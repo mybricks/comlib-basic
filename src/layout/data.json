@@ -1,0 +1,22 @@
+{
+  "style": {
+    "backgroundColor": "#FFF",
+    "borderRadius": 0
+  },
+  "rows": [
+    {
+      "id": "tr0",
+      "cols": [
+        {
+          "id": "td0",
+          "defId": "col0"
+        }
+      ]
+    }
+  ],
+  "cols": [
+    {
+      "id": "col0"
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+@import "../../theme";
+
+.layout {
+  position: relative;
+
+  overflow: visible;
+
+  > table {
+    width: 100%;
+    //outline-offset:-1px;
+    //outline: 1px dashed #DDD;
+
+    .thead {
+      height: 0;
+
+      td {
+        border: 0px;
+      }
+    }
+
+    > tbody {
+      //display: flex;
+      //flex-direction: column;
+      //border-top: 1px dashed #DDD;
+      //border-left: 1px dashed #DDD;
+    }
+
+    tr {
+      //display: flex;
+      width: 100%;
+
+      &:not(:first-child) {
+        > td {
+          > div[data-isslot] {
+            //top: -1px !important;
+            //height: calc(100% + 0px) !important;
+          }
+        }
+      }
+
+      &:last-child {
+        > td {
+          > div[data-isslot] {
+            //height: calc(100% + 2px) !important;
+          }
+        }
+      }
+
+      //&:nth-child(2) {
+      //  //background-color: red;
+      //  //margin-left: -1px;
+      //  > td {
+      //    > div[data-isslot] {
+      //      top: -1px !important;
+      //      height: calc(100% + 0px) !important;
+      //    }
+      //  }
+      //}
+
+      //&:not(:nth-of-type(-n+1)) {
+      //  //margin-left: -1px;
+      //  > td {
+      //    > div[data-isslot] {
+      //      top: 1px !important;
+      //      height: calc(100% + 0px) !important;
+      //    }
+      //  }
+      //}
+
+      //&:last-child {
+      //  //margin-left: -1px;
+      //  > td {
+      //    > div[data-isslot] {
+      //      top: 1px !important;
+      //      height: calc(100% + -1px) !important;
+      //    }
+      //  }
+      //}
+
+      //&:nth-of-type(1) {
+      //  > td {
+      //    > div[data-isslot] {
+      //      height: calc(100% + 2px) !important;
+      //    }
+      //  }
+      //}
+      //
+      //&:not(:nth-of-type(-n+2)) {
+      //  > td {
+      //    > div[data-isslot] {
+      //      height: calc(100% + 1px) !important;
+      //    }
+      //  }
+      //}
+    }
+
+    .td {
+      position: relative;
+      border: 1px dashed #DDD;
+      border-collapse: collapse;
+      padding: 0;
+      overflow: hidden;
+      min-width: 10px;
+      min-height: 10%;
+
+      //&:last-child {
+      //  flex: 1;
+      //}
+
+      &:first-child {
+        > div[data-isslot] {
+          //left: -1px;
+          //width: calc(100% + 1px);
+        }
+      }
+
+      &:not(:first-child) {
+        //margin-left: -1px;
+
+        > div[data-isslot] {
+          //left: -2px;
+          //width: calc(100% + 2px);
+        }
+      }
+
+      > div[data-isslot] {
+        outline-offset: 0;
+        position: absolute !important;
+        left: -1px;
+        top: -1px;
+        width: calc(100% + 1px);
+        height: calc(100% + 1px) !important;
+      }
+
+
+      .resizeW {
+        width: 7px;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: -3px;
+        background-color: transparent;
+        z-index: 10000;
+        cursor: ew-resize !important;
+
+        //&:hover {
+        //  //background-color: black;
+        //
+        //  div {
+        //    visibility: visible;
+        //  }
+        //}
+
+        div {
+          pointer-events: none;
+          height: 100%;
+          width: 3px;
+          margin-left: 1px;
+          //background-color: red;
+          visibility: hidden;
+        }
+      }
+
+      .resizeH {
+        height: 7px;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background-color: transparent;
+        z-index: 10000;
+        cursor: ns-resize !important;
+
+        //&:hover {
+        //  //background-color: black;
+        //
+        //  div {
+        //    visibility: visible;
+        //  }
+        //}
+
+        div {
+          pointer-events: none;
+          width: 100%;
+          height: 3px;
+          margin-top: 1px;
+          //background-color: red;
+          visibility: hidden;
+        }
+      }
+    }
+  }
+
+  .showCol {
+    position: absolute !important;
+    top: 0;
+    height: 100%;
+    z-index: 1000;
+    border: 2px solid @color-primary;
+    pointer-events: none !important;
+  }
+
+  > [data-edit-col] {
+    display: none;
+  }
+
+  .showRow {
+    position: absolute !important;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    border: 2px solid @color-primary;
+    pointer-events: none !important;
+  }
+
+  .showZone{
+    position: absolute !important;
+    z-index: 1000;
+    border: 2px solid @color-primary;
+    pointer-events: none !important;
+  }
+
+  > [data-edit-row] {
+    display: none;
+  }
+}

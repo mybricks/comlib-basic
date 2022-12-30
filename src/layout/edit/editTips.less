@@ -1,0 +1,86 @@
+@import "../../theme";
+
+.radius0, .radius1, .radius2, .radius3 {
+  position: absolute;
+  width: 7px;
+  height: 9px;
+  border-radius: 7px;
+  background-color: #CCC;
+  pointer-events: auto;
+  clip-path: polygon(0 0, 0% 100%, 100% 50%);
+  transform: rotate(45deg);
+
+  &:hover {
+    //transform: scale(1.5);
+    background-color: @color-primary;
+    transition: all 100ms linear;
+  }
+}
+
+
+.colTips {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.colBar {
+  position: absolute;
+  height: 7px;
+  background-color: #CCC;
+  pointer-events: auto;
+
+  &:hover {
+    background-color: @color-primary;
+  }
+}
+
+.rowTips {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: -7px;
+}
+
+.rowBar {
+  position: absolute;
+  width: 7px;
+  background-color: #CCC;
+  pointer-events: auto;
+
+  &:hover {
+    background-color: @color-primary;
+  }
+}
+
+.focusBar {
+  background-color: @color-primary !important;
+}
+
+.flexBar {
+  //background-color: #d7b8e3;
+  background-color: #f3dfc0;
+
+  //&:after {
+  //  position: absolute;
+  //  left: 2px;
+  //  top: -10px;
+  //  content: 'auto';
+  //}
+}
+
+.tip {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 7px;
+  background-color: #CCC;
+  pointer-events: auto;
+
+  &:hover {
+    transform: scale(1.5);
+    background-color: @color-primary;
+    transition: all 100ms linear;
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "title": "布局",
+  "namespace": "mybricks.basic-comlib.layout",
+  "author": "CheMingjun",
+  "author_name": "车明君",
+  "version": "1.0.0",
+  "description": "布局",
+  "icon": "./icon.png",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "runtime.edit": "./edit/runtime.tsx",
+  "editors": "./edit/editors.tsx",
+  "slots": [
+    {
+      "id": "td0",
+      "title": "单元格"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}
