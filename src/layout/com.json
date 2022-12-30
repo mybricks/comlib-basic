@@ -5,7 +5,7 @@
   "author_name": "车明君",
   "version": "1.0.0",
   "description": "布局",
-  "icon": "./icon.png",
+  "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "runtime.edit": "./edit/runtime.tsx",
