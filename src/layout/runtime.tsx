@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 
 export default function ({ data, slots }) {
-
   const layoutStyle = useCallback(() => {
     let gridTemplateColumns = '';
     let gridTemplateRows = '';
@@ -25,7 +24,8 @@ export default function ({ data, slots }) {
       gridTemplateRows,
       gridTemplateColumns,
       width: '100%',
-      height: '100%'
+      height: '100%',
+      ...data.style
     };
   }, []);
 

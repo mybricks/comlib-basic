@@ -15,9 +15,9 @@ export default function ({env, data, style, slots}) {
   const [dragPo, setDragPo] = useState<{ style, colIds }>()
   const layoutEl = useRef<HTMLElement>()
 
-  useMemo(() => {
-    env.loadCSSLazy(css)//加载css
-  }, [])
+  // useMemo(() => {
+  //   env.loadCSSLazy(css)//加载css
+  // }, [])
 
   useEffect(() => {
     if (data._editCol) {
