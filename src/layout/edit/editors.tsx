@@ -348,7 +348,7 @@ export default {
           set({data, slots, focusArea}, value) {
             const {col, slot} = getByFousArea({data, slots, focusArea})
 
-            col.style = value
+            col.style = Object.assign(col.style || {}, value);
             if (value.layout === 'absolute') {
               slot.setLayout('absolute')
             } else {

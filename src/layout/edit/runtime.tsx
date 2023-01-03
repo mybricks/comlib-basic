@@ -310,7 +310,7 @@ function Row({env, data, slots, style, row, dragTd}) {
                 onClick={focusTable}
                 onMouseDown={dragTd}
             >
-              {slots[col.id].render({style: col.style})}
+              {slots[col.id].render({style: {...col.style}})}
               {
                 idx < row.cols.length - 1 || typeof style.width === 'number' ? (
                   <div className={css.resizeW} onMouseDown={e => dragW(e, col)}>
