@@ -1,4 +1,5 @@
 import {getPosition} from "../../utils";
+import { WidthUnitEnum } from '../const';
 
 export function resetLayout({data}) {
   data.rows = data.rows.filter((row, idx) => {
@@ -40,6 +41,7 @@ export function resetLayout({data}) {
 
   if (!data.cols.find(col => !col.width)) {//flex col
     data.cols[data.cols.length - 1].width = void 0
+    data.cols[data.cols.length - 1].widthPercent = void 0
   }
 
   if (!data.rows.find(row => !row.height)) {//flex row
@@ -89,4 +91,40 @@ export function calculateTds({data}, {po, aw, ah}, tableEl): {
     width: width - left,
     height: height - top
   }
+}
+
+export function widthTypeConversion ({col, styleWidth, widthType, keepWidth = false}) {
+  const canvas = document.getElementById('_mybricks-geo-webview_') as HTMLElement;
+  const clientWidth = canvas.clientWidth;
+  const width = typeof styleWidth === 'number' ? styleWidth : clientWidth;
+
+  if (widthType === WidthUnitEnum.Percent) {
+    if (keepWidth) {
+
+    } else {
+      col.widthPercent = col.width ? `${((col.width / width) * 100).toFixed(2)}%` : 0
+    }
+  } else {
+    col.width = col.widthPercent ? Number((Number(col.widthPercent.replace('%', '')) / 100 * width).toFixed(0)) : 0
+  }
+}
+
+export function refleshPercent ({cols, styleWidth}) {
+  const canvas = document.getElementById('_mybricks-geo-webview_') as HTMLElement;
+  const clientWidth = canvas.clientWidth;
+  const width = typeof styleWidth === 'number' ? styleWidth : clientWidth;
+
+  cols.forEach((col) => {
+    col.widthPercent = col.width ? `${((col.width / width) * 100).toFixed(2)}%` : 0
+  })
+}
+
+export function refleshPx ({cols, styleWidth}) {
+  const canvas = document.getElementById('_mybricks-geo-webview_') as HTMLElement;
+  const clientWidth = canvas.clientWidth;
+  const width = typeof styleWidth === 'number' ? styleWidth : clientWidth;
+
+  cols.forEach((col) => {
+    col.width = col.widthPercent ? Number((Number(col.widthPercent.replace('%', '')) / 100 * width).toFixed(0)) : 0
+  })
 }

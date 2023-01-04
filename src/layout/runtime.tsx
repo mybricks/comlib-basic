@@ -1,7 +1,10 @@
 import React, { useCallback, useMemo } from 'react';
 
+import { WidthUnitEnum } from './const';
+
 export default function ({ data, slots }) {
   const layoutStyle = useCallback(() => {
+    const { cellWidthType } = data;
     let gridTemplateColumns = '';
     let gridTemplateRows = '';
   
@@ -11,11 +14,15 @@ export default function ({ data, slots }) {
         gridTemplateRows = gridTemplateRows + (gridTemplateRows ? ` ${height}px` : `${height}px`);
       }
     });
+
+    const useWidth = cellWidthType === WidthUnitEnum.Px;
   
     data.cols.forEach((col) => {
-      const { width } = col;
-      if (width) {
-        gridTemplateColumns = gridTemplateColumns + (gridTemplateColumns ? ` ${width}px` : `${width}px`);
+      const { width, widthPercent } = col;
+      const relWidth = useWidth ? (width && `${width}px`) : widthPercent;
+
+      if (relWidth) {
+        gridTemplateColumns = gridTemplateColumns + (gridTemplateColumns ? ` ${relWidth}` : `${relWidth}`);
       }
     });
 

@@ -6,9 +6,10 @@
  * CheMingjun @2019
  * mybricks@126.com
  */
-import {Tips} from "./editTips";
-import React from "react";
-import {resetLayout} from "./edtUtils";
+import React from 'react';
+import { Tips } from './editTips';
+import { refleshPx, resetLayout, refleshPercent } from './edtUtils';
+import { WidthUnitEnum } from '../const';
 
 interface Result {
   focusArea: any
@@ -26,15 +27,15 @@ export default {
   '@resize': {
     options: ['width', 'height'],
     value: {
-      set({data}, {width, height}) {
+      set({data, style}, {width, height}) {
         if (typeof height === 'number' && !isNaN(height)) {
           data.height = height;
         }
-        
-        // if (typeof height === 'number'&&height) {
-        //   console.log(height)
-        //   data.height = height
-        // }
+        if (data.cellWidthType === WidthUnitEnum.Percent) {
+          refleshPx({cols: data.cols, styleWidth: style.width})
+        } else {
+          refleshPercent({cols: data.cols, styleWidth: style.width})
+        }
       }
     }
   },
@@ -47,6 +48,24 @@ export default {
 
     cate1.title = '常规';
     cate1.items = [
+      {
+        title: '单元格宽度类型',
+        type: 'select',
+        options: [
+          {label: '固定宽度', value: WidthUnitEnum.Px},
+          {label: '百分比', value: WidthUnitEnum.Percent}
+        ],
+        value: {
+          get({data, style, slots}) {
+            return data.cellWidthType;
+          },
+          set({data, style, slots}, value) {
+            data.cellWidthType = value;
+
+            resetLayout({data})
+          }
+        }
+      },
       {
         title: '背景',
         type: 'colorPicker',
@@ -243,23 +262,23 @@ export default {
   'div[data-zone]': {
     title: '单元格',
     items: [
-      {
-        title: "布局",
-        type: "layout",
-        options: [],
-        value: {
-          set({data, slots, focusArea}, value) {
-            const {col, slot} = getByFousArea({data, slots, focusArea})
+      // {
+      //   title: "布局",
+      //   type: "layout",
+      //   options: [],
+      //   value: {
+      //     set({data, slots, focusArea}, value) {
+      //       const {col, slot} = getByFousArea({data, slots, focusArea})
 
-            col.style = value
-            if (value.layout === 'absolute') {
-              slot.setLayout('absolute')
-            } else {
-              slot.setLayout(value.layout)
-            }
-          },
-        },
-      },
+      //       col.style = value
+      //       if (value.layout === 'absolute') {
+      //         slot.setLayout('absolute')
+      //       } else {
+      //         slot.setLayout(value.layout)
+      //       }
+      //     },
+      //   },
+      // },
       {
         title: "合并",
         type: "button",
@@ -416,5 +435,3 @@ function searchCol({data}, colId) {
 
   return found
 }
-
-

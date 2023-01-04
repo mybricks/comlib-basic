@@ -1,10 +1,18 @@
-import React, {Fragment, useCallback} from "react";
+import React, {Fragment, useMemo,useCallback} from "react";
 import {dragable, getPosition, uuid} from "../../utils";
-import {calculateTds, resetLayout} from "./edtUtils";
+import { WidthUnitEnum } from '../const';
+import {calculateTds, resetLayout, refleshPx, refleshPercent} from "./edtUtils";
 
 import css from './editTips.less'
 
 export function Tips({data, style, slots, element}) {
+  useMemo(() => {
+    if (data.cellWidthType === WidthUnitEnum.Percent) {
+      refleshPx({cols: data.cols, styleWidth: style.width})
+    } else {
+      refleshPercent({cols: data.cols, styleWidth: style.width})
+    }
+  }, [])
   return (
     <>
       <ColTips data={data} slots={slots} element={element} style={style}/>
@@ -321,6 +329,25 @@ function _addCol(col, {data, slots, style, element}) {
     style.width += 100
   } else {
 
+  }
+
+  const canvas = document.getElementById('_mybricks-geo-webview_') as HTMLElement;
+  const clientWidth = canvas.clientWidth;
+  const styleWidth = style.width;
+  const width = typeof styleWidth === 'number' ? styleWidth : clientWidth;
+
+  if (data.cellWidthType === WidthUnitEnum.Percent) {
+    data.cols.forEach((col) => {
+      if (col.width) {
+        col.widthPercent = `${((col.width / width) * 100).toFixed(2)}%`
+      }
+    })
+  } else {
+    data.cols.forEach((col) => {
+      if (col.widthPercent) {
+        col.width = Number((Number(col.widthPercent.replace('%', '')) / 100 * width).toFixed(0))
+      }
+    })
   }
 
   resetLayout({data})

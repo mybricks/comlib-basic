@@ -9,7 +9,8 @@
 import css from './css.lazy.less'
 import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {dragable, getPosition, uuid} from "../../utils";
-import {calculateTds} from "./edtUtils";
+import { calculateTds, widthTypeConversion, refleshPx, refleshPercent } from "./edtUtils";
+import { WidthUnitEnum } from '../const';
 
 export default function ({env, data, style, slots}) {
   const [dragPo, setDragPo] = useState<{ style, colIds }>()
@@ -111,10 +112,22 @@ export default function ({env, data, style, slots}) {
 
   useEffect(() => {
     const { height } = style;
+    const rowHeight = data.rows.reduce((c, s) => {
+      return c + (s.height || 0)
+    }, 0)
+
+    let rstHeight = data.height;
+
     if (typeof height === 'number' && !isNaN(height)) {
-      data.height = height;
+      rstHeight = height;
     }
-  }, [style.height]);
+    if (rowHeight >= data.height ) {
+      rstHeight = rowHeight + 100;
+    }
+
+    data.height = rstHeight;
+    style.height = rstHeight;
+  }, [style.height, data.rows]);
 
   return (
     <div className={css.layout} ref={layoutEl} style={{height: data.height}}>
@@ -125,9 +138,14 @@ export default function ({env, data, style, slots}) {
         <tr className={css.thead}>
           {
             data.cols.map((col, idx) => {
+              const length = data.cols.length
+              const style: any = {};
+              if (length - 1 !== idx) {
+                style.width = data.cellWidthType === WidthUnitEnum.Percent ? col.widthPercent : col.width
+              }
               return (
                 <td id={`col-${col.id}`} key={col.id}
-                    style={{width: col.width}}
+                    style={style}
                     className={css.td}>
                 </td>
               )
@@ -224,6 +242,7 @@ function Row({env, data, slots, style, row, dragTd}) {
     let width = defCol.width || style.width
     let editFinish
     let allValidWidth = 0
+    const { cellWidthType } = data
 
     dragable(e, ({po, eo, dpo}, state) => {
       if (state === 'start') {
@@ -235,6 +254,17 @@ function Row({env, data, slots, style, row, dragTd}) {
               allValidWidth += def.width
             }
           })
+        } else {
+          if (cellWidthType === WidthUnitEnum.Percent) {
+            widthTypeConversion({col: defCol, styleWidth: style.width, widthType: cellWidthType})
+          }
+
+          // console.log('start')
+          // if (data.cellWidthType === WidthUnitEnum.Percent) {
+          //   refleshPx({cols: data.cols, styleWidth: style.width})
+          // } else {
+          //   refleshPercent({cols: data.cols, styleWidth: style.width})
+          // }
         }
       } else if (state === 'ing') {
         width += dpo.dx
@@ -242,10 +272,28 @@ function Row({env, data, slots, style, row, dragTd}) {
         if (defCol.width) {
           if (width > 10) {
             defCol.width = width
+            if (cellWidthType === WidthUnitEnum.Percent) {
+              widthTypeConversion({col: defCol, styleWidth: style.width, widthType: cellWidthType})
+            }
+            // console.log('ing1')
+            // if (data.cellWidthType === WidthUnitEnum.Percent) {
+            //   refleshPx({cols: data.cols, styleWidth: style.width})
+            // } else {
+            //   refleshPercent({cols: data.cols, styleWidth: style.width})
+            // }
           }
         } else {
           if (width - allValidWidth > 10) {
             style.width = width
+            if (cellWidthType === WidthUnitEnum.Percent) {
+              refleshPercent({cols: data.cols, styleWidth: width})
+            }
+            // console.log('ing2')
+            // if (data.cellWidthType === WidthUnitEnum.Percent) {
+            //   refleshPx({cols: data.cols, styleWidth: style.width})
+            // } else {
+            //   refleshPercent({cols: data.cols, styleWidth: style.width})
+            // }
           }
         }
 
