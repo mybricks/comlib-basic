@@ -27,7 +27,10 @@ export default {
     options: ['width', 'height'],
     value: {
       set({data}, {width, height}) {
-        data.height = height
+        if (typeof height === 'number' && !isNaN(height)) {
+          data.height = height;
+        }
+        
         // if (typeof height === 'number'&&height) {
         //   console.log(height)
         //   data.height = height

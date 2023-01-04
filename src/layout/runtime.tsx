@@ -24,7 +24,8 @@ export default function ({ data, slots }) {
       gridTemplateRows,
       gridTemplateColumns,
       width: '100%',
-      height: '100%',
+      height: data.height || '100%',
+      overflow: 'hidden',
       ...data.style
     };
   }, []);

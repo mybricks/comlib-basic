@@ -109,10 +109,19 @@ export default function ({env, data, style, slots}) {
     }
   }, [env.edit.focusArea])
 
+  useEffect(() => {
+    const { height } = style;
+    if (typeof height === 'number' && !isNaN(height)) {
+      data.height = height;
+    }
+  }, [style.height]);
+
   return (
-    <div className={css.layout} ref={layoutEl}>
-      <table style={{minHeight: style.height, ...data.style}}>
-        <tbody style={{minHeight: style.height}}>
+    <div className={css.layout} ref={layoutEl} style={{height: data.height}}>
+      {/* <table style={{minHeight: style.height, ...data.style}}>
+        <tbody style={{minHeight: style.height}}> */}
+      <table style={{...data.style}}>
+        <tbody>
         <tr className={css.thead}>
           {
             data.cols.map((col, idx) => {
