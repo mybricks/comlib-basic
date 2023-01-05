@@ -7,7 +7,7 @@
   position: relative;
 
   // overflow: visible;
-  overflow: hidden;
+  overflow: visible; // todo
 
   > table {
     width: 100%;
@@ -107,7 +107,7 @@
       // outline: 1px dashed #DDD;
       border-collapse: collapse;
       padding: 0;
-      overflow: hidden;
+      // overflow: hidden; // todo
       min-width: 10px;
       min-height: 10%;
 
@@ -199,6 +199,20 @@
           //background-color: red;
           visibility: hidden;
         }
+      }
+
+      .resizeTip {
+        width: max-content;
+        padding: 3px;
+        bottom: -28px;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0px);
+        font-size: 12px;
+        line-height: 12px;
+        z-index: 20000;
+        background-color: @color-primary;
+        color: #ffffff;
       }
     }
   }

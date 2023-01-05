@@ -96,7 +96,9 @@ export function calculateTds({data}, {po, aw, ah}, tableEl): {
 }
 
 export function refleshPercent ({cols, styleWidth, cover = false}) {
-  cols.forEach((col) => {
+  const colsLength = cols.length;
+  cols.forEach((col, idx) => {
+    if (colsLength - 1 === idx) return
     const { width } = col;
 
     if (cover) {
@@ -110,7 +112,9 @@ export function refleshPercent ({cols, styleWidth, cover = false}) {
 }
 
 export function refleshPx ({cols, styleWidth, cover = false}) {
-  cols.forEach((col) => {
+  const colsLength = cols.length;
+  cols.forEach((col, idx) => {
+    if (colsLength - 1 === idx) return
     const { widthPercent } = col;
 
     if (cover) {
