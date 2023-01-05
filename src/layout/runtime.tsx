@@ -19,7 +19,7 @@ export default function ({ data, slots }) {
   
     data.cols.forEach((col) => {
       const { width, widthPercent, cellWidthType } = col;
-      const relWidth = cellWidthType ? 'auto' : (useWidth ? (width && `${width}px`) : widthPercent);
+      const relWidth = (cellWidthType === 'auto') ? 'auto' : (useWidth ? (width && `${width}px`) : widthPercent);
 
       if (relWidth) {
         gridTemplateColumns = gridTemplateColumns + (gridTemplateColumns ? ` ${relWidth}` : `${relWidth}`);
