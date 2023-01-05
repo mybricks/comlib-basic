@@ -282,7 +282,8 @@ function _addCol(col, {data, slots, style, element}) {
     const idx = data.cols.indexOf(col)
     newCol = {
       id: uuid(),
-      width: 100
+      width: 100,
+      cellWidthType: WidthUnitEnum.Stabl
     }
 
     data.cols.splice(idx, -1, newCol)

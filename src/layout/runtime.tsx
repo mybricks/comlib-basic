@@ -18,8 +18,8 @@ export default function ({ data, slots }) {
     const useWidth = cellWidthType === WidthUnitEnum.Px;
   
     data.cols.forEach((col) => {
-      const { width, widthPercent } = col;
-      const relWidth = useWidth ? (width && `${width}px`) : widthPercent;
+      const { width, widthPercent, cellWidthType } = col;
+      const relWidth = cellWidthType ? 'auto' : (useWidth ? (width && `${width}px`) : widthPercent);
 
       if (relWidth) {
         gridTemplateColumns = gridTemplateColumns + (gridTemplateColumns ? ` ${relWidth}` : `${relWidth}`);

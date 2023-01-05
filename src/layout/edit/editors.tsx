@@ -10,6 +10,7 @@ import React from 'react';
 import { Tips } from './editTips';
 import { refleshPx, resetLayout, refleshPercent } from './edtUtils';
 import { WidthUnitEnum } from '../const';
+import { isNumber } from '../../utils';
 
 interface Result {
   focusArea: any
@@ -128,6 +129,106 @@ export default {
   'div[data-col-id]': {
     title: '列',
     items: [
+      {
+        title: '宽度填充模式',
+        type: 'select',
+        ifVisible({data, focusArea}) {
+          const { cols } = data
+          const colId = focusArea.dataset.colId
+          const findIndex = cols.findIndex((col) => col.id === colId)
+          if (findIndex === (cols.length - 1)) {
+            return false
+          }
+
+          return true
+        },
+        options: [
+          {label: '固定', value: WidthUnitEnum.Stabl},
+          {label: '自动填充', value: WidthUnitEnum.Auto}
+        ],
+        value: {
+          get({data, focusArea}) {
+            const { cols } = data
+            const colId = focusArea.dataset.colId
+            const colDef = cols.find((col) => col.id === colId)
+
+            return colDef.cellWidthType || 'stabl';
+          },
+          set({data, focusArea}, value) {
+            const { cols } = data
+            const colId = focusArea.dataset.colId
+            const colDef = cols.find((col) => col.id === colId)
+
+            colDef.cellWidthType = value
+          }
+        }
+      },
+      {
+        title: '宽度(px)',
+        type: 'text',
+        ifVisible({ data, focusArea }) {
+          const { cols } = data
+          const colId = focusArea.dataset.colId
+          const colDef = cols.find((col) => col.id === colId)
+          return data.cellWidthType === WidthUnitEnum.Px && colDef.cellWidthType !== WidthUnitEnum.Auto;
+        },
+        options: {
+          type: 'number'
+        },
+        value: {
+          get({data, focusArea}) {
+            const { cols } = data
+            const colId = focusArea.dataset.colId
+            const colDef = cols.find((col) => col.id === colId)
+
+            return colDef.width;
+          },
+          set({data, focusArea}, value) {
+            const { cols } = data
+            const colId = focusArea.dataset.colId
+            const colDef = cols.find((col) => col.id === colId) 
+            let rstNumber = Number(value)
+
+            if (isNumber(rstNumber)) {
+              colDef.width = rstNumber
+            }
+          }
+        }
+      },
+      {
+        title: '百分比(%)',
+        type: 'text',
+        ifVisible({ data, focusArea }) {
+          const { cols } = data
+          const colId = focusArea.dataset.colId
+          const colDef = cols.find((col) => col.id === colId)
+          return data.cellWidthType === WidthUnitEnum.Percent && colDef.cellWidthType !== WidthUnitEnum.Auto;
+        },
+        options: {
+          type: 'number'
+        },
+        value: {
+          get({data, focusArea}) {
+            const { cols } = data
+            const colId = focusArea.dataset.colId
+            const colDef = cols.find((col) => col.id === colId)
+
+            console.log(JSON.parse(JSON.stringify(cols)), 'cols')
+
+            return Number(colDef.widthPercent?.replace('%', ''))
+          },
+          set({data, focusArea}, value) {
+            const { cols } = data
+            const colId = focusArea.dataset.colId
+            const colDef = cols.find((col) => col.id === colId)
+            let rstNumber = Number(value)
+
+            if (isNumber(rstNumber)) {
+              colDef.widthPercent = `${rstNumber}%`
+            }
+          }
+        }
+      },
       {
         title: '布局',
         type: 'layout',

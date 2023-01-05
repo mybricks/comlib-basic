@@ -39,8 +39,10 @@ export function resetLayout({data}) {
   })
 
   if (!data.cols.find(col => !col.width)) {//flex col
-    data.cols[data.cols.length - 1].width = void 0
-    data.cols[data.cols.length - 1].widthPercent = void 0
+    const col = data.cols[data.cols.length - 1];
+    col.width = void 0
+    col.widthPercent = void 0
+    col.cellWidthType = void 0
   }
 
   if (!data.rows.find(row => !row.height)) {//flex row

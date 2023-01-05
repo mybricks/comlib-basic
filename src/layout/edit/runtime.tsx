@@ -143,7 +143,7 @@ export default function ({env, data, style, slots}) {
             data.cols.map((col, idx) => {
               const length = data.cols.length
               const style: any = {};
-              if (length - 1 !== idx) {
+              if (length - 1 !== idx && col.cellWidthType !== WidthUnitEnum.Auto) {
                 style.width = data.cellWidthType === WidthUnitEnum.Percent ? col.widthPercent : col.width
               }
               return (
@@ -430,6 +430,12 @@ function Row({env, data, slots, style, row, dragTd, layoutEl}) {
     <tr key={row.id} id={`row-${row.id}`} {...getTrProps(row)}>
       {
         row.cols.map((col, idx) => {
+          let defCol = data.cols.find(def => def.id === col.defId)
+
+          if (col.colSpan) {//考虑到跨列的情况
+            defCol = data.cols[data.cols.indexOf(defCol) + col.colSpan - 1]
+          }
+
           return (
             <td key={col.id}
                 id={`col-${col.id}`}
@@ -442,7 +448,7 @@ function Row({env, data, slots, style, row, dragTd, layoutEl}) {
             >
               {slots[col.id].render({style: {...col.style}})}
               {
-                idx < row.cols.length - 1 || typeof style.width === 'number' ? (
+                (idx < row.cols.length - 1 || typeof style.width === 'number') && defCol.cellWidthType !== WidthUnitEnum.Auto ? (
                   <div className={css.resizeW} onMouseDown={e => dragW(e, col)} onMouseUp={() => setColSize(void 0)}>
                   </div>
                 ) : null
