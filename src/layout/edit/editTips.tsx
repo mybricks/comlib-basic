@@ -7,11 +7,13 @@ import css from './editTips.less'
 
 export function Tips({data, style, slots, element}) {
   useMemo(() => {
-    if (data.cellWidthType === WidthUnitEnum.Percent) {
-      refleshPx({cols: data.cols, styleWidth: style.width})
-    } else {
-      refleshPercent({cols: data.cols, styleWidth: style.width})
-    }
+    requestAnimationFrame(() => {
+      if (data.cellWidthType === WidthUnitEnum.Percent) {
+        refleshPx({cols: data.cols, styleWidth: element.parentElement.clientWidth})
+      } else {
+        refleshPercent({cols: data.cols, styleWidth: element.parentElement.clientWidth})
+      }
+    })
   }, [])
   return (
     <>
@@ -189,7 +191,7 @@ function ColTips({data, slots, style, element}) {
     data._editCol = {
       id: defCol.id,
       style: {
-        width: tdEle.clientWidth,
+        width: tdEle?.clientWidth,
         left: curLeft
       }
     }
@@ -331,26 +333,14 @@ function _addCol(col, {data, slots, style, element}) {
 
   }
 
-  const canvas = document.getElementById('_mybricks-geo-webview_') as HTMLElement;
-  const clientWidth = canvas.clientWidth;
-  const styleWidth = style.width;
-  const width = typeof styleWidth === 'number' ? styleWidth : clientWidth;
-
-  if (data.cellWidthType === WidthUnitEnum.Percent) {
-    data.cols.forEach((col) => {
-      if (col.width) {
-        col.widthPercent = `${((col.width / width) * 100).toFixed(2)}%`
-      }
-    })
-  } else {
-    data.cols.forEach((col) => {
-      if (col.widthPercent) {
-        col.width = Number((Number(col.widthPercent.replace('%', '')) / 100 * width).toFixed(0))
-      }
-    })
-  }
-
   resetLayout({data})
+
+  const styleWidth = element.parentElement.clientWidth;
+  if (data.cellWidthType === WidthUnitEnum.Percent) {
+    refleshPercent({cols: data.cols, styleWidth, cover: true})
+  } else {
+    refleshPx({cols: data.cols, styleWidth, cover: true})
+  }
 
   return newCol
 }

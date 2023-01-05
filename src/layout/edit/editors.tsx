@@ -27,15 +27,17 @@ export default {
   '@resize': {
     options: ['width', 'height'],
     value: {
-      set({data, style}, {width, height}) {
+      set({data, style, element}, {width, height}) {
         if (typeof height === 'number' && !isNaN(height)) {
           data.height = height;
         }
-        if (data.cellWidthType === WidthUnitEnum.Percent) {
-          refleshPx({cols: data.cols, styleWidth: style.width})
-        } else {
-          refleshPercent({cols: data.cols, styleWidth: style.width})
-        }
+        requestAnimationFrame(() => {
+          if (data.cellWidthType === WidthUnitEnum.Percent) {
+            refleshPx({cols: data.cols, styleWidth: element.parentElement.clientWidth})
+          } else {
+            refleshPercent({cols: data.cols, styleWidth: element.parentElement.clientWidth})
+          }
+        })
       }
     }
   },

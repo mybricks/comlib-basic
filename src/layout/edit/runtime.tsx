@@ -9,7 +9,7 @@
 import css from './css.lazy.less'
 import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {dragable, getPosition, uuid} from "../../utils";
-import { calculateTds, widthTypeConversion, refleshPx, refleshPercent } from "./edtUtils";
+import { calculateTds, refleshPercent } from "./edtUtils";
 import { WidthUnitEnum } from '../const';
 
 export default function ({env, data, style, slots}) {
@@ -160,6 +160,7 @@ export default function ({env, data, style, slots}) {
                         slots={slots}
                         style={style}
                         row={row}
+                        layoutEl={layoutEl}
                         dragTd={dragTd}/>
           })
         }
@@ -196,7 +197,7 @@ export default function ({env, data, style, slots}) {
 }
 
 
-function Row({env, data, slots, style, row, dragTd}) {
+function Row({env, data, slots, style, row, dragTd, layoutEl}) {
   const focusTable = useCallback(e => {
 
   }, [])
@@ -243,6 +244,7 @@ function Row({env, data, slots, style, row, dragTd}) {
     let editFinish
     let allValidWidth = 0
     const { cellWidthType } = data
+    const styleWidth = layoutEl.current.parentElement.clientWidth
 
     dragable(e, ({po, eo, dpo}, state) => {
       if (state === 'start') {
@@ -256,15 +258,8 @@ function Row({env, data, slots, style, row, dragTd}) {
           })
         } else {
           if (cellWidthType === WidthUnitEnum.Percent) {
-            widthTypeConversion({col: defCol, styleWidth: style.width, widthType: cellWidthType})
+            refleshPercent({cols: data.cols, styleWidth})
           }
-
-          // console.log('start')
-          // if (data.cellWidthType === WidthUnitEnum.Percent) {
-          //   refleshPx({cols: data.cols, styleWidth: style.width})
-          // } else {
-          //   refleshPercent({cols: data.cols, styleWidth: style.width})
-          // }
         }
       } else if (state === 'ing') {
         width += dpo.dx
@@ -273,14 +268,8 @@ function Row({env, data, slots, style, row, dragTd}) {
           if (width > 10) {
             defCol.width = width
             if (cellWidthType === WidthUnitEnum.Percent) {
-              widthTypeConversion({col: defCol, styleWidth: style.width, widthType: cellWidthType})
+              refleshPercent({cols: data.cols, styleWidth})
             }
-            // console.log('ing1')
-            // if (data.cellWidthType === WidthUnitEnum.Percent) {
-            //   refleshPx({cols: data.cols, styleWidth: style.width})
-            // } else {
-            //   refleshPercent({cols: data.cols, styleWidth: style.width})
-            // }
           }
         } else {
           if (width - allValidWidth > 10) {
@@ -288,12 +277,6 @@ function Row({env, data, slots, style, row, dragTd}) {
             if (cellWidthType === WidthUnitEnum.Percent) {
               refleshPercent({cols: data.cols, styleWidth: width})
             }
-            // console.log('ing2')
-            // if (data.cellWidthType === WidthUnitEnum.Percent) {
-            //   refleshPx({cols: data.cols, styleWidth: style.width})
-            // } else {
-            //   refleshPercent({cols: data.cols, styleWidth: style.width})
-            // }
           }
         }
 

@@ -1,5 +1,4 @@
 import {getPosition} from "../../utils";
-import { WidthUnitEnum } from '../const';
 
 export function resetLayout({data}) {
   data.rows = data.rows.filter((row, idx) => {
@@ -93,38 +92,30 @@ export function calculateTds({data}, {po, aw, ah}, tableEl): {
   }
 }
 
-export function widthTypeConversion ({col, styleWidth, widthType, keepWidth = false}) {
-  const canvas = document.getElementById('_mybricks-geo-webview_') as HTMLElement;
-  const clientWidth = canvas.clientWidth;
-  const width = typeof styleWidth === 'number' ? styleWidth : clientWidth;
-
-  if (widthType === WidthUnitEnum.Percent) {
-    if (keepWidth) {
-
-    } else {
-      col.widthPercent = col.width ? `${((col.width / width) * 100).toFixed(2)}%` : 0
-    }
-  } else {
-    col.width = col.widthPercent ? Number((Number(col.widthPercent.replace('%', '')) / 100 * width).toFixed(0)) : 0
-  }
-}
-
-export function refleshPercent ({cols, styleWidth}) {
-  const canvas = document.getElementById('_mybricks-geo-webview_') as HTMLElement;
-  const clientWidth = canvas.clientWidth;
-  const width = typeof styleWidth === 'number' ? styleWidth : clientWidth;
-
+export function refleshPercent ({cols, styleWidth, cover = false}) {
   cols.forEach((col) => {
-    col.widthPercent = col.width ? `${((col.width / width) * 100).toFixed(2)}%` : 0
+    const { width } = col;
+
+    if (cover) {
+      if (width) {
+        col.widthPercent = `${((width / styleWidth) * 100).toFixed(2)}%`
+      }
+    } else {
+      col.widthPercent = width ? `${((width / styleWidth) * 100).toFixed(2)}%` : 0
+    }
   })
 }
 
-export function refleshPx ({cols, styleWidth}) {
-  const canvas = document.getElementById('_mybricks-geo-webview_') as HTMLElement;
-  const clientWidth = canvas.clientWidth;
-  const width = typeof styleWidth === 'number' ? styleWidth : clientWidth;
-
+export function refleshPx ({cols, styleWidth, cover = false}) {
   cols.forEach((col) => {
-    col.width = col.widthPercent ? Number((Number(col.widthPercent.replace('%', '')) / 100 * width).toFixed(0)) : 0
+    const { widthPercent } = col;
+
+    if (cover) {
+      if (widthPercent) {
+        col.width = Number((Number(widthPercent.replace('%', '')) / 100 * styleWidth).toFixed(0))
+      }
+    } else {
+      col.width = widthPercent ? Number((Number(widthPercent.replace('%', '')) / 100 * styleWidth).toFixed(0)) : 0
+    }
   })
 }
