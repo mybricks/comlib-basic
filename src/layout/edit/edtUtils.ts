@@ -1,4 +1,4 @@
-import {getPosition} from "../../utils";
+import { isNumber, getPosition } from '../../utils';
 
 export function resetLayout({data}) {
   data.rows = data.rows.filter((row, idx) => {
@@ -53,12 +53,12 @@ export function calculateTds({data}, {po, aw, ah}, tableEl): {
   left, top,
   width, height
 } {
-  const colIds = []
+  const colIds: string[] = []
 
-  let left = 0, top = 0, width = 0, height = 0
+  let left, top, width, height
   data.rows.forEach(row => {
-    const trow = []
-    row.cols.forEach(col => {
+    const trow: string[] = []
+    row.cols.forEach((col) => {
       const ele = tableEl.querySelector(`#col-${col.id}`)
       const epo = getPosition(ele, tableEl)
 
@@ -71,10 +71,10 @@ export function calculateTds({data}, {po, aw, ah}, tableEl): {
         (ah + ele.offsetHeight)) {//范围存在交集
         trow.push(col.id)
 
-        left = !left ? epo.x : Math.min(left, epo.x)
-        top = !top ? epo.y : Math.min(top, epo.y)
-        width = Math.max(width, epo.x + ele.offsetWidth)
-        height = Math.max(height, epo.y + ele.offsetHeight)
+        left = !isNumber(left) ? epo.x : Math.min(left, epo.x)
+        top = !isNumber(top) ? epo.y : Math.min(top, epo.y)
+        width = Math.max(width || 0, epo.x + ele.offsetWidth)
+        height = Math.max(height || 0, epo.y + ele.offsetHeight)
       }
     })
 
@@ -83,12 +83,15 @@ export function calculateTds({data}, {po, aw, ah}, tableEl): {
     }
   })
 
+  left = left || 0
+  top = top || 0
+
   return {
     colIds,
     left,
     top,
-    width: width - left,
-    height: height - top
+    width: (width || 0) - left,
+    height: (height || 0) - top
   }
 }
 
