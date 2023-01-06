@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 
-import { WidthUnitEnum } from './const';
+import { CellWidthTypeEnum } from './const';
 
 export default function ({ data, slots }) {
   const layoutStyle = useCallback(() => {
@@ -15,7 +15,7 @@ export default function ({ data, slots }) {
       }
     });
 
-    const useWidth = cellWidthType === WidthUnitEnum.Px;
+    const useWidth = cellWidthType === CellWidthTypeEnum.Px;
   
     data.cols.forEach((col) => {
       const { width, widthPercent, cellWidthType } = col;

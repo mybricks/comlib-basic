@@ -6,25 +6,31 @@
  * CheMingjun @2019
  * mybricks@126.com
  */
-import css from './css.lazy.less'
-import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {dragable, getPosition, isNumber, uuid} from "../../utils";
-import { calculateTds, refleshPercent } from "./edtUtils";
-import { WidthUnitEnum } from '../const';
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useCallback
+} from 'react'
 
-export default function ({env, data, style, slots}) {
+import Table from './table'
+import { calculateTds } from './edtUtils'
+import { dragable, getPosition } from '../../utils'
+
+import css from './index.less'
+
+export default function ({env, data, style, slots}): JSX.Element {
+  /** 鼠标点中拖动框选单元格信息 */
   const [dragPo, setDragPo] = useState<{ style, colIds }>()
-  const layoutEl = useRef<HTMLElement>()
-
-  // useMemo(() => {
-  //   env.loadCSSLazy(css)//加载css
-  // }, [])
+  /** 组件 */
+  const layoutEl = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (data._editCol) {
-      const ele = layoutEl.current.querySelector(`div[data-col-id]`)
-      ele.click()
+      // 选中列
+      const ele = (layoutEl.current as HTMLDivElement).querySelector(`div[data-col-id]`) as HTMLDivElement
 
+      ele.click()
       env.edit.regBlur(() => {
         data._editCol = void 0
       })
@@ -33,34 +39,36 @@ export default function ({env, data, style, slots}) {
 
   useEffect(() => {
     if (data._editRow) {
-      const ele = layoutEl.current.querySelector(`div[data-row-id]`)
-      ele.click()
+      // 选中行
+      const ele = (layoutEl.current as HTMLDivElement).querySelector(`div[data-row-id]`) as HTMLDivElement
 
+      ele.click()
       env.edit.regBlur(() => {
         data._editRow = void 0
       })
     }
   }, [data._editRow])
 
-  const dragTd = useCallback(e => {
+  /**
+   * 拖动框选单元格
+   */
+  const dragTd: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void = useCallback(e => {
     if (env.edit.focusArea) {
+      // 需要聚焦后才可以拖动
       const tableEl = layoutEl.current as HTMLElement
-      let tablePo, startPo
-      let tStyle
-      let editFinish
+      let tablePo, startPo, tStyle, editFinish
       dragable(e, ({po, epo, dpo}, state) => {
         if (state === 'start') {
           tablePo = getPosition(tableEl)
-          startPo = {x: epo.ex - tablePo.x, y: epo.ey - tablePo.y}
+          startPo = { x: epo.ex - tablePo.x, y: epo.ey - tablePo.y }
           editFinish = env.edit.focusPaasive()
         } else if (state === 'ing') {
-          const finishPo = {x: epo.ex - tablePo.x, y: epo.ey - tablePo.y}
-
-          const po = {x: Math.min(startPo.x, finishPo.x), y: Math.min(startPo.y, finishPo.y)}
+          const finishPo = { x: epo.ex - tablePo.x, y: epo.ey - tablePo.y }
+          const po = { x: Math.min(startPo.x, finishPo.x), y: Math.min(startPo.y, finishPo.y) }
           const aw = Math.abs(finishPo.x - startPo.x)
           const ah = Math.abs(finishPo.y - startPo.y)
 
-          tStyle = calculateTds({data}, {po, aw, ah}, tableEl)
+          tStyle = calculateTds({ data }, { po, aw, ah }, tableEl)
 
           const {colIds, left, top, width, height} = tStyle
 
@@ -77,7 +85,6 @@ export default function ({env, data, style, slots}) {
           if (editFinish) {
             editFinish()
           }
-
           if (tStyle) {
             const po = {x: tStyle.left, y: tStyle.top}
             const {colIds, left, top, width, height} = calculateTds({data}, {
@@ -96,9 +103,9 @@ export default function ({env, data, style, slots}) {
               colIds
             })
 
-            const ele = layoutEl.current.querySelector(`div[data-zone]`)
-            ele.click()
+            const ele = (layoutEl.current as HTMLDivElement).querySelector(`div[data-zone]`) as HTMLDivElement
 
+            ele.click()
             env.edit.regBlur(() => {
               setDragPo(void 0)
             })
@@ -110,65 +117,16 @@ export default function ({env, data, style, slots}) {
     }
   }, [env.edit.focusArea])
 
-  useEffect(() => {
-    // const { height } = style;
-    // const rowHeight = data.rows.reduce((c, s) => {
-    //   return c + (s.height || 0)
-    // }, 0)
-
-    // let rstHeight = data.height;
-
-    // if (typeof height === 'number' && !isNaN(height)) {
-    //   rstHeight = height;
-    // }
-    // if (rowHeight >= data.height ) {
-    //   rstHeight = rowHeight + 100;
-    // }
-
-    // data.height = rstHeight;
-    // style.height = rstHeight;
-    if (isNumber(style.height)) {
-      data.height = style.height
-    }
-  }, [style.height]);
-
   return (
     <div className={css.layout} ref={layoutEl} style={{height: data.height}}>
-      {/* <table style={{minHeight: style.height, ...data.style}}>
-        <tbody style={{minHeight: style.height}}> */}
-      <table style={{...data.style}}>
-        <tbody>
-        <tr className={css.thead}>
-          {
-            data.cols.map((col, idx) => {
-              const length = data.cols.length
-              const style: any = {};
-              if (length - 1 !== idx && col.cellWidthType !== WidthUnitEnum.Auto) {
-                style.width = data.cellWidthType === WidthUnitEnum.Percent ? col.widthPercent : col.width
-              }
-              return (
-                <td id={`col-${col.id}`} key={col.id}
-                    style={style}
-                    className={css.td}>
-                </td>
-              )
-            })
-          }
-        </tr>
-        {
-          data.rows.map(row => {
-            return <Row key={row.id}
-                        env={env}
-                        data={data}
-                        slots={slots}
-                        style={style}
-                        row={row}
-                        layoutEl={layoutEl}
-                        dragTd={dragTd}/>
-          })
-        }
-        </tbody>
-      </table>
+      <Table
+        env={env}
+        layoutEl={layoutEl}
+        data={data}
+        slots={slots}
+        style={style}
+        dragTd={dragTd}
+      />
 
       {
         data._editCol ? (
@@ -194,276 +152,6 @@ export default function ({env, data, style, slots}) {
       <div data-col-id={data._editCol?.id}/>
       <div data-row-id={data._editRow?.id}/>
       <div data-zone={JSON.stringify(dragPo?.colIds)}/>
-      {/*{tips}*/}
     </div>
-  )
-}
-
-
-function Row({env, data, slots, style, row, dragTd, layoutEl}) {
-  const [colSize, setColSize] = useState<{ id, width, height }>()
-  const focusTable = useCallback(e => {
-
-  }, [])
-
-  function getTrProps(row) {
-    const props = {}
-    if (!(data.rows.length === 1 && data.rows[0].cols.length === 1)) {
-      props['data-row-id'] = row.id
-    }
-
-    if (row.height) {
-      props.style = {height: row.height}
-    }
-
-    // if (idx !== row.cols.length - 1) {
-    //   tdProps['style'] = {width: col.width}
-    // }
-
-    return props
-  }
-
-  function getTdProps(row, col, idx) {
-    const tdProps = {}
-    //if (!(data.rows.length === 1 && data.rows[0].cols.length === 1)) {
-    tdProps['data-col-id'] = col.id
-    tdProps['data-row-id'] = row.id
-    //}
-
-    // if (idx !== row.cols.length - 1) {
-    //   tdProps['style'] = {width: col.width}
-    // }
-
-    return tdProps
-  }
-
-  const dragW = useCallback((e, col) => {
-    const styleWidth = layoutEl.current.parentElement.clientWidth
-    const { cols, rows, cellWidthType } = data
-    const defRow = rows.find(def => {
-      return def.cols.find((def) => def.defId === col.defId)
-    })
-
-    let defCol = data.cols.find(def => def.id === col.defId)
-
-    if (col.colSpan) {//考虑到跨列的情况
-      defCol = data.cols[data.cols.indexOf(defCol) + col.colSpan - 1]
-    }
-
-    if (typeof defCol.width === 'undefined') {
-      let width = cols.slice(0, cols.length - 1).reduce((c, s) => {
-        return c - s.width;
-      }, styleWidth)
-      if (cellWidthType === WidthUnitEnum.Percent) {
-        width = `${((width / styleWidth) * 100).toFixed(2)}%`
-      }
-      setColSize({
-        id: col.id,
-        width,
-        height: defRow?.height || data.height
-      })
-    } else {
-      const width = cellWidthType === WidthUnitEnum.Percent ? defCol.widthPercent : defCol.width;
-      setColSize({
-        id: col.id,
-        width,
-        height: defRow?.height || data.height
-      })
-    }
-
-    let width = defCol.width || style.width
-    let editFinish
-    let allValidWidth = 0
-
-    dragable(e, ({po, eo, dpo}, state) => {
-      if (state === 'start') {
-        editFinish = env.edit.focusPaasive()//打开组件，阻止focus样式绘制
-
-        if (!defCol.width) {
-          data.cols.forEach(def => {
-            if (def.width) {
-              allValidWidth += def.width
-            }
-          })
-        } else {
-          if (cellWidthType === WidthUnitEnum.Percent) {
-            refleshPercent({cols: data.cols, styleWidth})
-          }
-        }
-      } else if (state === 'ing') {
-        width += dpo.dx
-
-        if (defCol.width) {
-          if (width > 10) {
-            defCol.width = width
-            let lastWidth = width;
-            if (cellWidthType === WidthUnitEnum.Percent) {
-              refleshPercent({cols: data.cols, styleWidth})
-              lastWidth = defCol.widthPercent;
-            }
-            setColSize((colSize) => {
-              return {
-                ...colSize,
-                width: lastWidth
-              }
-            })
-          }
-        } else {
-          if (width - allValidWidth > 10) {
-            style.width = width
-            let lastWidth = cols.slice(0, cols.length - 1).reduce((c, s) => {
-              return c - s.width;
-            }, width)
-            if (cellWidthType === WidthUnitEnum.Percent) {
-              refleshPercent({cols: data.cols, styleWidth: width})
-              lastWidth = `${((lastWidth / width) * 100).toFixed(2)}%`;
-            }
-            setColSize((colSize) => {
-              return {
-                ...colSize,
-                width: lastWidth
-              }
-            })
-          }
-        }
-
-      } else if (state === 'finish') {
-        setColSize(void 0);
-        if (editFinish) {
-          editFinish()
-        }
-      }
-    })
-    e.stopPropagation()
-  }, [])
-
-  const dragH = useCallback((e, row, col) => {
-    const styleWidth = layoutEl.current.parentElement.clientWidth
-    const { cols, rows, cellWidthType } = data
-    let editFinish
-
-    let moveRow = row
-
-    if (col.rowSpan) {//考虑到跨行的情况
-      moveRow = data.rows[data.rows.indexOf(row) + col.rowSpan - 1]
-    }
-
-    let defCol = data.cols.find(def => def.id === col.defId)
-
-    if (col.colSpan) {//考虑到跨列的情况
-      defCol = data.cols[data.cols.indexOf(defCol) + col.colSpan - 1]
-    }
-
-    let height = moveRow.height || style.height
-    let allValidHeight = 0
-
-    if (typeof defCol.width === 'undefined') {
-      let width = cols.slice(0, cols.length - 1).reduce((c, s) => {
-        return c - s.width;
-      }, styleWidth)
-      if (cellWidthType === WidthUnitEnum.Percent) {
-        width = `${((width / styleWidth) * 100).toFixed(2)}%`
-      }
-      setColSize({
-        id: col.id,
-        width,
-        height
-      })
-    } else {
-      const width = cellWidthType === WidthUnitEnum.Percent ? defCol.widthPercent : defCol.width;
-      setColSize({
-        id: col.id,
-        width,
-        height
-      })
-    }
-
-    dragable(e, ({po, eo, dpo}, state) => {
-      if (state === 'start') {
-        editFinish = env.edit.focusPaasive()//打开组件，阻止focus样式绘制
-
-        if (!moveRow.height) {
-          data.rows.forEach(row => {
-            if (row.height) {
-              allValidHeight += row.height
-            }
-          })
-        }
-      } else if (state === 'ing') {
-        height += dpo.dy
-
-        if (moveRow.height) {
-          if (height > 5) {
-            moveRow.height = height
-            setColSize((colSize) => {
-              return {
-                ...colSize,
-                height
-              }
-            })
-          }
-        } else {
-          if (height - allValidHeight > 10) {
-            style.height = height
-            setColSize((colSize) => {
-              return {
-                ...colSize,
-                height
-              }
-            })
-          }
-        }
-      } else if (state === 'finish') {
-        setColSize(void 0);
-        if (editFinish) {
-          editFinish()
-        }
-      }
-    })
-    e.stopPropagation()
-  }, [])
-
-  const idx = data.rows.indexOf(row)
-  const isLastRow = idx === data.rows.length - 1
-
-  return (
-    <tr key={row.id} id={`row-${row.id}`} {...getTrProps(row)}>
-      {
-        row.cols.map((col, idx) => {
-          let defCol = data.cols.find(def => def.id === col.defId)
-
-          if (col.colSpan) {//考虑到跨列的情况
-            defCol = data.cols[data.cols.indexOf(defCol) + col.colSpan - 1]
-          }
-
-          return (
-            <td key={col.id}
-                id={`col-${col.id}`}
-                {...getTdProps(row, col, idx)}
-                colSpan={col.colSpan}
-                rowSpan={col.rowSpan}
-                className={css.td}
-                onClick={focusTable}
-                onMouseDown={dragTd}
-            >
-              {slots[col.id].render({style: {...col.style}})}
-              {
-                (idx < row.cols.length - 1 || typeof style.width === 'number') && defCol.cellWidthType !== WidthUnitEnum.Auto ? (
-                  <div className={css.resizeW} onMouseDown={e => dragW(e, col)} onMouseUp={() => setColSize(void 0)}>
-                  </div>
-                ) : null
-              }
-              {
-                !isLastRow || typeof style.height === 'number' ? (
-                  <div className={css.resizeH} onMouseDown={e => dragH(e, row, col)} onMouseUp={() => setColSize(void 0)}>
-                  </div>
-                ) : null
-              }
-              {(colSize?.id === col.id) && <div className={css.resizeTip}>{colSize.width} x {colSize.height}</div>}
-            </td>
-          )
-        })
-      }
-    </tr>
   )
 }

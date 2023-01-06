@@ -1,4 +1,4 @@
-export enum WidthUnitEnum {
+export enum CellWidthTypeEnum {
   // 像素
   Px = 'px',
   // 百分比

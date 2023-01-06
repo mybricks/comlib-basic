@@ -9,7 +9,7 @@
 import React from 'react';
 import { Tips } from './editTips';
 import { refleshPx, resetLayout, refleshPercent } from './edtUtils';
-import { WidthUnitEnum } from '../const';
+import { CellWidthTypeEnum } from '../const';
 import { isNumber } from '../../utils';
 
 interface Result {
@@ -29,11 +29,11 @@ export default {
     options: ['width', 'height'],
     value: {
       set({data, style, element}, {width, height}) {
-        if (typeof height === 'number' && !isNaN(height)) {
+        if (isNumber(height)) {
           data.height = height;
         }
         requestAnimationFrame(() => {
-          if (data.cellWidthType === WidthUnitEnum.Percent) {
+          if (data.cellWidthType === CellWidthTypeEnum.Percent) {
             refleshPx({cols: data.cols, styleWidth: element.parentElement.clientWidth})
           } else {
             refleshPercent({cols: data.cols, styleWidth: element.parentElement.clientWidth})
@@ -55,8 +55,8 @@ export default {
         title: '单元格宽度类型',
         type: 'select',
         options: [
-          {label: '固定宽度', value: WidthUnitEnum.Px},
-          {label: '百分比', value: WidthUnitEnum.Percent}
+          {label: '固定宽度', value: CellWidthTypeEnum.Px},
+          {label: '百分比', value: CellWidthTypeEnum.Percent}
         ],
         value: {
           get({data, style, slots}) {
@@ -143,8 +143,8 @@ export default {
           return true
         },
         options: [
-          {label: '固定', value: WidthUnitEnum.Stabl},
-          {label: '自动填充', value: WidthUnitEnum.Auto}
+          {label: '固定', value: CellWidthTypeEnum.Stabl},
+          {label: '自动填充', value: CellWidthTypeEnum.Auto}
         ],
         value: {
           get({data, focusArea}) {
@@ -170,7 +170,7 @@ export default {
           const { cols } = data
           const colId = focusArea.dataset.colId
           const colDef = cols.find((col) => col.id === colId)
-          return data.cellWidthType === WidthUnitEnum.Px && colDef.cellWidthType !== WidthUnitEnum.Auto;
+          return data.cellWidthType === CellWidthTypeEnum.Px && colDef.cellWidthType !== CellWidthTypeEnum.Auto;
         },
         options: {
           type: 'number'
@@ -202,7 +202,7 @@ export default {
           const { cols } = data
           const colId = focusArea.dataset.colId
           const colDef = cols.find((col) => col.id === colId)
-          return data.cellWidthType === WidthUnitEnum.Percent && colDef.cellWidthType !== WidthUnitEnum.Auto;
+          return data.cellWidthType === CellWidthTypeEnum.Percent && colDef.cellWidthType !== CellWidthTypeEnum.Auto;
         },
         options: {
           type: 'number'

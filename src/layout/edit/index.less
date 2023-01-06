@@ -7,7 +7,7 @@
   position: relative;
 
   // overflow: visible;
-  overflow: visible; // todo
+  overflow: hidden;
 
   > table {
     width: 100%;
@@ -107,7 +107,7 @@
       // outline: 1px dashed #DDD;
       border-collapse: collapse;
       padding: 0;
-      // overflow: hidden; // todo
+      overflow: hidden;
       min-width: 10px;
       min-height: 10%;
 
@@ -144,7 +144,6 @@
         // height: calc(100% + 1px) !important;
       }
 
-
       .resizeW {
         width: 7px;
         height: 100%;
@@ -155,20 +154,11 @@
         z-index: 10000;
         cursor: ew-resize !important;
 
-        //&:hover {
-        //  //background-color: black;
-        //
-        //  div {
-        //    visibility: visible;
-        //  }
-        //}
-
         div {
           pointer-events: none;
           height: 100%;
           width: 3px;
           margin-left: 1px;
-          //background-color: red;
           visibility: hidden;
         }
       }
@@ -183,20 +173,11 @@
         z-index: 10000;
         cursor: ns-resize !important;
 
-        //&:hover {
-        //  //background-color: black;
-        //
-        //  div {
-        //    visibility: visible;
-        //  }
-        //}
-
         div {
           pointer-events: none;
           width: 100%;
           height: 3px;
           margin-top: 1px;
-          //background-color: red;
           visibility: hidden;
         }
       }

@@ -1,20 +1,22 @@
-import React, {Fragment, useMemo,useCallback} from "react";
-import {dragable, getPosition, uuid} from "../../utils";
-import { WidthUnitEnum } from '../const';
-import {calculateTds, resetLayout, refleshPx, refleshPercent} from "./edtUtils";
+import React, { useMemo, useCallback } from 'react'
+
+import { CellWidthTypeEnum } from '../const'
+import { dragable, uuid } from '../../utils'
+import { resetLayout, refleshPx, refleshPercent } from './edtUtils'
 
 import css from './editTips.less'
 
 export function Tips({data, style, slots, element}) {
   useMemo(() => {
     requestAnimationFrame(() => {
-      if (data.cellWidthType === WidthUnitEnum.Percent) {
+      if (data.cellWidthType === CellWidthTypeEnum.Percent) {
         refleshPx({cols: data.cols, styleWidth: element.parentElement.clientWidth})
       } else {
         refleshPercent({cols: data.cols, styleWidth: element.parentElement.clientWidth})
       }
     })
   }, [])
+
   return (
     <>
       <ColTips data={data} slots={slots} element={element} style={style}/>
@@ -114,7 +116,7 @@ function RowTips({data, slots, style, element}) {
     e.stopPropagation()
   }, [])
 
-  const rowTips = []
+  const rowTips: JSX.Element[] = []
   const isStyleHeightIsNumber = typeof style.height === 'number'
 
   let curTop = 0
@@ -196,6 +198,14 @@ function ColTips({data, slots, style, element}) {
       }
     }
 
+    console.log({
+      id: defCol.id,
+      style: {
+        width: tdEle?.clientWidth,
+        left: curLeft
+      }
+    }, '_editCol')
+
     e.stopPropagation()
   }, [])
 
@@ -209,7 +219,7 @@ function ColTips({data, slots, style, element}) {
 
   const isStyleWidthIsNumber = typeof style.width === 'number'
 
-  const colTips = []
+  const colTips: JSX.Element[] = []
 
   let curLeft = 0
 
@@ -283,7 +293,7 @@ function _addCol(col, {data, slots, style, element}) {
     newCol = {
       id: uuid(),
       width: 100,
-      cellWidthType: WidthUnitEnum.Stabl
+      cellWidthType: CellWidthTypeEnum.Stabl
     }
 
     data.cols.splice(idx, -1, newCol)
@@ -337,7 +347,7 @@ function _addCol(col, {data, slots, style, element}) {
   resetLayout({data})
 
   const styleWidth = element.parentElement.clientWidth;
-  if (data.cellWidthType === WidthUnitEnum.Percent) {
+  if (data.cellWidthType === CellWidthTypeEnum.Percent) {
     refleshPercent({cols: data.cols, styleWidth, cover: true})
   } else {
     refleshPx({cols: data.cols, styleWidth, cover: true})
