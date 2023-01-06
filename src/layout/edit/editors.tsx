@@ -29,15 +29,13 @@ export default {
     options: ['width', 'height'],
     value: {
       set({data, style, element}, {width, height}) {
-        if (isNumber(height)) {
-          data.height = height;
-        }
         requestAnimationFrame(() => {
           if (data.cellWidthType === CellWidthTypeEnum.Percent) {
             refleshPx({cols: data.cols, styleWidth: element.parentElement.clientWidth})
-          } else {
-            refleshPercent({cols: data.cols, styleWidth: element.parentElement.clientWidth})
-          }
+          } 
+          // else {
+          //   refleshPercent({cols: data.cols, styleWidth: element.parentElement.clientWidth})
+          // }
         })
       }
     }
@@ -81,18 +79,18 @@ export default {
           }
         }
       },
-      {
-        title: '事件',
-        items: [
-          {
-            title: '单击',
-            type: '_Event',
-            options: {
-              outputId: 'click'
-            }
-          },
-        ]
-      }
+      // {
+      //   title: '事件',
+      //   items: [
+      //     {
+      //       title: '单击',
+      //       type: '_Event',
+      //       options: {
+      //         outputId: 'click'
+      //       }
+      //     },
+      //   ]
+      // }
     ]
   },
   // '[data-row-id]': [
@@ -169,7 +167,11 @@ export default {
         ifVisible({ data, focusArea }) {
           const { cols } = data
           const colId = focusArea.dataset.colId
-          const colDef = cols.find((col) => col.id === colId)
+          const findIndex = cols.findIndex((col) => col.id === colId)
+          if (findIndex === (cols.length - 1)) {
+            return false
+          }
+          const colDef = cols[findIndex];
           return data.cellWidthType === CellWidthTypeEnum.Px && colDef.cellWidthType !== CellWidthTypeEnum.Auto;
         },
         options: {
@@ -201,7 +203,11 @@ export default {
         ifVisible({ data, focusArea }) {
           const { cols } = data
           const colId = focusArea.dataset.colId
-          const colDef = cols.find((col) => col.id === colId)
+          const findIndex = cols.findIndex((col) => col.id === colId)
+          if (findIndex === (cols.length - 1)) {
+            return false
+          }
+          const colDef = cols[findIndex];
           return data.cellWidthType === CellWidthTypeEnum.Percent && colDef.cellWidthType !== CellWidthTypeEnum.Auto;
         },
         options: {
@@ -449,12 +455,13 @@ export default {
         title: '名称',
         type: 'text',
         value: {
-          get({data, style, slots, focusArea}) {
+          get({data, slots, focusArea}) {
             const {col, slot} = getByFousArea({data, slots, focusArea})
-            return col.name
+            return col.name || slot.title
           },
-          set({data, style, slots, focusArea}, name) {
+          set({data, slots, focusArea}, name) {
             const {col, slot} = getByFousArea({data, slots, focusArea})
+            slot.setTitle(name)
             col.name = name
           }
         }
@@ -500,15 +507,15 @@ export default {
         }
       },
       {},
-      {
-        title: '添加状态',
-        type: 'button',
-        value: {
-          set() {
-            alert('TODO')
-          }
-        }
-      }
+      // {
+      //   title: '添加状态',
+      //   type: 'button',
+      //   value: {
+      //     set() {
+      //       alert('TODO')
+      //     }
+      //   }
+      // }
     ]
   }
 }

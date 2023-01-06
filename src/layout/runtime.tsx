@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 
 import { CellWidthTypeEnum } from './const';
 
-export default function ({ data, slots }) {
+export default function ({ data, style, slots }) {
   const layoutStyle = useCallback(() => {
     const { cellWidthType } = data;
     let gridTemplateColumns = '';
@@ -30,7 +30,7 @@ export default function ({ data, slots }) {
       display: 'grid',
       gridTemplateRows,
       gridTemplateColumns,
-      width: '100%',
+      width: style.width === 'fit-content' ? data.width : '100%',
       height: data.height || '100%',
       overflow: 'hidden',
       ...data.style

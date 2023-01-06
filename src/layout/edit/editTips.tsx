@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from 'react'
 
 import { CellWidthTypeEnum } from '../const'
-import { dragable, uuid } from '../../utils'
+import { dragable, isNumber, uuid } from '../../utils'
 import { resetLayout, refleshPx, refleshPercent } from './edtUtils'
 
 import css from './editTips.less'
@@ -348,16 +348,17 @@ function _addCol(col, {data, slots, style, element}) {
 
   const styleWidth = element.parentElement.clientWidth;
   if (data.cellWidthType === CellWidthTypeEnum.Percent) {
-    refleshPercent({cols: data.cols, styleWidth, cover: true})
-  } else {
+    // refleshPercent({cols: data.cols, styleWidth, cover: true})
     refleshPx({cols: data.cols, styleWidth, cover: true})
+  } else {
+    // refleshPx({cols: data.cols, styleWidth, cover: true})
+    refleshPercent({cols: data.cols, styleWidth, cover: true})
   }
 
   return newCol
 }
 
 function _addRow(row, {data, slots, style, element}) {
-  const isLayoutWidthNumber = typeof style.width === 'number'
 
   const newRow = {
     id: uuid(),
@@ -388,10 +389,10 @@ function _addRow(row, {data, slots, style, element}) {
     data.rows.push(newRow)
   }
 
-  if (isLayoutWidthNumber) {
+  if (isNumber(style.height)) {
     style.height += 100
   } else {
-
+    data.height += 100
   }
 
   resetLayout({data})

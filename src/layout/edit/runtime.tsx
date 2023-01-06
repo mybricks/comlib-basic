@@ -15,7 +15,7 @@ import React, {
 
 import Table from './table'
 import { calculateTds } from './edtUtils'
-import { dragable, getPosition } from '../../utils'
+import { isNumber, dragable, getPosition } from '../../utils'
 
 import css from './index.less'
 
@@ -48,6 +48,30 @@ export default function ({env, data, style, slots}): JSX.Element {
       })
     }
   }, [data._editRow])
+
+  useEffect(() => {
+    const { height } = style;
+    if (isNumber(height)) {
+      let rowsHeight = data.rows.reduce((c, s) => {
+        return c + (s.height || 0)
+      }, 8)
+      rowsHeight = height < rowsHeight ? rowsHeight : height
+      style.height = rowsHeight
+      data.height = rowsHeight
+    }
+  }, [style.height])
+  /** TODO style内width以及height的变更，不会在editor中响应，(上下两个useEffect是不是可以去掉) */
+  useEffect(() => {
+    const { width } = style;
+    if (isNumber(width)) {
+      let colsWidth = data.cols.reduce((c, s) => {
+        return c + (s.width || 0)
+      }, 8)
+      colsWidth = width < colsWidth ? colsWidth : width
+      style.width = colsWidth
+      data.width = colsWidth
+    }
+  }, [style.width])
 
   /**
    * 拖动框选单元格
@@ -118,7 +142,14 @@ export default function ({env, data, style, slots}): JSX.Element {
   }, [env.edit.focusArea])
 
   return (
-    <div className={css.layout} ref={layoutEl} style={{height: data.height}}>
+    <div
+      ref={layoutEl}
+      className={css.layout}
+      style={{
+        height: data.height,
+        width: style.width === 'fit-content' ? data.width : style.width
+      }}
+    >
       <Table
         env={env}
         layoutEl={layoutEl}
