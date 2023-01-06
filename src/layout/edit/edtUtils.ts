@@ -55,7 +55,7 @@ export function calculateTds({data}, {po, aw, ah}, tableEl): {
   left, top,
   width, height
 } {
-  const colIds: string[] = []
+  const colIds: Array<string[]> = []
 
   let left, top, width, height
   data.rows.forEach(row => {

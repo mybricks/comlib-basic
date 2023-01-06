@@ -181,20 +181,6 @@
           visibility: hidden;
         }
       }
-
-      .resizeTip {
-        width: max-content;
-        padding: 3px;
-        bottom: -28px;
-        position: absolute;
-        left: 50%;
-        transform: translate(-50%, 0px);
-        font-size: 12px;
-        line-height: 12px;
-        z-index: 20000;
-        background-color: @color-primary;
-        color: #ffffff;
-      }
     }
   }
 
@@ -230,4 +216,16 @@
   > [data-edit-row] {
     display: none;
   }
+}
+
+.resizeTip {
+  width: max-content;
+  padding: 3px;
+  position: fixed;
+  z-index: 1;
+  transform: translate(-50%, 0px);
+  font-size: 12px;
+  line-height: 12px;
+  background-color: @color-primary;
+  color: #ffffff;
 }

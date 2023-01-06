@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 
 import { dragable } from '../../utils'
 import { refleshPercent } from './edtUtils'
@@ -79,7 +80,7 @@ function TrRows ({data, env, slots, style, layoutEl, dragTd}): JSX.Element {
 }
 
 function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
-  const [colSize, setColSize] = useState<{ id, width, height }>()
+  const [colSize, setColSize] = useState<{ width, height, po }>()
 
   /** 行 */
   const getTrProps = useCallback((row) => {
@@ -119,6 +120,8 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
       defCol = data.cols[data.cols.indexOf(defCol) + col.colSpan - 1]
     }
 
+    const tdPo = e.target.parentElement.getBoundingClientRect();
+
     if (typeof defCol.width === 'undefined') {
       let width = cols.slice(0, cols.length - 1).reduce((c, s) => {
         return c - s.width
@@ -127,16 +130,22 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
         width = `${((width / styleWidth) * 100).toFixed(2)}%`
       }
       setColSize({
-        id: col.id,
         width,
-        height: defRow?.height || data.height
+        height: defRow?.height || data.height,
+        po: {
+          left: tdPo.x + (tdPo.width / 2),
+          top: tdPo.y + tdPo.height + 10
+        }
       })
     } else {
       const width = cellWidthType === CellWidthTypeEnum.Percent ? defCol.widthPercent : defCol.width
       setColSize({
-        id: col.id,
         width,
-        height: defRow?.height || data.height
+        height: defRow?.height || data.height,
+        po: {
+          left: tdPo.x + (tdPo.width / 2),
+          top: tdPo.y + tdPo.height + 10
+        }
       })
     }
 
@@ -172,9 +181,14 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
             }
             setColSize((colSize) => {
               if (!colSize) return void 0
+              const { po, ...other } = colSize;
               return {
-                ...colSize,
-                width: lastWidth
+                ...other,
+                width: lastWidth,
+                po: {
+                  ...po,
+                  left: tdPo.x + (lastWidth / 2),
+                }
               }
             })
           }
@@ -190,9 +204,14 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
             }
             setColSize((colSize) => {
               if (!colSize) return void 0
+              const { po, ...other } = colSize;
               return {
-                ...colSize,
-                width: lastWidth
+                ...other,
+                width: lastWidth,
+                po: {
+                  ...po,
+                  left: tdPo.x + (lastWidth / 2),
+                }
               }
             })
           }
@@ -229,6 +248,8 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
     let height = moveRow.height || style.height
     let allValidHeight = 0
 
+    const tdPo = e.target.parentElement.getBoundingClientRect();
+
     if (typeof defCol.width === 'undefined') {
       let width = cols.slice(0, cols.length - 1).reduce((c, s) => {
         return c - s.width
@@ -237,16 +258,22 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
         width = `${((width / styleWidth) * 100).toFixed(2)}%`
       }
       setColSize({
-        id: col.id,
         width,
-        height
+        height,
+        po: {
+          left: tdPo.x + (tdPo.width / 2),
+          top: tdPo.y + tdPo.height + 10
+        }
       })
     } else {
       const width = cellWidthType === CellWidthTypeEnum.Percent ? defCol.widthPercent : defCol.width
       setColSize({
-        id: col.id,
         width,
-        height
+        height,
+        po: {
+          left: tdPo.x + (tdPo.width / 2),
+          top: tdPo.y + tdPo.height + 10
+        }
       })
     }
 
@@ -268,27 +295,38 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
           if (height > 5) {
             moveRow.height = height
             setColSize((colSize) => {
-              if (colSize) {
-                return {
-                  ...colSize,
-                  height
+              if (!colSize) return void 0
+              const { po, ...other } = colSize;
+              return {
+                ...other,
+                height,
+                po: {
+                  ...po,
+                  top: tdPo.y + height + 10,
                 }
               }
-              return void 0
             })
           }
         } else {
           if (height - allValidHeight > 10) {
             style.height = height
             data.height = height
+            
+            let lastHeight = rows.slice(0, cols.length - 1).reduce((c, s) => {
+              return c - s.height
+            }, height)
+
             setColSize((colSize) => {
-              if (colSize) {
-                return {
-                  ...colSize,
-                  height
+              if (!colSize) return void 0
+              const { po, ...other } = colSize;
+              return {
+                ...other,
+                height,
+                po: {
+                  ...po,
+                  top: tdPo.y + lastHeight + 10,
                 }
               }
-              return void 0
             })
           }
         }
@@ -303,43 +341,74 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
   }, [])
 
   return (
-    <tr key={row.id} id={`row-${row.id}`} {...getTrProps(row)}>
-      {
-        row.cols.map((col, idx) => {
-          let defCol = data.cols.find(def => def.id === col.defId)
+    <>
+      <tr key={row.id} id={`row-${row.id}`} {...getTrProps(row)}>
+        {
+          row.cols.map((col, idx) => {
+            let defCol = data.cols.find(def => def.id === col.defId)
 
-          if (col.colSpan) {//考虑到跨列的情况 
-            defCol = data.cols[data.cols.indexOf(defCol) + col.colSpan - 1]
-          }
+            if (col.colSpan) {//考虑到跨列的情况 
+              defCol = data.cols[data.cols.indexOf(defCol) + col.colSpan - 1]
+            }
 
-          return (
-            <td 
-              key={col.id}
-              id={`col-${col.id}`}
-              {...getTdProps(row, col)}
-              colSpan={col.colSpan}
-              rowSpan={col.rowSpan}
-              className={css.td}
-              onMouseDown={dragTd}
-            >
-              {slots[col.id].render({style: {...col.style}})}
-              {
-                (idx < row.cols.length - 1 || typeof style.width === 'number') && defCol.cellWidthType !== CellWidthTypeEnum.Auto ? (
-                  <div className={css.resizeW} onMouseDown={e => dragW(e, col)} onMouseUp={() => setColSize(void 0)}>
-                  </div>
-                ) : null
-              }
-              {
-                !isLastRow || typeof style.height === 'number' ? (
-                  <div className={css.resizeH} onMouseDown={e => dragH(e, row, col)} onMouseUp={() => setColSize(void 0)}>
-                  </div>
-                ) : null
-              }
-              {(colSize?.id === col.id) && <div className={css.resizeTip}>{colSize?.width} x {colSize?.height}</div>}
-            </td>
-          )
-        })
-      }
-    </tr>
+            return (
+              <td 
+                key={col.id}
+                id={`col-${col.id}`}
+                {...getTdProps(row, col)}
+                colSpan={col.colSpan}
+                rowSpan={col.rowSpan}
+                className={css.td}
+                onMouseDown={dragTd}
+              >
+                {slots[col.id].render({style: {...col.style}})}
+                {
+                  (idx < row.cols.length - 1 || typeof style.width === 'number') && defCol.cellWidthType !== CellWidthTypeEnum.Auto ? (
+                    <div className={css.resizeW} onMouseDown={e => dragW(e, col)} onMouseUp={() => setColSize(void 0)}>
+                    </div>
+                  ) : null
+                }
+                {
+                  !isLastRow || typeof style.height === 'number' ? (
+                    <div className={css.resizeH} onMouseDown={e => dragH(e, row, col)} onMouseUp={() => setColSize(void 0)}>
+                    </div>
+                  ) : null
+                }
+              </td>
+            )
+          })
+        }
+      </tr>
+      <ResizeTip colSize={colSize}/>
+    </>
   )
+}
+
+/** 宽高提示  */
+function ResizeTip ({colSize}): JSX.Element {
+  const render: JSX.Element = useMemo(() => {
+    if (!colSize) return <></>
+
+    const {
+      // 展示的数据
+      width,
+      height,
+      // 位置,
+      po
+    } = colSize
+
+    return (
+      createPortal(
+        (
+          <div
+            className={css.resizeTip}
+            style={{...po}}
+          >{width} x {height}</div>
+        ),
+        document.body
+      )
+    )
+  }, [colSize])
+
+  return render;
 }
