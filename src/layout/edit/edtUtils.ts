@@ -128,3 +128,25 @@ export function refleshPx ({cols, styleWidth, cover = false}) {
     }
   })
 }
+
+export function resetEditCol (data, currentCol, element) {
+  let curLeft = 0
+  data.cols.find(col => {
+    if (col.id !== currentCol.id) {
+      const tdEle = element.querySelector(`#col-${col.id}`)
+      curLeft += tdEle?.clientWidth || 0
+    } else {
+      return true
+    }
+  })
+
+  const tdEle = element.querySelector(`#col-${currentCol.id}`)
+
+  data._editCol = {
+    id: currentCol.id,
+    style: {
+      width: tdEle?.clientWidth,
+      left: curLeft
+    }
+  }
+}

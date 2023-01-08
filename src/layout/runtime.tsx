@@ -19,10 +19,12 @@ export default function ({ data, style, slots }) {
   
     data.cols.forEach((col) => {
       const { width, widthPercent, cellWidthType } = col;
-      const relWidth = (cellWidthType === 'auto') ? 'auto' : (useWidth ? (width && `${width}px`) : widthPercent);
+      const relWidth = (cellWidthType === 'auto') ? '1fr' : (useWidth ? (width && `${width}px`) : widthPercent);
 
       if (relWidth) {
         gridTemplateColumns = gridTemplateColumns + (gridTemplateColumns ? ` ${relWidth}` : `${relWidth}`);
+      } else {
+        gridTemplateColumns += ' 1fr';
       }
     });
 
@@ -67,7 +69,7 @@ export default function ({ data, style, slots }) {
         }
         
         return (
-          <div key={id} style={{gridArea: `${obj.rowIndex} / ${obj.colIndex} / ${obj.rowSpan} / ${obj.colSpan}`}}>
+          <div key={id} style={{gridArea: `${obj.rowIndex} / ${obj.colIndex} / ${obj.rowSpan} / ${obj.colSpan}`, overflow: 'hidden'}}>
             {slots[id].render({style: col.style})}
           </div>
         );

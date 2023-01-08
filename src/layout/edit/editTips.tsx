@@ -1,8 +1,14 @@
-import React, { useMemo, useCallback } from 'react'
+import React, {
+  useRef,
+  useMemo,
+  useState,
+  useEffect,
+  useCallback
+} from 'react'
 
 import { CellWidthTypeEnum } from '../const'
 import { dragable, isNumber, uuid } from '../../utils'
-import { resetLayout, refleshPx, refleshPercent } from './edtUtils'
+import { resetLayout, refleshPx, refleshPercent, resetEditCol } from './edtUtils'
 
 import css from './editTips.less'
 
@@ -57,8 +63,6 @@ function Radius({data}) {
 
           data.style.borderRadius = Math.round(Math.sqrt(td * td * 2))
         }
-
-        //console.log(dx, dy,data.style.borderRadius)
 
       } else if (state === 'finish') {
 
@@ -179,32 +183,54 @@ function RowTips({data, slots, style, element}) {
 }
 
 function ColTips({data, slots, style, element}) {
-  const editCol = useCallback((e, defCol) => {
-    let curLeft = 0
-    data.cols.find(col => {
-      if (col.id !== defCol.id) {
-        curLeft += col.width || 0
-      } else {
-        return true
+  const colTipsEl = useRef<HTMLDivElement | null>(null)
+  const [showTips, setShowTips] = useState(true)
+
+  useEffect(() => {
+    const dom = (colTipsEl.current as HTMLDivElement).parentElement as HTMLDivElement
+    const observer = new window.MutationObserver(function(mutations) {
+      for (let mutation of mutations) {
+        if (mutation.type === 'attributes') {
+          // @ts-ignore
+          if (mutation.target.style.visibility === 'hidden') {
+            setShowTips(false)
+          } else {
+            setShowTips(true)
+          }
+          break
+        }
       }
     })
+    observer.observe(dom, {
+      attributes: true,
+      attributeFilter: ['style']
+    })
+  }, [])
 
-    const tdEle = element.querySelector(`#col-${defCol.id}`)
-    data._editCol = {
-      id: defCol.id,
-      style: {
-        width: tdEle?.clientWidth,
-        left: curLeft
-      }
-    }
+  const editCol = useCallback((e, defCol) => {
+    // let curLeft = 0
+    // data.cols.find(col => {
+    //   if (col.id !== defCol.id) {
+    //     const tdEle = element.querySelector(`#col-${col.id}`)
+    //     curLeft += tdEle?.clientWidth || 0
+    //     // curLeft += col.width || 0
+    //   } else {
+    //     return true
+    //   }
+    // })
 
-    console.log({
-      id: defCol.id,
-      style: {
-        width: tdEle?.clientWidth,
-        left: curLeft
-      }
-    }, '_editCol')
+    // const tdEle = element.querySelector(`#col-${defCol.id}`)
+
+    // data._editCol = {
+    //   id: defCol.id,
+    //   // tdEle,
+    //   style: {
+    //     width: tdEle?.clientWidth,
+    //     left: curLeft
+    //   }
+    // }
+
+    resetEditCol(data, defCol, element)
 
     e.stopPropagation()
   }, [])
@@ -217,66 +243,142 @@ function ColTips({data, slots, style, element}) {
 
   }, [])
 
-  const isStyleWidthIsNumber = typeof style.width === 'number'
-
   const colTips: JSX.Element[] = []
 
-  let curLeft = 0
-
-  data.cols.forEach((col, idx) => {
-    const focusNow = data._editCol?.id === col.id
-
+  if (showTips) {
+    const isStyleWidthIsNumber = typeof style.width === 'number'
+  
+    let curLeft = 0
+  
+    data.cols.forEach((col, idx) => {
+      const focusNow = data._editCol?.id === col.id
+  
+      colTips.push(
+        <div key={`${col.id}-tip`}
+             data-mybricks-tip={`{content:'添加列',position:'bottom'}`}
+             className={css.tip}
+             style={{bottom: -17, left: curLeft - 3}}
+             onClick={e => addCol(e, col)}/>
+      )
+  
+      if (idx === data.cols.length - 1) {//last col
+        colTips.push(
+          <div key={`${col.id}-bar`}
+               data-mybricks-tip={`{content:'选择当前列',position:'bottom'}`}
+               className={`${css.colBar} ${focusNow ? css.focusBar : ''} ${(!isNumber(col.width) || col.cellWidthType === 'auto') ? css.flexBar : ''}`}
+               style={{
+                 left: curLeft,
+                 width: isStyleWidthIsNumber ? style.width - curLeft : void 0,
+                 right: isStyleWidthIsNumber ? void 0 : 0
+               }}
+               onClick={e => editCol(e, col)}/>
+        )
+      } else {
+        const tdEle = element.querySelector(`#col-${col.id}`)
+        colTips.push(
+          <div key={`${col.id}-bar`}
+               data-mybricks-tip={`{content:'选择当前列',position:'bottom'}`}
+               className={`${css.colBar} ${focusNow ? css.focusBar : ''} ${(!isNumber(col.width) || col.cellWidthType === 'auto') ? css.flexBar : ''}`}
+               style={
+                 {
+                   left: curLeft,
+                  //  width: col.width
+                  width: tdEle.clientWidth || 0
+                 }
+               }
+               onClick={e => editCol(e, col)}/>
+        )
+        curLeft += tdEle.clientWidth || 0
+      }
+  
+      // curLeft += col.width || 0
+    })
+  
     colTips.push(
-      <div key={`${col.id}-tip`}
+      <div key={'last'}
            data-mybricks-tip={`{content:'添加列',position:'bottom'}`}
            className={css.tip}
-           style={{bottom: -17, left: curLeft - 3}}
-           onClick={e => addCol(e, col)}/>
+           style={{
+             bottom: -17,
+             left: isStyleWidthIsNumber ? style.width - 3 : void 0,
+             right: isStyleWidthIsNumber ? void 0 : -3
+           }}
+           onClick={e => addCol(e)}/>
     )
+  }
 
-    if (idx === data.cols.length - 1) {//last col
-      colTips.push(
-        <div key={`${col.id}-bar`}
-             data-mybricks-tip={`{content:'选择当前列',position:'bottom'}`}
-             className={`${css.colBar} ${focusNow ? css.focusBar : ''} ${!col.width ? css.flexBar : ''}`}
-             style={{
-               left: curLeft,
-               width: isStyleWidthIsNumber ? style.width - curLeft : void 0,
-               right: isStyleWidthIsNumber ? void 0 : 0
-             }}
-             onClick={e => editCol(e, col)}/>
-      )
-    } else {
-      colTips.push(
-        <div key={`${col.id}-bar`}
-             data-mybricks-tip={`{content:'选择当前列',position:'bottom'}`}
-             className={`${css.colBar} ${focusNow ? css.focusBar : ''} ${!col.width ? css.flexBar : ''}`}
-             style={
-               {
-                 left: curLeft, width: col.width
-               }
-             }
-             onClick={e => editCol(e, col)}/>
-      )
-    }
+  // const colTips: JSX.Element = useMemo(() => {
+  //   if (showTips) {
+  //     const isStyleWidthIsNumber = typeof style.width === 'number'
 
-    curLeft += col.width || 0
-  })
+  //     const colTips: JSX.Element[] = []
+    
+  //     let curLeft = 0
+    
+  //     data.cols.forEach((col, idx) => {
+  //       const focusNow = data._editCol?.id === col.id
+    
+  //       colTips.push(
+  //         <div key={`${col.id}-tip`}
+  //              data-mybricks-tip={`{content:'添加列',position:'bottom'}`}
+  //              className={css.tip}
+  //              style={{bottom: -17, left: curLeft - 3}}
+  //              onClick={e => addCol(e, col)}/>
+  //       )
+    
+  //       if (idx === data.cols.length - 1) {//last col
+  //         colTips.push(
+  //           <div key={`${col.id}-bar`}
+  //                data-mybricks-tip={`{content:'选择当前列',position:'bottom'}`}
+  //                className={`${css.colBar} ${focusNow ? css.focusBar : ''} ${!col.width ? css.flexBar : ''}`}
+  //                style={{
+  //                  left: curLeft,
+  //                  width: isStyleWidthIsNumber ? style.width - curLeft : void 0,
+  //                  right: isStyleWidthIsNumber ? void 0 : 0
+  //                }}
+  //                onClick={e => editCol(e, col)}/>
+  //         )
+  //       } else {
+  //         colTips.push(
+  //           <div key={`${col.id}-bar`}
+  //                data-mybricks-tip={`{content:'选择当前列',position:'bottom'}`}
+  //                className={`${css.colBar} ${focusNow ? css.focusBar : ''} ${!col.width ? css.flexBar : ''}`}
+  //                style={
+  //                  {
+  //                    left: curLeft, width: col.width
+  //                  }
+  //                }
+  //                onClick={e => editCol(e, col)}/>
+  //         )
+  //       }
+    
+  //       curLeft += col.width || 0
+  //     })
+    
+  //     colTips.push(
+  //       <div key={'last'}
+  //            data-mybricks-tip={`{content:'添加列',position:'bottom'}`}
+  //            className={css.tip}
+  //            style={{
+  //              bottom: -17,
+  //              left: isStyleWidthIsNumber ? style.width - 3 : void 0,
+  //              right: isStyleWidthIsNumber ? void 0 : -3
+  //            }}
+  //            onClick={e => addCol(e)}/>
+  //     )
 
-  colTips.push(
-    <div key={'last'}
-         data-mybricks-tip={`{content:'添加列',position:'bottom'}`}
-         className={css.tip}
-         style={{
-           bottom: -17,
-           left: isStyleWidthIsNumber ? style.width - 3 : void 0,
-           right: isStyleWidthIsNumber ? void 0 : -3
-         }}
-         onClick={e => addCol(e)}/>
-  )
+  //     return (
+  //       <>
+  //         {colTips}
+  //       </>
+  //     )
+  //   }
+
+  //   return <></>
+  // }, [showTips, data._editCol])
 
   return (
-    <div key={'topCols'} className={css.colTips}>
+    <div key={'topCols'} ref={colTipsEl} className={css.colTips}>
       {colTips}
     </div>
   )
@@ -288,6 +390,7 @@ function _addCol(col, {data, slots, style, element}) {
   const isLayoutWidthNumber = typeof style.width === 'number'
 
   let newCol
+  // TODO 添加列的时候计算宽度
   if (col) {//before
     const idx = data.cols.indexOf(col)
     newCol = {
@@ -347,6 +450,7 @@ function _addCol(col, {data, slots, style, element}) {
   resetLayout({data})
 
   const styleWidth = element.parentElement.clientWidth;
+  // TODO 下面这段还有点问题，看一下
   if (data.cellWidthType === CellWidthTypeEnum.Percent) {
     // refleshPercent({cols: data.cols, styleWidth, cover: true})
     refleshPx({cols: data.cols, styleWidth, cover: true})

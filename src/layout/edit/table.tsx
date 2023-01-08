@@ -108,6 +108,8 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
 
   /** 拖宽 */
   const dragW = useCallback((e, col) => {
+    data._editCol = void 0
+    data._editRow = void 0
     const styleWidth = layoutEl.current.parentElement.clientWidth
     const { cols, rows, cellWidthType } = data
     const defRow = rows.find(def => {
@@ -127,13 +129,14 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
 
     data.cols.forEach((col, idx) => {
       if (idx < colIndex) {
-        leftColsWidth += (col.width || 8)
+        leftColsWidth += (col.cellWidthType === 'auto') ? 8 : (col.width || 8)
       } else if (idx > colIndex) {
-        rightColsWidth += (col.width || 8)
+        rightColsWidth += (col.cellWidthType === 'auto') ? 8 : (col.width || 8)
       }
     })
 
-    const tdPo = e.target.parentElement.getBoundingClientRect();
+    // const tdPo = e.target.parentElement.getBoundingClientRect();
+    const tdElement = e.target.parentElement;
 
     if (typeof defCol.width === 'undefined') {
       let width = cols.slice(0, cols.length - 1).reduce((c, s) => {
@@ -142,6 +145,7 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
       if (cellWidthType === CellWidthTypeEnum.Percent) {
         width = `${((width / styleWidth) * 100).toFixed(2)}%`
       }
+      const tdPo = tdElement.getBoundingClientRect();
       setColSize({
         width,
         height: defRow?.height || data.height,
@@ -152,6 +156,7 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
       })
     } else {
       const width = cellWidthType === CellWidthTypeEnum.Percent ? defCol.widthPercent : defCol.width
+      const tdPo = tdElement.getBoundingClientRect();
       setColSize({
         width,
         height: defRow?.height || data.height,
@@ -197,6 +202,7 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
             }
             setColSize((colSize) => {
               if (!colSize) return void 0
+              const tdPo = tdElement.getBoundingClientRect();
               const { po, ...other } = colSize;
               return {
                 ...other,
@@ -221,6 +227,7 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
             }
             setColSize((colSize) => {
               if (!colSize) return void 0
+              const tdPo = tdElement.getBoundingClientRect();
               const { po, ...other } = colSize;
               return {
                 ...other,
@@ -246,6 +253,8 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
 
   /** 拖高 */
   const dragH = useCallback((e, row, col) => {
+    data._editCol = void 0
+    data._editRow = void 0
     const styleWidth = layoutEl.current.parentElement.clientWidth
     const styleHeight = layoutEl.current.parentElement.clientHeight
     const { cellWidthType } = data

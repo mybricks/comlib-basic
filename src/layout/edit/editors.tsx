@@ -8,7 +8,7 @@
  */
 import React from 'react';
 import { Tips } from './editTips';
-import { refleshPx, resetLayout, refleshPercent } from './edtUtils';
+import { refleshPx, resetLayout, resetEditCol } from './edtUtils';
 import { CellWidthTypeEnum } from '../const';
 import { isNumber } from '../../utils';
 
@@ -152,12 +152,16 @@ export default {
 
             return colDef.cellWidthType || 'stabl';
           },
-          set({data, focusArea}, value) {
+          set({data, focusArea, element}, value) {
             const { cols } = data
             const colId = focusArea.dataset.colId
             const colDef = cols.find((col) => col.id === colId)
 
             colDef.cellWidthType = value
+
+            setTimeout(() => {
+              resetEditCol(data, colDef, element)
+            })
           }
         }
       },
@@ -193,6 +197,19 @@ export default {
 
             if (isNumber(rstNumber)) {
               colDef.width = rstNumber
+
+              setTimeout(() => {
+                const { tdEle, style, ...other } = data._editCol
+
+                data._editCol = {
+                  ...other,
+                  tdEle,
+                  style: {
+                    ...style,
+                    width: tdEle?.clientWidth
+                  }
+                }
+              })
             }
           }
         }
@@ -218,8 +235,6 @@ export default {
             const { cols } = data
             const colId = focusArea.dataset.colId
             const colDef = cols.find((col) => col.id === colId)
-
-            console.log(JSON.parse(JSON.stringify(cols)), 'cols')
 
             return Number(colDef.widthPercent?.replace('%', ''))
           },
