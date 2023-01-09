@@ -599,22 +599,37 @@ export default {
         },
       },
       {
-        title: '背景',
-        type: 'colorPicker',
+        title: '样式',
+        type: 'style',
+        options: ['BgColor', 'Padding'],
         value: {
-          get({data, style, slots, focusArea}) {
-            const {col, slot} = getByFousArea({data, slots, focusArea})
-            return col.style?.backgroundColor
+          get({data, slots, focusArea}) {
+            const { col } = getByFousArea({data, slots, focusArea})
+            return col.style
           },
-          set({data, style, slots, focusArea}, color) {
-            const {col, slot} = getByFousArea({data, slots, focusArea})
-            if (!col.style) {
-              col.style = {}
-            }
-            col.style.backgroundColor = color
+          set({data, slots, focusArea}, value) {
+            const { col } = getByFousArea({data, slots, focusArea})
+            col.style = value
           }
         }
       },
+      // {
+      //   title: '背景',
+      //   type: 'colorPicker',
+      //   value: {
+      //     get({data, style, slots, focusArea}) {
+      //       const {col, slot} = getByFousArea({data, slots, focusArea})
+      //       return col.style?.backgroundColor
+      //     },
+      //     set({data, style, slots, focusArea}, color) {
+      //       const {col, slot} = getByFousArea({data, slots, focusArea})
+      //       if (!col.style) {
+      //         col.style = {}
+      //       }
+      //       col.style.backgroundColor = color
+      //     }
+      //   }
+      // },
       {},
       // {
       //   title: '添加状态',
