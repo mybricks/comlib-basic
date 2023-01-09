@@ -144,6 +144,7 @@ export function resetEditCol (data, currentCol, element) {
 
   data._editCol = {
     id: currentCol.id,
+    tdEle,
     style: {
       width: tdEle?.clientWidth,
       left: curLeft

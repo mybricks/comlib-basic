@@ -483,6 +483,100 @@ export default {
       },
       {},
       {
+        title: '宽度填充模式',
+        type: 'select',
+        ifVisible({data, slots, focusArea}) {
+          const { col, isLastCol } = getByFousArea({data, slots, focusArea})
+          if (isLastCol || (isNumber(col.colSpan) && col.colSpan > 1)) {
+            return false
+          }
+
+          return true
+        },
+        options: [
+          {label: '固定', value: CellWidthTypeEnum.Stabl},
+          {label: '自动填充', value: CellWidthTypeEnum.Auto}
+        ],
+        value: {
+          get({data, slots, focusArea}) {
+            const { col } = getByFousArea({data, slots, focusArea})
+            const colDef = data.cols.find((def) => def.id === col.defId)
+            return colDef.cellWidthType || 'stabl';
+          },
+          set({data, slots, focusArea, element}, value) {
+            const { col } = getByFousArea({data, slots, focusArea})
+            const colDef = data.cols.find((def) => def.id === col.defId)
+
+            colDef.cellWidthType = value
+            setTimeout(() => {
+              resetEditCol(data, colDef, element)
+            })
+          }
+        }
+      },
+      {
+        title: '宽度(px)',
+        type: 'text',
+        ifVisible({ data, slots, focusArea }) {
+          const { col, isLastCol } = getByFousArea({data, slots, focusArea})
+          if (isLastCol || (isNumber(col.colSpan) && col.colSpan > 1)) {
+            return false
+          }
+          const colDef = data.cols.find((def) => def.id === col.defId)
+          return data.cellWidthType === CellWidthTypeEnum.Px && colDef.cellWidthType !== CellWidthTypeEnum.Auto;
+        },
+        options: {
+          type: 'number'
+        },
+        value: {
+          get({data, slots, focusArea}) {
+            const { col } = getByFousArea({data, slots, focusArea})
+            const colDef = data.cols.find((def) => def.id === col.defId)
+            return colDef.width;
+          },
+          set({data, slots, focusArea}, value) {
+            let rstNumber = Number(value)
+
+            if (isNumber(rstNumber)) {
+              const { col } = getByFousArea({data, slots, focusArea})
+              const colDef = data.cols.find((def) => def.id === col.defId)
+              colDef.width = rstNumber
+            }
+          }
+        }
+      },
+      {
+        title: '百分比(%)',
+        type: 'text',
+        ifVisible({ data, slots, focusArea }) {
+          const { col, isLastCol } = getByFousArea({data, slots, focusArea})
+          if (isLastCol || (isNumber(col.colSpan) && col.colSpan > 1)) {
+            return false
+          }
+          const colDef = data.cols.find((def) => def.id === col.defId)
+          return data.cellWidthType === CellWidthTypeEnum.Percent && colDef.cellWidthType !== CellWidthTypeEnum.Auto;
+        },
+        options: {
+          type: 'number'
+        },
+        value: {
+          get({data, slots, focusArea}) {
+            const { col } = getByFousArea({data, slots, focusArea})
+            const colDef = data.cols.find((def) => def.id === col.defId)
+            return Number(colDef.widthPercent?.replace('%', ''))
+          },
+          set({data, slots, focusArea}, value) {
+            let rstNumber = Number(value)
+
+            if (isNumber(rstNumber)) {
+              const { col } = getByFousArea({data, slots, focusArea})
+              const colDef = data.cols.find((def) => def.id === col.defId)
+              colDef.widthPercent = `${rstNumber}%`
+            }
+          }
+        }
+      },
+      {
         title: "布局",
         type: "layout",
         options: [],
@@ -535,16 +629,18 @@ export default {
   }
 }
 
-function getByFousArea({data, slots, focusArea}): { col, slot } {
+function getByFousArea({data, slots, focusArea}): { col, slot, isLastCol } {
   const rowId = focusArea.dataset[`rowId`]
   const colId = focusArea.dataset[`colId`]
 
   const row = data.rows.find(row => row.id === rowId)
-  const col = row.cols.find(col => col.id === colId)
+  // const col = row.cols.find(col => col.id === colId)
+  const colIndex = row.cols.findIndex(col => col.id === colId)
+  const col = row.cols[colIndex]
 
   const slot = slots.get(col.id)
 
-  return {col, slot}
+  return {col, slot, isLastCol: colIndex === row.cols.length - 1}
 }
 
 function searchCol({data}, colId) {
