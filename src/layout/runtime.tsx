@@ -33,8 +33,11 @@ export default function ({ data, style, slots }) {
       gridTemplateRows,
       gridTemplateColumns,
       width: style.width === 'fit-content' ? data.width : '100%',
-      height: data.height || '100%',
+      height: data.height === 'auto' ? data.pxHeight : '100%',
       overflow: 'hidden',
+      position: 'absolute',
+      top: 0,
+      left: 0,
       ...data.style
     };
   }, []);

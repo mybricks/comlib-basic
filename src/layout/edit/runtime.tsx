@@ -50,14 +50,17 @@ export default function ({env, data, style, slots}): JSX.Element {
   }, [data._editRow])
 
   useEffect(() => {
-    const { height } = style;
+    const { height } = style
     if (isNumber(height)) {
       let rowsHeight = data.rows.reduce((c, s) => {
         return c + (s.height || 0)
       }, 8)
       rowsHeight = height < rowsHeight ? rowsHeight : height
       style.height = rowsHeight
+      data.pxHeight = rowsHeight
       data.height = rowsHeight
+    } else {
+      data.height = height
     }
   }, [style.height])
   /** TODO style内width以及height的变更，不会在editor中响应，(上下两个useEffect是不是可以去掉) */
@@ -146,7 +149,7 @@ export default function ({env, data, style, slots}): JSX.Element {
       ref={layoutEl}
       className={css.layout}
       style={{
-        height: data.height,
+        height: data.height === 'auto' ? data.pxHeight : '100%',
         width: style.width === 'fit-content' ? data.width : style.width
       }}
     >
