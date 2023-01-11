@@ -622,11 +622,12 @@ export default {
         value: {
           get({data, slots, focusArea}) {
             const { col } = getByFousArea({data, slots, focusArea})
-            return col.style
+            const { style } = col
+            return style
           },
           set({data, slots, focusArea}, value) {
             const { col } = getByFousArea({data, slots, focusArea})
-            col.style = value
+            col.style = Object.assign(col.style || {}, value);
           }
         }
       },
