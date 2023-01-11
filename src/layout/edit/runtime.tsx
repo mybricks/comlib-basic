@@ -113,12 +113,23 @@ export default function ({env, data, style, slots}): JSX.Element {
             editFinish()
           }
           if (tStyle) {
-            const po = {x: tStyle.left, y: tStyle.top}
-            const {colIds, left, top, width, height} = calculateTds({data}, {
-              po,
-              aw: tStyle.width,
-              ah: tStyle.height
-            }, tableEl)
+            // const po = {x: tStyle.left, y: tStyle.top}
+            // const {colIds, left, top, width, height} = calculateTds({data}, {
+            //   po,
+            //   aw: tStyle.width,
+            //   ah: tStyle.height
+            // }, tableEl)
+
+            // setDragPo({
+            //   style: {
+            //     left,
+            //     top,
+            //     width,
+            //     height
+            //   },
+            //   colIds
+            // })
+            const {colIds, left, top, width, height} = tStyle
 
             setDragPo({
               style: {

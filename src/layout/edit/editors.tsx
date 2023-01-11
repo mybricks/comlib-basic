@@ -134,7 +134,7 @@ export default {
           const { cols } = data
           const colId = focusArea.dataset.colId
           const findIndex = cols.findIndex((col) => col.id === colId)
-          if (findIndex === (cols.length - 1)) {
+          if (findIndex === -1 || findIndex === (cols.length - 1)) {
             return false
           }
 
@@ -172,7 +172,7 @@ export default {
           const { cols } = data
           const colId = focusArea.dataset.colId
           const findIndex = cols.findIndex((col) => col.id === colId)
-          if (findIndex === (cols.length - 1)) {
+          if (findIndex === -1 || findIndex === (cols.length - 1)) {
             return false
           }
           const colDef = cols[findIndex];
@@ -221,7 +221,7 @@ export default {
           const { cols } = data
           const colId = focusArea.dataset.colId
           const findIndex = cols.findIndex((col) => col.id === colId)
-          if (findIndex === (cols.length - 1)) {
+          if (findIndex === -1 || findIndex === (cols.length - 1)) {
             return false
           }
           const colDef = cols[findIndex];
@@ -408,7 +408,7 @@ export default {
         type: "button",
         options: [],
         value: {
-          set({data, slots, focusArea}, value) {
+          set({data, slots, focusArea, element}, value) {
             const colIds = JSON.parse(focusArea.dataset.zone)
 
             if (colIds.length > 0) {
@@ -455,9 +455,26 @@ export default {
                   startCol.rowSpan = rowSpan
                 }
               }
-            }
 
-            resetLayout({data})
+              resetLayout({data})
+
+              const styleWidth = element.parentElement.clientWidth;
+            
+              if (data.cellWidthType === CellWidthTypeEnum.Percent) {
+                const colsLength = data.cols.length;
+                data.cols.forEach((col, idx) => {
+                  if (colsLength - 1 === idx) return
+                  const { width } = col;
+            
+                  col.widthPercent = `${((width / styleWidth) * 100).toFixed(2)}%`
+                })
+              }
+
+              requestAnimationFrame(() => {
+                const ele = element.querySelector(`[data-col-id="${targetId}"]`)
+                ele?.click()
+              })
+            }
           },
         },
       }

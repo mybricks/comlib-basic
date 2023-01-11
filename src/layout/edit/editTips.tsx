@@ -237,10 +237,9 @@ function ColTips({data, slots, style, element}) {
 
   const addCol = useCallback((e, col?) => {
     const newCol = _addCol(col, {data, slots, style, element})
-    requestAnimationFrame(v => {
-      editCol(e, newCol)
-    })
-
+    // requestAnimationFrame(v => {
+    //   editCol(e, newCol)
+    // })
   }, [])
 
   const colTips: JSX.Element[] = []
@@ -275,6 +274,9 @@ function ColTips({data, slots, style, element}) {
         )
       } else {
         const tdEle = element.querySelector(`#col-${col.id}`)
+        /** TODO 宽高计算需要考虑到画布大小变更--transform: scale(x); */
+        // const clientWidth = tdEle?.getBoundingClientRect()?.width || 0
+        const clientWidth = tdEle?.clientWidth || 0
         colTips.push(
           <div key={`${col.id}-bar`}
                data-mybricks-tip={`{content:'选择当前列',position:'bottom'}`}
@@ -283,12 +285,12 @@ function ColTips({data, slots, style, element}) {
                  {
                    left: curLeft,
                   //  width: col.width
-                  width: tdEle.clientWidth || 0
+                  width: clientWidth
                  }
                }
                onClick={e => editCol(e, col)}/>
         )
-        curLeft += tdEle.clientWidth || 0
+        curLeft += clientWidth
       }
   
       // curLeft += col.width || 0
@@ -392,7 +394,7 @@ function _addCol(col, {data, slots, style, element}) {
   let newCol
   // TODO 添加列的时候计算宽度
   if (col) {//before
-    const idx = data.cols.indexOf(col)
+    let idx = data.cols.indexOf(col)
     newCol = {
       id: uuid(),
       width: 100,
@@ -404,6 +406,18 @@ function _addCol(col, {data, slots, style, element}) {
     data.rows.forEach(row => {
       const cols = row.cols
       const colId = uuid()
+
+      let colSpan = 0;
+      /** 需要考虑合并的情况 */
+      if (idx) {
+        for (let i in cols) {
+          colSpan = colSpan + cols[i].colSpan || 0
+          if (colSpan === idx) {
+            idx = i + 1
+            break
+          }
+        }
+      }
 
       cols.splice(idx, -1, {
         id: colId,
@@ -449,15 +463,25 @@ function _addCol(col, {data, slots, style, element}) {
 
   resetLayout({data})
 
-  const styleWidth = element.parentElement.clientWidth;
-  // TODO 下面这段还有点问题，看一下
-  if (data.cellWidthType === CellWidthTypeEnum.Percent) {
-    // refleshPercent({cols: data.cols, styleWidth, cover: true})
-    refleshPx({cols: data.cols, styleWidth, cover: true})
-  } else {
-    // refleshPx({cols: data.cols, styleWidth, cover: true})
-    refleshPercent({cols: data.cols, styleWidth, cover: true})
-  }
+  const { cols } = data
+
+  requestAnimationFrame(() => {
+    const styleWidth = element.parentElement.clientWidth;
+
+    if (data.cellWidthType === CellWidthTypeEnum.Percent) {
+      const colsLength = cols.length;
+      cols.forEach((col, idx) => {
+        if (colsLength - 1 === idx) return
+        const { width } = col;
+  
+        col.widthPercent = `${((width / styleWidth) * 100).toFixed(2)}%`
+      })
+    }
+
+    requestAnimationFrame(() => {
+      resetEditCol(data, newCol, element)
+    })
+  })
 
   return newCol
 }

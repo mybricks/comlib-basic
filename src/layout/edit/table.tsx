@@ -116,12 +116,15 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
       return def.cols.find((def) => def.defId === col.defId)
     })
 
-    const colIndex = data.cols.findIndex((def) => def.id === col.defId)
+    let colIndex = data.cols.findIndex((def) => def.id === col.defId)
 
     let defCol = data.cols[colIndex]
+    let hasColSpan = colIndex
 
     if (col.colSpan) {//考虑到跨列的情况
-      defCol = data.cols[data.cols.indexOf(defCol) + col.colSpan - 1]
+      const index = data.cols.indexOf(defCol) + col.colSpan - 1
+      colIndex = index
+      defCol = data.cols[index]
     }
 
     let leftColsWidth = 0
@@ -139,7 +142,7 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
     const tdElement = e.target.parentElement;
 
     if (typeof defCol.width === 'undefined') {
-      let width = cols.slice(0, cols.length - 1).reduce((c, s) => {
+      let width = cols.slice(0, hasColSpan).reduce((c, s) => {
         return c - s.width
       }, styleWidth)
       if (cellWidthType === CellWidthTypeEnum.Percent) {
@@ -155,7 +158,19 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
         }
       })
     } else {
-      const width = cellWidthType === CellWidthTypeEnum.Percent ? defCol.widthPercent : defCol.width
+      let width: any = 0
+
+      if (cellWidthType === CellWidthTypeEnum.Percent) {
+        data.cols.slice(hasColSpan, colIndex+1).forEach((col) => {
+          width = width + Number(col.widthPercent.replace('%', ''))
+        })
+        width = width.toFixed(2) + '%'
+      } else {
+        data.cols.slice(hasColSpan, colIndex+1).forEach((col) => {
+          width = width + col.width
+        })
+      }
+
       const tdPo = tdElement.getBoundingClientRect();
       setColSize({
         width,
@@ -194,22 +209,34 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
             if ((leftColsWidth + width + rightColsWidth) > styleWidth) return
 
             defCol.width = width
-            let lastWidth = width
-            let widthPercent
+
+            // let lastWidth = width
+            // let widthPercent: any = 0
+            let lastWidth: any = 0
             if (cellWidthType === CellWidthTypeEnum.Percent) {
               refleshPercent({cols: data.cols, styleWidth})
-              widthPercent = defCol.widthPercent
+              // widthPercent = defCol.widthPercent
+              data.cols.slice(hasColSpan, colIndex+1).forEach((col) => {
+                lastWidth = lastWidth + Number(col.widthPercent.replace('%', ''))
+              })
+              lastWidth = lastWidth.toFixed(2) + '%'
+            } else {
+              data.cols.slice(hasColSpan, colIndex+1).forEach((col) => {
+                lastWidth = lastWidth + col.width
+              })
             }
+
             setColSize((colSize) => {
               if (!colSize) return void 0
               const tdPo = tdElement.getBoundingClientRect();
               const { po, ...other } = colSize;
               return {
                 ...other,
-                width: widthPercent || lastWidth,
+                width: lastWidth,
                 po: {
                   ...po,
-                  left: tdPo.x + (lastWidth / 2),
+                  // left: tdPo.x + (lastWidth / 2),
+                  left: tdPo.x + (tdElement.clientWidth / 2),
                 }
               }
             })
@@ -409,6 +436,7 @@ function Row({env, data, slots, style, row, dragTd, layoutEl, isLastRow}) {
                   ) : null
                 }
                 {
+                  // TODO 现在使用最大可能的高度，style.height不会响应，需要设计器支持
                   !isLastRow || typeof style.height === 'number' ? (
                     <div className={css.resizeH} onMouseDown={e => dragH(e, row, col)} onMouseUp={() => setColSize(void 0)}>
                     </div>
