@@ -3,7 +3,7 @@
   "namespace": "mybricks.basic-comlib.layout",
   "author": "CheMingjun",
   "author_name": "车明君",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "布局",
   "icon": "./icon.svg",
   "data": "./data.json",

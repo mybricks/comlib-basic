@@ -153,6 +153,7 @@ export default {
             return colDef.cellWidthType || 'stabl';
           },
           set({data, focusArea, element}, value) {
+            // TODO 切换的时候防止组件抖动，计算宽高
             const { cols } = data
             const colId = focusArea.dataset.colId
             const colDef = cols.find((col) => col.id === colId)
@@ -292,11 +293,25 @@ export default {
               style.width -= element.querySelector(`#col-${colId}`).offsetWidth
             }
 
-            data.cols = data.cols.filter((col, idx) => col.id !== colId)
+            const deleteColsIndex = data.cols.findIndex(col => col.id === colId)
 
-            data.rows.forEach(row => {
-              row.cols = row.cols.filter((col, idx) => {
-                if (col.defId === colId) {
+            data.cols = data.cols.filter((col) => col.id !== colId)
+
+            data.rows.forEach((row) => {
+              let colSpan = 0
+              row.cols = row.cols.filter((col) => {
+                if (colSpan !== -1) {
+                  colSpan = colSpan + (col.colSpan || 1)
+                  if (colSpan > deleteColsIndex) {
+                    if (col.colSpan && col.colSpan > 1) {
+                      col.colSpan = col.colSpan - 1
+                      colSpan = -1
+                    }
+                  }
+                }
+                
+                if (col.defId === colId && colSpan !== -1) {
+                  colSpan = -1
                   slots.remove(col.id)
                 } else {
                   return col

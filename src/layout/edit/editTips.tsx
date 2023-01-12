@@ -403,31 +403,51 @@ function _addCol(col, {data, slots, style, element}) {
 
     data.cols.splice(idx, -1, newCol)
 
-    data.rows.forEach(row => {
+    data.rows.forEach((row) => {
       const cols = row.cols
       const colId = uuid()
 
       let colSpan = 0;
+      let rowColsIdx = idx
+      let add = false
       /** 需要考虑合并的情况 */
       if (idx) {
         for (let i in cols) {
-          colSpan = colSpan + cols[i].colSpan || 0
+          const colIndex = Number(i)
+          colSpan = colSpan + (cols[colIndex].colSpan || 1)
           if (colSpan === idx) {
-            idx = i + 1
+            rowColsIdx = colIndex + 1
+            add = true
+            break
+          } else if (colSpan > idx) {
+            cols[colIndex].colSpan = cols[colIndex].colSpan + 1
             break
           }
         }
+      } else {
+        add = true
       }
 
-      cols.splice(idx, -1, {
-        id: colId,
-        defId: newCol.id
-      })
+      if (add) {
+        cols.splice(rowColsIdx, -1, {
+          id: colId,
+          defId: newCol.id
+        })
 
-      slots.add({
-        id: colId,
-        title: '单元格'
-      })
+        slots.add({
+          id: colId,
+          title: '单元格'
+        })
+      }
+      // cols.splice(idx, -1, {
+      //   id: colId,
+      //   defId: newCol.id
+      // })
+
+      // slots.add({
+      //   id: colId,
+      //   title: '单元格'
+      // })
     })
   } else {//last one
     const lastColDef = data.cols[data.cols.length - 1]
