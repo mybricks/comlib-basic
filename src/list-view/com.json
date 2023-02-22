@@ -1,0 +1,35 @@
+{
+  "title": "循环列表",
+  "namespace": "mybricks.basic-comlib.list-view",
+  "author": "CheMingjun",
+  "author_name": "CheMingjun",
+  "version": "1.0.0",
+  "description": "循环列表",
+  "runtime": "./runtime.tsx",
+  "data": "./data.json",
+  "editors": "./editors.tsx",
+  "slots": [
+    {
+      "id": "item0",
+      "title": "项目1"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "setValue",
+      "title": "当前数据",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

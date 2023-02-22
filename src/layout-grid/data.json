@@ -1,0 +1,24 @@
+{
+  "style": {
+    "backgroundColor": "#FFF",
+    "borderRadius": 0
+  },
+  "rows": [
+    {
+      "id": "row0",
+      "height": "auto",
+      "cols": [
+        {
+          "id": "col0",
+          "title": "列1",
+          "width": 100
+        },
+        {
+          "id": "col1",
+          "title": "列2",
+          "width": "auto"
+        }
+      ]
+    }
+  ]
+}

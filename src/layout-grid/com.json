@@ -1,0 +1,22 @@
+{
+  "title": "栅格布局",
+  "namespace": "mybricks.basic-comlib.layout-grid",
+  "author": "CheMingjun",
+  "author_name": "CheMingjun",
+  "version": "1.0.0",
+  "description": "列表",
+  "runtime": "./runtime.tsx",
+  "runtime.edit": "./edit/runtime.tsx",
+  "data": "./data.json",
+  "editors": "./edit/editors.tsx",
+  "slots": [
+    {
+      "id": "col0",
+      "title": "栅格1"
+    },
+    {
+      "id": "col1",
+      "title": "栅格2"
+    }
+  ]
+}

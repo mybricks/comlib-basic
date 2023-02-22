@@ -1,7 +1,7 @@
 {
   "name": "@mybricks/comlib-basic",
   "version": "1.0.0",
-  "description": "原子组件库",
+  "description": "基础组件库",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,5 +16,13 @@
   "bugs": {
     "url": "https://github.com/mybricks/comlib-basic/issues"
   },
-  "homepage": "https://github.com/mybricks/comlib-basic#readme"
+  "homepage": "https://github.com/mybricks/comlib-basic#readme",
+  "dependencies": {
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.6",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6"
+  }
 }
