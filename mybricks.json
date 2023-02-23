@@ -1,4 +1,10 @@
 {
+  "fileId": 7182,
+  "prodFileId": 30402,
+  "folderId": 28720,
+  "folderIdStaging": 7183,
+  "content": "",
+  "commitInfo": "init",
   "comAry": [
     "./src/layout/com.json",
     "./src/text/com.json",
@@ -6,5 +12,6 @@
     "./src/layout-grid/com.json",
     "./src/list-view/com.json",
     "./src/image/com.json"
-  ]
+  ],
+  "componentType": "PC"
 }
