@@ -1,23 +1,12 @@
 {
+  "layoutStyle": {
+    "layout": "absolute",
+    "flexDirection": "row",
+    "alignItems": "flex-start",
+    "justifyContent": "flex-start"
+  },
   "style": {
     "backgroundColor": "#FFF",
     "borderRadius": 0
-  },
-  "rows": [
-    {
-      "id": "tr0",
-      "cols": [
-        {
-          "id": "td0",
-          "defId": "col0"
-        }
-      ]
-    }
-  ],
-  "cols": [
-    {
-      "id": "col0"
-    }
-  ],
-  "cellWidthType": "px"
+  }
 }
