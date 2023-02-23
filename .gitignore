@@ -41,6 +41,6 @@ buildInfo.json
 .tmp
 buildfe
 .history
-
+.temp
 global.json
 yarn.lock
