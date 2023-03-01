@@ -3,9 +3,10 @@ import css from './css.less'
 import {CellWidthTypeEnum} from "../../layout/const";
 import {dragable} from "../../utils";
 import {refleshPercent} from "../../layout/edit/edtUtils";
+import { getColOutputId, getRowOutputId } from './util'
 
 export default (props: T_Props) => {
-  const {env, data, slots, inputs} = props
+  const {env, data, slots, inputs, outputs} = props
 
   return (
     <div className={css.layout}>
@@ -19,10 +20,11 @@ export default (props: T_Props) => {
 }
 
 function Row({row, props}: { props: T_Props }) {
-  const {data, slots} = props
+  const {data, slots, env, outputs} = props
   const cols = row.cols
 
-  const style = {} as any
+  /** 与响应式对象解耦，防止修改源对象 */
+  const style = JSON.parse(JSON.stringify(row?.style ?? {}))
 
   if (row.height === 'auto') {
     style.flex = 1
@@ -48,7 +50,7 @@ function Row({row, props}: { props: T_Props }) {
 }
 
 function Col({col, row, props}: { props: T_Props }) {
-  const {env, slots, data} = props
+  const {env, slots, data, outputs} = props
 
   const dragW = useCallback((e) => {
     let editFinish
@@ -80,7 +82,8 @@ function Col({col, row, props}: { props: T_Props }) {
   }, [])
 
 
-  const style = {} as any
+  /** 与响应式对象解耦，防止下方修改源对象 */
+  const style = JSON.parse(JSON.stringify(col?.style ?? {}))
 
   if (col.width === 'auto') {
     style.flex = 1
@@ -88,12 +91,15 @@ function Col({col, row, props}: { props: T_Props }) {
     style.width = col.width
   }
 
+  /** 获取col的布局属性，优先级为col > row > data */
+  const layoutStyle = { ...(data?.layout ?? {}), ...(row?.layout ?? {}), ...(col?.layout ?? {}) }
+  
   const isLastOne = row.cols.indexOf(col) === row.cols.length - 1
 
   return (
     <div className={css.col} style={style} data-col-id={col.id}>
       {
-        slots[col.id].render()
+        slots[col.id].render({ style: layoutStyle })
       }
       {
         !isLastOne ? (
