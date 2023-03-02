@@ -7,10 +7,11 @@ import { CSSProperties } from "react";
 
 export default {
   '@init'({style}) {
-    style.width = '100%'
+    style.height = 'fit-content';
+    style.width = '100%';
   },
   '@resize': {
-    options: ['width']
+    options: ['width', 'height']
   },
   ':root': [
     {
