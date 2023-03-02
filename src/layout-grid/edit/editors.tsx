@@ -7,7 +7,7 @@ import { CSSProperties } from "react";
 
 export default {
   '@init'({style}) {
-    style.height = 'fit-content';
+    // style.height = 'fit-content';
     style.width = '100%';
   },
   '@resize': {
@@ -37,6 +37,22 @@ export default {
       }
     },
     {},
+    {
+      title: '样式',
+      type: 'style',
+      options: {
+        defaultOpen: true,
+        items: ['bgcolor', 'border']
+      },
+      value: {
+        get({data, slots, focusArea}) {
+          return data.style ?? {}
+        },
+        set({data, slots, focusArea}, value) {
+          data.style = value
+        }
+      }
+    },
     {
       title: '布局',
       type: 'layout',
@@ -77,7 +93,7 @@ export default {
       //   return <ColWidth data={data} col={col} focusArea={focusArea} />
       // },
       {
-        title: '切换至固定宽度',
+        title: '固定宽度',
         type: 'switch',
         value: {
           get({ data, focusArea }) {

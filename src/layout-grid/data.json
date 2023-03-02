@@ -1,8 +1,5 @@
 {
-  "style": {
-    "backgroundColor": "#FFF",
-    "borderRadius": 0
-  },
+  "style": {},
   "rows": [
     {
       "id": "row0",

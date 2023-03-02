@@ -6,7 +6,7 @@ export default (props: T_Props) => {
   const { env, data, slots, inputs, outputs } = props
 
   return (
-    <div className={css.layout}>
+    <div className={css.layout} style={data.style}>
       {data.rows.map((row, index) => {
         return <Row key={row.id} row={row} props={props} onClick={() => outputs['click']?.(true)} />
       })}
