@@ -15,9 +15,7 @@ export default ({env, data, slots, inputs}) => {
   }
 
   return (
-    <div className={css.text} style={style} onClick={e=>{
-      data.content = Math.random()
-    }}>
+    <div className={css.text} style={style}>
       {data.content}
     </div>
   );
