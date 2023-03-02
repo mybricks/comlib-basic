@@ -2,12 +2,21 @@
 
 .draggingTip() {
   position: absolute;
-  border: 0px solid @color-primary;
+  z-index: 999;
   color: @color-primary;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 500;
+
+  &.dashed {
+    &&::after {
+      border-style: dashed;
+    }
+    &&::before {
+      border-style: dashed;
+    }
+  }
 }
 
 .draggingTipW {
@@ -18,6 +27,21 @@
   left: 0px;
   right: 0px;
   border-bottom-width: 1px;
+
+  &&::after {
+    content: '';
+    flex: 1;
+    border: 0px solid @color-primary;
+    border-bottom-width: 1px;
+    margin: 0px 10px;
+  }
+  &&::before {
+    content: '';
+    flex: 1;
+    border: 0px solid @color-primary;
+    border-bottom-width: 1px;
+    margin: 0px 5px;
+  }
 }
 
 .resizeW {
@@ -46,12 +70,27 @@
 
 .draggingTipH {
   .draggingTip();
+  flex-direction: column;
   width: 30px;
   height: 100%;
   top: 0px;
   bottom: 0px;
   left: 0px;
   border-left-width: 1px;
+  &&::after {
+    content: '';
+    flex: 1;
+    border: 0px solid @color-primary;
+    border-left-width: 1px;
+    margin: 0px 10px;
+  }
+  &&::before {
+    content: '';
+    flex: 1;
+    border: 0px solid @color-primary;
+    border-left-width: 1px;
+    margin: 0px 5px;
+  }
 }
 
 .resizeH {

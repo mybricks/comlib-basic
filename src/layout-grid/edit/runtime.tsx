@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {CellWidthTypeEnum} from "../../layout/const";
 import {dragable} from "../../utils";
 import {refleshPercent} from "../../layout/edit/edtUtils";
@@ -70,12 +70,15 @@ function Row({row, props}: { props: T_Props }) {
     style.height = row.height
   }
 
-  const isLastOne = data.rows.indexOf(row) === data.rows.length - 1;
-
   let rowProps = {}
   if (data.rows.length > 1) {
     rowProps['data-row-id'] = row.id
   }
+
+  /** 相同列是否有正在拖动的元素 */
+  const hasDragTarget = data.rows.some(_row => _row.isDragging)
+  /** 拖动的元素是否是当前元素 */
+  const isDragTarget = row.isDragging
 
   return (
     <div className={css.row} style={style} {...rowProps}>
@@ -85,15 +88,12 @@ function Row({row, props}: { props: T_Props }) {
                       props={props}/>
         })
       }
+      <div
+        className={editCss.resizeH}
+        onMouseDown={e => dragH(e)}>
+      </div>
       {
-        !isLastOne || true ? (
-          <div className={editCss.resizeH}
-               onMouseDown={e => dragH(e)}>
-          </div>
-        ) : null
-      }
-      {
-        row.isDragging && <div className={editCss.draggingTipH}>{row.height}</div>
+        hasDragTarget && <div className={isDragTarget ? editCss.draggingTipH : `${editCss.draggingTipH} ${editCss.dashed}`}>{row.height}</div>
       }
     </div>
   )
@@ -150,27 +150,27 @@ function Col({col, row, props}: { props: T_Props }) {
   /** 获取col的布局属性，优先级为col > row > data */
   const layoutStyle = { ...(data?.layout ?? {}), ...(row?.layout ?? {}), ...(col?.layout ?? {}) }
 
-  const isLastOne = row.cols.indexOf(col) === row.cols.length - 1;
-
   const colProps = {}
   if (Array.isArray(row.cols) && row.cols.length > 1) {
     colProps['data-col-id'] = col.id
   }
+
+  /** 相同行是否有正在拖动的元素 */
+  const hasDragTarget = row.cols.some(_col => _col.isDragging)
+  /** 拖动的元素是否是当前元素 */
+  const isDragTarget = col.isDragging
 
   return (
     <div className={css.col} style={style} {...colProps}>
       {
         slots[col.id].render({ style: layoutStyle })
       }
+      <div
+        className={editCss.resizeW}
+        onMouseDown={e => dragW(e)}>
+      </div>
       {
-        !isLastOne || true ? (
-          <div className={editCss.resizeW}
-               onMouseDown={e => dragW(e)}>
-          </div>
-        ) : null
-      }
-      {
-        col.isDragging && <div className={editCss.draggingTipW}>{col.width}</div>
+        hasDragTarget && <div className={isDragTarget ? editCss.draggingTipW : `${editCss.draggingTipW} ${editCss.dashed}`}>{col.width}</div>
       }
     </div>
   )

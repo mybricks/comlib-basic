@@ -14,5 +14,11 @@
       "id": "col0",
       "title": "内容（竖向排列）"
     }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击"
+    }
   ]
 }

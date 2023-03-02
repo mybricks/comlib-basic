@@ -1,7 +1,7 @@
 import {isNumber, uuid} from "../../utils";
 import {CellWidthTypeEnum} from "../../layout/const";
 import {resetEditCol, resetLayout} from "../../layout/edit/edtUtils";
-import ColWidth from "./ColWidth";
+import ColWidth, { WidthType } from "./ColWidth";
 import { getColOutputId, getRowOutputId } from './util'
 import { CSSProperties } from "react";
 
@@ -70,42 +70,33 @@ export default {
   'div[data-col-id]': {
     title: '列',
     items: [
-      // ({data}) => {
-      //   return <ColWidth />
+      // ({ data, focusArea}) => {
+      //   const colId = focusArea.dataset.colId
+      //   const col = getCol(data, colId)
+      //   return <ColWidth data={data} col={col} focusArea={focusArea} />
       // },
       {
-        title: '宽度',
-        type: 'select',
-        options: [
-          {
-            label: '固定宽度',
-            value: 'custom'
-          },
-          {
-            label: '自适应宽度',
-            value: 'auto'
-          }
-        ],
+        title: '切换至固定宽度',
+        type: 'switch',
         value: {
-          get({ data, slots, focusArea }) {
+          get({ data, focusArea }) {
             const colId = focusArea.dataset.colId
             const col = getCol(data, colId)
-            return col.width
+            return typeof col.width === 'number'
           },
-          set({ data, slots, focusArea }, val) {
+          set({ data, focusArea }, val) {
             const colId = focusArea.dataset.colId
             const col = getCol(data, colId)
-            if (val === 'auto') {
-              col.width = val
-              return
-            }
 
-            if (!focusArea?.ele?.getBoundingClientRect) {
-              return
+            if (val) {
+              if (!focusArea?.ele?.getBoundingClientRect) {
+                return
+              }
+              const { width } = focusArea?.ele?.getBoundingClientRect()
+              col.width = width
+            } else {
+              col.width = WidthType.AUTO
             }
-            const { width } = focusArea?.ele?.getBoundingClientRect()
-            /** TODO，缩放场景下拿到的width值不知道对不对 */
-            col.width = width
           }
         }
       },
