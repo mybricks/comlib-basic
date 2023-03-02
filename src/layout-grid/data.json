@@ -10,12 +10,7 @@
       "cols": [
         {
           "id": "col0",
-          "title": "列1",
-          "width": 100
-        },
-        {
-          "id": "col1",
-          "title": "列2",
+          "title": "内容",
           "width": "auto"
         }
       ]

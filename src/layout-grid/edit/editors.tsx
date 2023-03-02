@@ -6,12 +6,11 @@ import { getColOutputId, getRowOutputId } from './util'
 import { CSSProperties } from "react";
 
 export default {
-  // '@init'({style}) {
-  //   style.height = 50
-  //   style.width = 100
-  // },
+  '@init'({style}) {
+    style.width = '100%'
+  },
   '@resize': {
-    options: ['width', 'height']
+    options: ['width']
   },
   ':root': [
     {
@@ -23,15 +22,7 @@ export default {
       value: {
         set({data, slots}) {
           const row = data.rows[0]
-          const id = uuid(), title = `列${row.cols.length + 1}`
-
-          row.cols.push({
-            id,
-            title
-          })
-          slots.add({
-            id, title
-          })
+          addCol({ slots, row, colId: row.cols?.[0]?.id, type: 'AFTER' })
         }
       }
     },
@@ -79,8 +70,44 @@ export default {
   'div[data-col-id]': {
     title: '列',
     items: [
-      ({data}) => {
-        return <ColWidth/>
+      // ({data}) => {
+      //   return <ColWidth />
+      // },
+      {
+        title: '宽度',
+        type: 'select',
+        options: [
+          {
+            label: '固定宽度',
+            value: 'custom'
+          },
+          {
+            label: '自适应宽度',
+            value: 'auto'
+          }
+        ],
+        value: {
+          get({ data, slots, focusArea }) {
+            const colId = focusArea.dataset.colId
+            const col = getCol(data, colId)
+            return col.width
+          },
+          set({ data, slots, focusArea }, val) {
+            const colId = focusArea.dataset.colId
+            const col = getCol(data, colId)
+            if (val === 'auto') {
+              col.width = val
+              return
+            }
+
+            if (!focusArea?.ele?.getBoundingClientRect) {
+              return
+            }
+            const { width } = focusArea?.ele?.getBoundingClientRect()
+            /** TODO，缩放场景下拿到的width值不知道对不对 */
+            col.width = width
+          }
+        }
       },
       {},
       {
@@ -88,7 +115,7 @@ export default {
         type: 'style',
         options: {
           defaultOpen: true,
-          plugins: ['bgcolor']
+          plugins: ['bgcolor', 'border']
         },
         value: {
           get({data, slots, focusArea}) {
@@ -177,6 +204,26 @@ export default {
           }
         }
       },
+      {},
+      {
+        title: '单击',
+        type: '_Event',
+        options: ({ data, focusArea, output }) => {
+          if (!output) {
+            return
+          }
+          const colId = focusArea.dataset.colId
+          const col = getCol(data, colId)
+
+          if (!output.get(getColOutputId(colId))) {
+            output.add(getColOutputId(colId), col.title, { type: "any" });
+          }
+          return {
+            outputId: getColOutputId(colId)
+          }
+        }
+      },
+      {},
       {
         title: '删除',
         type: 'button',
@@ -229,22 +276,6 @@ export default {
           }
         }
       },
-      {},
-      {
-        title: '单击',
-        type: '_Event',
-        options: ({ data, focusArea, output }) => {
-          const colId = focusArea.dataset.colId
-          const col = getCol(data, colId)
-
-          if (!output.get(getColOutputId(colId))) {
-            output.add(getColOutputId(colId), col.title, { type: "any" });
-          }
-          return {
-            outputId: getColOutputId(colId)
-          }
-        }
-      }
     ]
   },
   'div[data-row-id]': {
@@ -255,7 +286,7 @@ export default {
         type: 'style',
         options: {
           defaultOpen: true,
-          plugins: ['bgcolor']
+          plugins: ['bgcolor', 'border']
         },
         value: {
           get({data, slots, focusArea}) {
@@ -304,17 +335,7 @@ export default {
             const row = data.rows.find(row => {
               return row.id === rowId
             })
-
-            const id = uuid(), title = `列${row.cols.length + 1}`
-
-            row.cols.push({
-              id,
-              title
-            })
-
-            slots.add({
-              id, title
-            })
+            addCol({ slots, row, colId: row.cols?.[row.cols.length - 1]?.id, type: 'AFTER' })
           }
         }
       },
@@ -338,6 +359,26 @@ export default {
           }
         }
       },
+      {},
+      {
+        title: '单击',
+        type: '_Event',
+        options: ({ data, focusArea, output }) => {
+          if (!output) {
+            return
+          }
+          const rowId = focusArea.dataset.rowId
+          const row = getRow(data, rowId)
+
+          if (!output.get(getRowOutputId(rowId))) {
+            output.add(getRowOutputId(rowId), row.title, { type: "any" });
+          }
+          return {
+            outputId: getRowOutputId(rowId)
+          }
+        }
+      },
+      {},
       {
         title: '删除',
         type: 'button',
@@ -365,22 +406,6 @@ export default {
                 return true
               }
             })
-          }
-        }
-      },
-      {},
-      {
-        title: '单击',
-        type: '_Event',
-        options: ({ data, focusArea, output }) => {
-          const rowId = focusArea.dataset.rowId
-          const row = getRow(data, rowId)
-
-          if (!output.get(getRowOutputId(rowId))) {
-            output.add(getRowOutputId(rowId), row.title, { type: "any" });
-          }
-          return {
-            outputId: getRowOutputId(rowId)
           }
         }
       }
@@ -434,7 +459,7 @@ function addCol({
   row,
   colId,
   type,
-  title = `列${colId}`
+  title = `列（纵向排列）`
 }: {
   slots: any,
   row: any,
@@ -452,7 +477,8 @@ function addCol({
 
   row.cols.splice(type === 'BEFORE' ? currentColIndex : currentColIndex + 1, 0, {
     id,
-    title
+    title,
+    width: 'auto'
   })
   slots.add({
     id, title
@@ -522,7 +548,7 @@ function addRow({
     cols
   })
 
-  const col0Id = uuid(), col0Title = `列1`
+  const col0Id = uuid(), col0Title = `列（竖向排列）`
   cols.push({
     id: col0Id,
     title: col0Title,
@@ -534,7 +560,7 @@ function addRow({
   })
 
 
-  const col1Id = uuid(), col1Title = `列2`
+  const col1Id = uuid(), col1Title = `列（竖向排列）`
   cols.push({
     id: col1Id,
     title: col1Title,
@@ -555,14 +581,17 @@ function setSlotLayoutByCss (slot: any, cssStyles: CSSProperties) {
   switch(true) {
     case cssStyles.position === 'absolute': {
       slot.setLayout('absolute')
+      slot.setTitle('列（自由排列）')
       break;
     }
     case cssStyles.position !== 'absolute' && cssStyles.display === 'flex': {
       if (cssStyles.flexDirection === 'row') {
         slot.setLayout('flex-row')
+        slot.setTitle('列（横向排列）')
       }
       if (cssStyles.flexDirection === 'column') {
         slot.setLayout('flex-column')
+        slot.setTitle('列（竖向排列）')
       }
       break;
     }

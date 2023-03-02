@@ -1,28 +1,23 @@
 @import "../../theme";
 
-.layout {
+.draggingTip() {
+  position: absolute;
+  border: 0px solid @color-primary;
+  color: @color-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.draggingTipW {
+  .draggingTip();
+  height: 17px;
   width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-
-  &:not(:first-of-type) {
-    margin-top: -1px;
-  }
-}
-
-.col {
-  position: relative;
-  overflow: hidden;
-
-  &:not(:first-of-type) {
-    margin-left: -1px;
-  }
+  bottom: 0;
+  left: 0px;
+  right: 0px;
+  border-bottom-width: 1px;
 }
 
 .resizeW {
@@ -46,26 +41,39 @@
     width: 3px;
     margin-left: 1px;
     visibility: hidden;
-
-
   }
 }
 
+.draggingTipH {
+  .draggingTip();
+  width: 30px;
+  height: 100%;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  border-left-width: 1px;
+}
+
 .resizeH {
-  height: 7px;
+  height: 5px;
   width: 100%;
   position: absolute;
-  bottom: 0;
   left: 0;
+  bottom: -2px;
   background-color: transparent;
   z-index: 10000;
   cursor: ns-resize !important;
+
+  &:hover {
+    visibility: visible;
+    background-color: @color-primary !important;
+  }
 
   div {
     pointer-events: none;
     width: 100%;
     height: 3px;
-    margin-top: 1px;
+    margin-bottom: 1px;
     visibility: hidden;
   }
 }

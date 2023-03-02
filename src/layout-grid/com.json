@@ -1,5 +1,5 @@
 {
-  "title": "栅格布局",
+  "title": "布局",
   "namespace": "mybricks.basic-comlib.layout-grid",
   "author": "CheMingjun",
   "author_name": "CheMingjun",
@@ -12,11 +12,7 @@
   "slots": [
     {
       "id": "col0",
-      "title": "栅格1"
-    },
-    {
-      "id": "col1",
-      "title": "栅格2"
+      "title": "内容（竖向排列）"
     }
   ]
 }
