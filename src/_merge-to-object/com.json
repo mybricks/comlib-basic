@@ -1,0 +1,40 @@
+{
+  "title": "对象合并22",
+  "namespace": "mybricks.basic-comlib._merge-to-object",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "对象合并",
+  "author": "Mybricks",
+  "author_name": "Mybricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "inputs": [
+    {
+      "id": "input0",
+      "title": "输入项0",
+      "schema": [
+        {
+          "name": "p0",
+          "title": "p0",
+          "type": "object"
+        },
+        {
+          "name": "p1",
+          "title": "p1",
+          "type": "object"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "output",
+      "title": "输出项",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}
