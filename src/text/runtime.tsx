@@ -9,13 +9,13 @@ export default ({env, data, slots, inputs}) => {
     })
   }, [])
 
-  const style = {}
-  if (data.style.align === 'center') {
-    style['textAlign'] = 'center'
-  }
+  // const style = {}
+  // if (data.style.align === 'center') {
+  //   style['textAlign'] = 'center'
+  // }
 
   return (
-    <div className={css.text} style={style}>
+    <div className={css.text} style={data.style}>
       {data.content}
     </div>
   );

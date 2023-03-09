@@ -28,11 +28,13 @@ export default {
         get({data}) {
           return data.style;
         },
-        set({data}, value: object) {
+        set({data, domChanged}, value: object) {
           data.style = {
             ...data.style,
             ...value
           };
+
+          domChanged()//Dom的尺寸(因为字体、行间距等因素)可能发生变化，通知设计器做变更
         }
       }
     },
