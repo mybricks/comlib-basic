@@ -3,7 +3,7 @@
   "namespace": "mybricks.basic-comlib.text",
   "author": "CheMingjun",
   "author_name": "CheMingjun",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "文字",
   "data": "./data.json",
   "runtime": "./runtime.tsx",

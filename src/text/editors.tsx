@@ -1,50 +1,42 @@
 export default {
-  '@init'({style}) {
-    style.width = 100
+  "@init"({ style }) {
+    style.width = 100;
   },
-  '@resize': {
-    options: ['width']
+  "@resize": {
+    options: ["width", "height"],
   },
-  ':root': [
+  ":root": [
     {
-      title: '文本',
-      type: 'text',
+      title: "文本",
+      type: "text",
       value: {
-        get({data}) {
-          return data.content
+        get({ data }) {
+          return data.content;
         },
-        set({data}, value) {
-          data.content = value
-        }
-      }
+        set({ data }, value) {
+          data.content = value;
+        },
+      },
     },
     {
-      title: '样式',
-      type: 'Style',
+      title: "样式",
+      type: "Style",
       options: {
-        plugins: ['font', 'align', 'border', 'bgcolor']
+        plugins: ["font", "align", "border", "bgcolor"],
       },
       value: {
-        get({data}) {
+        get({ data }) {
           return data.style;
         },
-        set({data, domChanged}, value: object) {
+        set({ data, domChanged }, value: object) {
           data.style = {
             ...data.style,
-            ...value
+            ...value,
           };
 
-          domChanged()//Dom的尺寸(因为字体、行间距等因素)可能发生变化，通知设计器做变更
-        }
-      }
+          domChanged(); //Dom的尺寸(因为字体、行间距等因素)可能发生变化，通知设计器做变更
+        },
+      },
     },
-    {},
-    {
-      title: '单击',
-      type: '_Event',
-      options: {
-        outputId: 'click'
-      }
-    },
-  ]
-}
+  ],
+};

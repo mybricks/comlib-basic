@@ -1,21 +1,20 @@
-import {useEffect} from 'react';
-import css from './css.less'
+import { useEffect } from "react";
+import css from "./css.less";
+import React from "react";
 
-export default ({env, data, slots, inputs}) => {
+export default ({ env, data, slots, inputs, outputs }) => {
+  const onClick = () => {
+    outputs["click"]();
+  };
 
   useEffect(() => {
-    inputs['setValue']((ds) => {
-      data.value = ds
-    })
-  }, [])
-
-  // const style = {}
-  // if (data.style.align === 'center') {
-  //   style['textAlign'] = 'center'
-  // }
+    inputs["setValue"]((ds) => {
+      data.value = ds;
+    });
+  }, []);
 
   return (
-    <div className={css.text} style={data.style}>
+    <div className={css.text} style={data.style} onClick={onClick}>
       {data.content}
     </div>
   );
