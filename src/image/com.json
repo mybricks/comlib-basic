@@ -9,5 +9,22 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
-  "runtime.edit": "./edit/runtime.tsx"
+  "inputs": [
+    {
+      "id": "setSrc",
+      "title": "图片链接",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
 }
