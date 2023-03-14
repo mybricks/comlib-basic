@@ -19,6 +19,18 @@ export default {
       },
     },
     {
+      title: "是否多行文本",
+      type: "Switch",
+      value: {
+        get({ data }) {
+          return data.multiLine;
+        },
+        set({ data }, value) {
+          data.multiLine = value;
+        },
+      },
+    },
+    {
       title: "样式",
       type: "Style",
       options: {
@@ -39,11 +51,11 @@ export default {
       },
     },
     {
-      title: '单击',
-      type: '_Event',
+      title: "单击",
+      type: "_Event",
       options: {
-        outputId: 'click'
-      }
+        outputId: "click",
+      },
     },
   ],
 };
