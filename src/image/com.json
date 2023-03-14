@@ -8,5 +8,6 @@
   "icon": "./icon.svg",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
-  "editors": "./editors.tsx"
+  "editors": "./editors.tsx",
+  "runtime.edit": "./edit/runtime.tsx"
 }

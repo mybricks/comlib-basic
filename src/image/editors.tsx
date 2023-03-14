@@ -22,6 +22,9 @@ export default {
     {
       title: "样式",
       type: "style",
+      options: {
+        plugins: ["border"],
+      },
       value: {
         get({ data }) {
           return data.style;

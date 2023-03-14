@@ -69,7 +69,6 @@ export default {
         }
       }
     },
-    {},
     {
       title: '单击',
       type: '_Event',

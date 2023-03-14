@@ -1,22 +1,20 @@
-import {useEffect} from 'react';
-import css from './css.less'
+import React, { useEffect } from "react";
+import css from "./css.less";
 
-export default (props) => {
-  const {env, data, slots, inputs} = props;
+export default ({ env, data, slots, inputs, outputs }) => {
+  const onClick = () => {
+    outputs["click"]();
+  };
 
   useEffect(() => {
-    inputs['setValue']((ds) => {
+    inputs["setValue"]((ds) => {
       data.value = ds;
-    })
-  }, [])
+    });
+  }, []);
 
   return (
-    <div className={css.rectangle}>
-      {
-        data.asSlot ? (
-          slots['container'].render()
-        ): null
-      }
+    <div className={css.rectangle} onClick={onClick}>
+      {data.asSlot ? slots["container"].render() : null}
     </div>
-  )
-}
+  );
+};
