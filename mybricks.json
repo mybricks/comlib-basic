@@ -11,7 +11,8 @@
     "./src/layout-grid/com.json",
     "./src/list-view/com.json",
     "./src/image/com.json",
-    "./src/_merge-to-object/com.json"
+    "./src/_merge-to-object/com.json",
+    "./src/_muilt-inputJs/com.json"
   ],
   "componentType": "PC"
 }
