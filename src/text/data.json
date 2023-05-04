@@ -2,6 +2,7 @@
   "content": "文字",
   "multiLine": false,
   "style": {
-    "textAlign": "center"
+    "color": "#000000",
+    "textAlign": "left"
   }
 }

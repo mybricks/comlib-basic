@@ -10,11 +10,21 @@
   "editors": "./editors.tsx",
   "inputs": [
     {
-      "id": "setValue",
-      "title": "当前数据",
+      "id": "setStyle",
+      "title": "设置样式",
       "schema": {
         "type": "string"
       }
+    },
+    {
+      "id": "rotate",
+      "title": "旋转",
+      "schema": {
+        "type": "number"
+      },
+      "rels": [
+        "rotateCompleted"
+      ]
     }
   ],
   "outputs": [
@@ -23,6 +33,13 @@
       "title": "点击",
       "schema": {
         "type": "string"
+      }
+    },
+    {
+      "id": "rotateCompleted",
+      "title": "旋转完成",
+      "schema": {
+        "type": "boolean"
       }
     }
   ]

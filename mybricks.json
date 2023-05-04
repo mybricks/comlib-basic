@@ -6,6 +6,7 @@
   "content": "",
   "commitInfo": "init",
   "comAry": [
+    "./src/_test_for_ai/com.json",
     "./src/text/com.json",
     "./src/rectangle/com.json",
     "./src/layout-grid/com.json",

@@ -14,9 +14,13 @@ export default ({ env, data, slots, inputs, outputs }) => {
   }, [data.content]);
 
   useEffect(() => {
-    inputs["setValue"]((ds) => {
-      setText(ds);
-    });
+    inputs["setContent"]((content) => {
+      setText(content);
+    })
+
+    inputs['getContent']((val,relOutputs) => {
+      relOutputs['return'](data.content)
+    })
   }, []);
 
   return (

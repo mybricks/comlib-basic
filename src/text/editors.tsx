@@ -1,9 +1,25 @@
 export default {
-  "@init"({ style }) {
-    style.width = 100;
+  "@init"({ data,style }) {
+    // style.width = '100%';
+    // style.height = '100%';
+    //debugger
+
+    // setTimeout(()=>{
+    //   data.content = Math.random()
+    //   console.log(data.content)
+    // },1000)
   },
-  "@resize": {
-    options: ["width", "height"],
+  '@resize': {
+    options: ['width', 'height'],
+    value: {
+      set({data}, {width, height}) {
+        data.height = height
+        // if (typeof height === 'number'&&height) {
+        //   console.log(height)
+        //   data.height = height
+        // }
+      }
+    }
   },
   ":root": [
     {
@@ -38,13 +54,13 @@ export default {
       },
       value: {
         get({ data }) {
-          return data.style;
+          return JSON.parse(JSON.stringify(data.style))
         },
         set({ data, domChanged }, value: object) {
           data.style = {
             ...data.style,
             ...value,
-          };
+          }
 
           domChanged(); //Dom的尺寸(因为字体、行间距等因素)可能发生变化，通知设计器做变更
         },

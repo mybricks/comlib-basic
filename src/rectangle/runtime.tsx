@@ -6,11 +6,11 @@ export default ({ env, data, slots, inputs, outputs }) => {
     outputs["click"]();
   };
 
-  useEffect(() => {
-    inputs["setValue"]((ds) => {
-      data.value = ds;
-    });
-  }, []);
+  // useEffect(() => {
+  //   inputs["setValue"]((ds) => {
+  //     data.value = ds;
+  //   });
+  // }, []);
 
   return (
     <div className={css.rectangle} onClick={onClick}>

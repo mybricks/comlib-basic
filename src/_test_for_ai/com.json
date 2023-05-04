@@ -1,14 +1,19 @@
 {
-  "title": "文字",
-  "namespace": "mybricks.basic-comlib.text",
+  "title": "AI测试",
+  "namespace": "_test.forAI",
   "author": "CheMingjun",
   "author_name": "CheMingjun",
   "version": "1.0.14",
   "description": "文字",
-  "data": "./data.json",
   "ai": "./ai.ts",
-  "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "runtime": "./runtime.tsx",
+  "slots": [
+    {
+      "id": "test",
+      "title": "测试插槽"
+    }
+  ],
   "inputs": [
     {
       "id": "setContent",
@@ -35,27 +40,6 @@
     {
       "id": "click",
       "title": "点击",
-      "schema": {
-        "type": "string"
-      }
-    },
-    {
-      "id": "dblClick",
-      "title": "双击",
-      "schema": {
-        "type": "string"
-      }
-    },
-    {
-      "id": "return",
-      "title": "返回当前内容",
-      "schema": {
-        "type": "string"
-      }
-    },
-    {
-      "id": "setContentFinished",
-      "title": "设置内容完成",
       "schema": {
         "type": "string"
       }
