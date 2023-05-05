@@ -8,7 +8,7 @@ export function jsonToSchema(json): any {
   }
 }
 
-function proItem({ schema, val, key, fromAry }: { schema; val; key?; fromAry? }) {
+function proItem({ schema, val, key, fromAry }: { schema; val; key?; fromAry?}) {
   if (Array.isArray(val)) {
     const items = {};
     if (key) {
@@ -69,4 +69,15 @@ function proAry(curSchema, ary) {
   }
 
   proItem({ schema: curSchema, val: sample, fromAry: true });
+}
+
+
+export function covertObject2Array(input) {
+  let result = [] as any[];
+  Object.keys(input).sort((a, b) => {
+    return parseInt(a) - parseInt(b);
+  }).forEach((key) => {
+    result.push(input[key]);
+  });
+  return result;
 }

@@ -1,5 +1,6 @@
 import { runJs } from './com-utils';
 import { Data } from './constants';
+import { covertObject2Array } from './util';
 
 export default function ({ env, data, inputs, outputs, logger, onError }: RuntimeParams<Data>) {
   const { fns, runImmediate } = data;
@@ -31,17 +32,6 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
     onError?.(ex);
     console.error('js计算组件运行错误.', ex);
     logger.error(`${ex}`);
-  }
-
-
-  function covertObject2Array(input) {
-    let result = [] as any[];
-    Object.keys(input).sort((a, b)=>{
-      return parseInt(a) - parseInt(b);
-    }).forEach((key) => {
-      result.push(input[key]);
-    });
-    return result;
   }
 
 }
