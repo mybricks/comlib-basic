@@ -1,5 +1,5 @@
 export default {
-  "@init"({ data,style }) {
+  "@init"({data, style}) {
     // style.width = '100%';
     // style.height = '100%';
     //debugger
@@ -26,22 +26,28 @@ export default {
       title: "文本",
       type: "text",
       value: {
-        get({ data }) {
+        get({data}) {
           return data.content;
         },
-        set({ data }, value) {
+        set({data}, value) {
           data.content = value;
-        },
+        }
       },
+      binding: {
+        for: 'data.content',
+        schema: {
+          type: 'string'
+        }
+      }
     },
     {
       title: "是否多行文本",
       type: "Switch",
       value: {
-        get({ data }) {
+        get({data}) {
           return data.multiLine;
         },
-        set({ data }, value) {
+        set({data}, value) {
           data.multiLine = value;
         },
       },
@@ -53,10 +59,10 @@ export default {
         plugins: ["font", "align", "border", "bgcolor"],
       },
       value: {
-        get({ data }) {
+        get({data}) {
           return JSON.parse(JSON.stringify(data.style))
         },
-        set({ data, domChanged }, value: object) {
+        set({data, domChanged}, value: object) {
           data.style = {
             ...data.style,
             ...value,
