@@ -13,7 +13,9 @@ export default {
     options: ['width', 'height'],
     value: {
       set({data}, {width, height}) {
-        data.height = height
+
+        // console.log(height)
+        // data.height = height
         // if (typeof height === 'number'&&height) {
         //   console.log(height)
         //   data.height = height
@@ -34,7 +36,7 @@ export default {
         }
       },
       binding: {
-        for: 'data.content',
+        with: 'data.content',
         schema: {
           type: 'string'
         }
