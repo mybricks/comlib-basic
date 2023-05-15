@@ -1,5 +1,5 @@
 import { CODE_TEMPLATE, COMMENTS, Data, IMMEDIATE_CODE_TEMPLATE } from './constants';
-import { jsonToSchema, covertObject2Array } from './util';
+import { jsonToSchema, convertObject2Array } from './util';
 
 export default {
   '@init': ({ data, setAutoRun, isAutoRun, output }: EditorResult<Data>) => {
@@ -108,8 +108,8 @@ function updateOutputSchema(output, code) {
       const fn = eval(decodeURIComponent(code.code || code));
       fn({
         inputValue: void 0,
-        outputs: covertObject2Array(outputs),
-        inputs: covertObject2Array(inputs)
+        outputs: convertObject2Array(outputs),
+        inputs: convertObject2Array(inputs)
       });
     });
   } catch (error) {}
