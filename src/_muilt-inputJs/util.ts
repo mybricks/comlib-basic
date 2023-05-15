@@ -72,7 +72,7 @@ function proAry(curSchema, ary) {
 }
 
 
-export function covertObject2Array(input) {
+export function convertObject2Array(input) {
   let result = [] as any[];
   Object.keys(input).sort((a, b) => {
     let _a = a?.match(/\d+/g)?.[0] || 0;
@@ -81,8 +81,5 @@ export function covertObject2Array(input) {
   }).forEach((key) => {
     result.push(input[key]);
   });
-
-  console.warn("result", result);
-
   return result;
 }

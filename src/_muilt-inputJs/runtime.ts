@@ -1,12 +1,12 @@
 import { runJs } from './com-utils';
 import { Data } from './constants';
-import { covertObject2Array } from './util';
+import { convertObject2Array } from './util';
 
 export default function ({ env, data, inputs, outputs, logger, onError }: RuntimeParams<Data>) {
   const { fns, runImmediate } = data;
 
   const runJSParams = {
-    outputs: covertObject2Array(outputs)
+    outputs: convertObject2Array(outputs)
   };
   try {
     if (runImmediate) {
@@ -19,7 +19,7 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
         runJs(fns, [
           {
             ...runJSParams,
-            inputs: covertObject2Array(val)
+            inputs: convertObject2Array(val)
           }
         ]);
       } catch (ex: any) {
