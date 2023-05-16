@@ -6,7 +6,13 @@
   "content": "",
   "commitInfo": "init",
   "comAry": [
-    "./src/_muilt-inputJs/com.json"
+    "./src/text/com.json",
+    "./src/rectangle/com.json",
+    "./src/layout-grid/com.json",
+    "./src/list-view/com.json",
+    "./src/image/com.json",
+    "./src/_muilt-inputJs/com.json",
+    "./src/_merge-to-object/com.json"
   ],
   "componentType": "PC"
 }
