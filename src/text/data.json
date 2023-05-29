@@ -1,8 +1,4 @@
 {
   "content": "文字",
-  "multiLine": false,
-  "style": {
-    "color": "#000000",
-    "textAlign": "left"
-  }
+  "multiLine": false
 }

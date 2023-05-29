@@ -1,0 +1,28 @@
+{
+  "title": "对话框",
+  "namespace": "mybricks.basic-comlib.popup",
+  "author": "CheMingjun",
+  "author_name": "车明君",
+  "version": "1.0.0",
+  "description": "对话框",
+  "icon": "./icon.png",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.ts",
+  "slots": [
+    {
+      "id": "body",
+      "title": "内容"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "ok",
+      "title": "确定"
+    },
+    {
+      "id": "cancel",
+      "title": "取消"
+    }
+  ]
+}
