@@ -3,7 +3,7 @@
   "namespace": "mybricks.basic-comlib.layout-grid",
   "author": "CheMingjun",
   "author_name": "CheMingjun",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "列表",
   "runtime": "./runtime.tsx",
   "runtime.edit": "./edit/runtime.tsx",

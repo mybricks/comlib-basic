@@ -6,10 +6,13 @@
   "content": "",
   "commitInfo": "init",
   "comAry": [
+    "./src/-test-container/com.json",
+    "./src/_test_for_ai/com.json",
     "./src/_random/com.json",
     "./src/_merge-to-object/com.json",
     "./src/_muilt-inputJs/com.json",
     "./src/popup/com.json",
+    "./src/text/com.json",
     "./src/rectangle/com.json",
     "./src/layout-grid/com.json",
     "./src/list-view/com.json",

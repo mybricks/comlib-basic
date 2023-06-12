@@ -7,6 +7,14 @@ export default ({ env, data, slots, inputs, outputs }) => {
 
   const onClick = () => {
     outputs["click"]();
+
+    // if(data.active){
+    //   data.active = void 0
+    // }else{
+    //   data.active = true
+    // }
+    //
+    // env.callDomainModel({},'query',{a:3})
   };
 
   useEffect(() => {
@@ -28,7 +36,6 @@ export default ({ env, data, slots, inputs, outputs }) => {
       className={`${css.text} ${
         data?.multiLine ? css.multiLineOverflow : css.singleLineOverflow
       }`}
-      style={data.style}
       onClick={onClick}
     >
       {text}

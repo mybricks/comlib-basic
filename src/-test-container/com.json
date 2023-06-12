@@ -1,0 +1,35 @@
+{
+  "title": "测试-容器",
+  "namespace": "_test.container",
+  "author": "CheMingjun",
+  "author_name": "CheMingjun",
+  "version": "1.0.14",
+  "description": "文字",
+  "editors": "./editors.tsx",
+  "runtime": "./runtime.tsx",
+  "slots": [
+    {
+      "id": "test",
+      "title": "测试插槽",
+      "type": "scope",
+      "inputs": [
+        {
+          "id": "in0",
+          "title": "测试",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "id": "out0",
+          "title": "测试Out",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  ]
+}
