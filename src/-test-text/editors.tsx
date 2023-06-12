@@ -1,3 +1,5 @@
+import css from './css.less'
+
 export default {
   "@init"({data, style}) {
     // style.width = '100%';
@@ -24,37 +26,64 @@ export default {
     }
   },
   ":root": {
-    // style: [
-    //   {
-    //     title: '测试分类',
-    //     //options: ['Color', 'TextAlign'],
-    //     target({id}) {
-    //       console.log(id)
-    //
-    //
-    //       return ':root'
-    //     }
-    //   },
-    //   {
-    //     title: "文本2222",
-    //     type: "text",
-    //     value: {
-    //       get({data}) {
-    //         return data.content;
-    //       },
-    //       set({data}, value) {
-    //         data.content = value;
-    //       }
-    //     },
-    //     binding: {
-    //       with: 'data.content',
-    //       schema: {
-    //         type: 'string'
-    //       }
-    //     }
-    //   },
-    // ],
+    style: [
+      {
+        title: '状态1',
+        options: ['bgColor'],
+        target({id}) {
+          return ':root'
+        },
+        // domTarget(){
+        //   return ':root'
+        // },
+        ifVisible() {
+          return true
+        }
+      },
+      {
+        title: '状态2',
+        options: ['bgColor'],
+        target({id}) {
+          console.log(id)
+          return ':root'
+        },
+        ifVisible() {
+          return true
+        }
+      },
+      {},
+      {
+        title: "文本2222",
+        type: "text",
+        value: {
+          get({data}) {
+            return data.content;
+          },
+          set({data}, value) {
+            data.content = value;
+          }
+        },
+        binding: {
+          with: 'data.content',
+          schema: {
+            type: 'string'
+          }
+        }
+      },
+    ],
     items: [
+      {
+        title: "测试领域模型",
+        type: "_domainModelSelect",
+        value: {
+          get({data}) {
+            return data.dm;
+          },
+          set({data}, value) {
+            data.dm = value;
+          }
+        }
+      },
       {
         title: "文本",
         type: "text",
@@ -113,5 +142,30 @@ export default {
         },
       },
     ],
+  },
+  'div[data-xxx]': {
+    title:'XXX',
+    style: [
+      {
+        title: '状态1',
+        options: ['bgColor'],
+        target({id}) {
+          return `.${css.test}`
+        },
+        ifVisible() {
+          return true
+        }
+      },
+      {
+        title: '状态2',
+        options: ['bgColor'],
+        target({id}) {
+          return `.${css.active}`
+        },
+        ifVisible() {
+          return true
+        }
+      },
+    ]
   }
 };
