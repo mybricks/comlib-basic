@@ -10,6 +10,22 @@
   background-color: rgba(0, 0, 0, 0.45);
 }
 
+.notCenterMask{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.45);
+}
+
+.notCenter{
+  top: 100px;
+  position: relative;
+}
+
 .popup {
   width: 520px;
 
@@ -115,6 +131,7 @@
       text-align: end;
       background: 0 0;
       margin-top: 12px;
+      display: flex;
 
       .button {
         outline: none;
@@ -142,6 +159,7 @@
         background-color: #fff;
         border-color: #d9d9d9;
         box-shadow: 0 2px 0 rgba(0,0,0,.02);
+        margin-inline-start: 8px;
 
         &:hover {
           color: #4096ff;

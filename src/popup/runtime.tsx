@@ -1,4 +1,5 @@
-import React, {useMemo, useCallback} from 'react'
+import React, {useMemo, useCallback} from 'react';
+import { AlignEnum } from './constants';
 
 import css from './runtime.less'
 
@@ -28,8 +29,35 @@ export default function ({
     okFn()////TODO 获取当前连接数
   }, [])
 
+  const renderFooter = ()=>{
+    return(
+      <div className={css.footer} data-toolbar style={{display: !data.useFooter ? 'none' : void 0, justifyContent: data.footerLayout || AlignEnum.FlexEnd }}>
+        {(data.footerBtns || []).map((item) => {
+          const {
+            title,
+            id,
+            type,
+            visible
+          } = item;
+          return (
+            <button
+              onClick={id==='cancel' ? handleCancel : handleOk}
+              className={`${css.button} ${type==='default' ? css.buttonDefault: css.buttonPrimary}`}
+              data-handler-button={id}
+              key={id}
+            >
+              {env.i18n(title)}
+            </button>
+          );
+        })}
+      </div>
+    )
+  }
+
   const jsx = (
-    <div className={css.popup}>
+    <div 
+      className={`${css.popup} ${!data.centered && !env.edit  ? css.notCenter : void 0}`} 
+      style={{width: data.width}}>
       <div className={css.content}>
         <button className={css.close} onClick={handleClose}>
           <span className={css.x}>
@@ -42,36 +70,26 @@ export default function ({
         </button>
 
         <div className={css.header}>
-          <div className={css.title} data-title>{data.title}</div>
+          <div className={css.title} data-modle-title>
+            {data.hideTitle ? undefined : env.i18n(data.title)}
+          </div>
         </div>
 
-        <div className={`${css.body} ${env.edit ? css.bodyEdit : ''}`}>
+        <div className={`${css.body} ${env.edit ? css.bodyEdit : ''}`} 
+          //背景色
+          //style={{...data.bodyStyle}}
+        >
           {slots['body'].render()}
         </div>
 
-        <div className={css.footer}>
-          <button
-            className={`${css.button} ${css.buttonDefault}`}
-            data-handler-button='cancel'
-            onClick={handleCancel}
-          >
-            <span>取消</span>
-          </button>
-          <button
-            className={`${css.button} ${css.buttonPrimary}`}
-            data-handler-button='ok'
-            onClick={handleOk}
-          >
-            <span>确定</span>
-          </button>
-        </div>
+        {renderFooter()}
       </div>
     </div>
   )
 
   if (!env.edit) {
     return (
-      <div className={css.mask}>
+      <div className={`${!data.centered && !env.edit ? css.notCenterMask : css.mask}`}>
         {jsx}
       </div>
     )

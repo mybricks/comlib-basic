@@ -3,12 +3,13 @@
   "namespace": "mybricks.basic-comlib.popup",
   "author": "CheMingjun",
   "author_name": "车明君",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "对话框",
   "icon": "./icon.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
   "slots": [
     {
       "id": "body",
