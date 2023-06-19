@@ -165,6 +165,18 @@ export default {
           }
         },
         {
+          title: '关闭按钮',
+          type: 'Switch',
+          value: {
+            get({ data }) {
+              return data.closable;
+            },
+            set({ data }, value: boolean) {
+              data.closable = value;
+            }
+          }
+        },
+        {
           title: '垂直居中',
           type: 'Switch',
           value: {
@@ -211,7 +223,7 @@ export default {
       ];
     }
   },
-  '[data-modle-title]': {
+  '.ant-modal-title': {
     title: '标题',
     items: [
       {
@@ -223,6 +235,23 @@ export default {
           },
           set({data}, title) {
             data.title = title
+          }
+        }
+      }
+    ]
+  },
+  '.ant-modal-close': {
+    title: '关闭按钮',
+    items: [
+      {
+        title: '显示',
+        type: 'Switch',
+        value: {
+          get({ data }) {
+            return data.closable;
+          },
+          set({ data }, value: boolean) {
+            data.closable = value;
           }
         }
       }

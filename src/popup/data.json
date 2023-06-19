@@ -32,5 +32,6 @@
       "autoClose": true,
       "isConnected": false
     }
-  ]
+  ],
+  "closable": true
 }

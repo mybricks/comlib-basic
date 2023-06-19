@@ -52,5 +52,12 @@ export default function ({
     ]
   }
 
+  /**
+   * @description 1.0.1->1.0.2  新增 closable
+   */
+  if(typeof data.closable === "undefined"){
+    data.closable = true
+  }
+
   return true;
 }

@@ -4,7 +4,7 @@
   "namespace": "mybricks.basic-comlib.popup",
   "author": "CheMingjun",
   "author_name": "车明君",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "对话框",
   "icon": "./icon.png",
   "data": "./data.json",
