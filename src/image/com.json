@@ -1,5 +1,6 @@
 {
   "title": "图片",
+  "visibility": false,
   "namespace": "mybricks.basic-comlib.image",
   "author": "CheMingjun",
   "author_name": "车明君",

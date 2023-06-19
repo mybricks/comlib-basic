@@ -6,7 +6,8 @@
   "content": "",
   "commitInfo": "init",
   "comAry": [
-    "./src/_random/com.json",
+    "./src/_type-change/com.json",
+    "./src/_get-data/com.json",
     "./src/_merge-to-object/com.json",
     "./src/_muilt-inputJs/com.json",
     "./src/text/com.json",

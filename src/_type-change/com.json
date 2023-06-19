@@ -1,0 +1,35 @@
+{
+  "title": "类型转换",
+  "namespace": "mybricks.core-comlib.type-change",
+  "author": "CheMingjun",
+  "author_name": "车明君",
+  "version": "1.0.0",
+  "description": "类型转换",
+  "icon": "./icon.png",
+  "runtime": "./rt.tsx",
+  "editors": "./editors.tsx",
+  "rtType": "js",
+  "inputs": [
+    {
+      "id": "from",
+      "title": "从",
+      "schema": {
+        "type": "follow"
+      },
+      "rels": [
+        "to"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "to",
+      "title": "到",
+      "schema": {
+        "type": "follow"
+      },
+      "conMax": 1,
+      "editable": true
+    }
+  ]
+}

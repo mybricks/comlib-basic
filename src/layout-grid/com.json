@@ -1,5 +1,6 @@
 {
   "title": "布局",
+  "visibility": false,
   "namespace": "mybricks.basic-comlib.layout-grid",
   "author": "CheMingjun",
   "author_name": "CheMingjun",

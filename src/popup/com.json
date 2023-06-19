@@ -1,5 +1,6 @@
 {
   "title": "对话框",
+  "visibility": false,
   "namespace": "mybricks.basic-comlib.popup",
   "author": "CheMingjun",
   "author_name": "车明君",

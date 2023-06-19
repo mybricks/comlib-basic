@@ -30,6 +30,7 @@ export default {
       {
         title: '状态1',
         options: ['bgColor'],
+        className:'active1',
         target({id}) {
           return ':root'
         },

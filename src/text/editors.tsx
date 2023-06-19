@@ -24,36 +24,36 @@ export default {
     }
   },
   ":root": {
-    // style: [
-    //   {
-    //     title: '测试分类',
-    //     //options: ['Color', 'TextAlign'],
-    //     target({id}) {
-    //       console.log(id)
-    //
-    //
-    //       return ':root'
-    //     }
-    //   },
-    //   {
-    //     title: "文本2222",
-    //     type: "text",
-    //     value: {
-    //       get({data}) {
-    //         return data.content;
-    //       },
-    //       set({data}, value) {
-    //         data.content = value;
-    //       }
-    //     },
-    //     binding: {
-    //       with: 'data.content',
-    //       schema: {
-    //         type: 'string'
-    //       }
-    //     }
-    //   },
-    // ],
+    style: [
+      {
+        title: '测试分类',
+        //options: ['Color', 'TextAlign'],
+        target({id}) {
+          console.log(id)
+
+
+          return ':root'
+        }
+      },
+      {
+        title: "文本2222",
+        type: "text",
+        value: {
+          get({data}) {
+            return data.content;
+          },
+          set({data}, value) {
+            data.content = value;
+          }
+        },
+        binding: {
+          with: 'data.content',
+          schema: {
+            type: 'string'
+          }
+        }
+      },
+    ],
     items: [
       {
         title: "文本",

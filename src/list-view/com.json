@@ -1,5 +1,6 @@
 {
   "title": "循环列表",
+  "visibility": false,
   "namespace": "mybricks.basic-comlib.list-view",
   "author": "CheMingjun",
   "author_name": "CheMingjun",
