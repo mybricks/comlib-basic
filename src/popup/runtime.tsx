@@ -95,7 +95,7 @@ export default function ({env, _env, data, slots, outputs}) {
     </div>
   )
 
-  //非编辑态, 用antd
+  //非编辑态
   if (!env.edit) {
     return (
       <div className={css.mask}>
@@ -104,6 +104,6 @@ export default function ({env, _env, data, slots, outputs}) {
     )
   }
 
-  //编辑态，用手写的
+  //编辑态
   return editPopup;
 }
