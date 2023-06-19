@@ -8,14 +8,22 @@
   "comAry": [
     "./src/_type-change/com.json",
     "./src/_get-data/com.json",
-    "./src/_merge-to-object/com.json",
     "./src/_muilt-inputJs/com.json",
     "./src/text/com.json",
     "./src/popup/com.json",
     "./src/rectangle/com.json",
     "./src/layout-grid/com.json",
     "./src/list-view/com.json",
-    "./src/image/com.json"
+    "./src/image/com.json",
+    "./src/_timer-delay/com.json",
+    "./src/_timer-loop/com.json",
+    "./src/_timer-debounce/com.json",
+    "./src/_timer-throttle/com.json",
+    "./src/_merge/com.json",
+    "./src/_object-merge/com.json",
+    "./src/_download/com.json",
+    "./src/_schema-simulator/com.json",
+    "./src/_copy/com.json"
   ],
   "componentType": "PC"
 }

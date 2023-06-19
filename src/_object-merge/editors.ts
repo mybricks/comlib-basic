@@ -22,15 +22,15 @@ function getInputOrder({ input }) {
 }
 
 export default {
-  '@inputUpdated'({ input, output }, updatePin) {
+  '@inputUpdated'({ input, output }: EditorResult<Data>, updatePin) {
     if (updatePin.id !== OutputIds.Output) {
       output.get(OutputIds.Output).setSchema(getOutputSchema(input));
     }
   },
-  '@inputConnected'({ output, input }) {
+  '@inputConnected'({ output, input }: EditorResult<Data>) {
     output.get(OutputIds.Output).setSchema(getOutputSchema(input));
   },
-  '@inputDisConnected'({ output, input }) {
+  '@inputDisConnected'({ output, input }: EditorResult<Data>) {
     output.get(OutputIds.Output).setSchema(getOutputSchema(input));
   },
   ':root': [
@@ -38,12 +38,10 @@ export default {
       title: '添加输入项',
       type: 'Button',
       value: {
-        set({ input }) {
-          const i0 = input.get('input0.p0');
-          console.log(i0)
-
-          const title = `输入项2`;
-          const hostId = `input0.p2`;
+        set({ input }: EditorResult<Data>) {
+          const idx = getInputOrder({ input });
+          const title = `输入项${idx}`;
+          const hostId = `input${idx}`;
           input.add(hostId, title, Schemas.Follow, true);
         }
       }
