@@ -10,7 +10,8 @@ export default function ({
                            slots,
                            outputs
                          }) {
-
+  
+  const isDebug = !!(env.runtime && env.runtime.debug)
   const handleClose = useCallback(() => {
     _env.currentScenes.close()
   }, [])
@@ -89,7 +90,8 @@ export default function ({
 
   if (!env.edit) {
     return (
-      <div className={`${!data.centered && !env.edit ? css.notCenterMask : css.mask}`}>
+      // <div className={`${!data.centered && !env.edit ? css.notCenterMask : css.mask}`}>
+      <div className={`${isDebug ? css.debugMask : css.notCenterMask} ${data.centered ? css.center : '' }`}>
         {jsx}
       </div>
     )
