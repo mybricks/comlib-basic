@@ -53,12 +53,11 @@ export default function ({env, _env, data, slots, outputs}) {
       className={css.debugMask} 
       ref={ref}>
         <Modal
-        open = {true}
+        visible = {true}
         title={data.hideTitle ? undefined : env.i18n(data.title)}
         width={data.width}
         footer={data.useFooter ? renderFooter() : null}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        onCancel={handleClose}
         centered={data.centered}
 
         wrapClassName={css.container}
@@ -79,13 +78,12 @@ export default function ({env, _env, data, slots, outputs}) {
       ref={ref}
     >
       <Modal
+        visible = {true}
         title={data.hideTitle ? undefined : env.i18n(data.title)}
         width={data.width}
         footer={data.useFooter ? renderFooter() : null}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        onCancel={handleClose}
         mask={false}
-        open = {true}
 
         wrapClassName={css.container}
         closable={data.closable}
