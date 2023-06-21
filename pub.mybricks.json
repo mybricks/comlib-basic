@@ -12,6 +12,7 @@
     "./src/list-view/com.json",
     "./src/image/com.json",
     "./src/popup/com.json",
+    "./src/_type-change/com.json",
     "./src/_muilt-inputJs/com.json",
     "./src/_timer-delay/com.json",
     "./src/_timer-loop/com.json",
