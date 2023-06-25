@@ -6,7 +6,6 @@
   "author_name": "车明君",
   "version": "1.0.3",
   "description": "对话框",
-  "icon": "./icon.png",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
