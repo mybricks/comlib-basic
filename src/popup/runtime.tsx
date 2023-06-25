@@ -84,6 +84,7 @@ export default function ({env, _env, data, slots, outputs}) {
         footer={data.useFooter ? renderFooter() : null}
         onCancel={handleClose}
         mask={false}
+        transitionName=""
 
         wrapClassName={css.container}
         closable={data.closable}
