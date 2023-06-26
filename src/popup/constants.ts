@@ -10,7 +10,6 @@
  * @param footerLayout 工具条布局
  * @param footerBtns 操作项
  * @param maskClosable 点击蒙层关闭
- * @param autoClose 
  */
 
 export enum Location {
