@@ -2,6 +2,7 @@
 
 export default function ({
   data,
+  output
 }): boolean {
   /**
    * @description 隐藏标题（hideTitle）、垂直居中（centered）、对话框宽度（width）、显示工具条（useFooter）、页脚布局（footerLayout）、
@@ -59,5 +60,18 @@ export default function ({
     data.closable = true
   }
 
+  /**
+   * @description 1.0.3->1.0.4  新增 maskClosable, 点击蒙层关闭,
+   *  取消按钮的autoClose,如果已经取消按钮之前已经连线了，点击自动关闭对话框为false，要经过rels
+   */
+  if(typeof data.maskClosable === "undefined"){
+    data.maskClosable = true
+  }  
+  const cancelFn = output.get('cancel');
+  const cons = cancelFn.connectionCount;
+  if(cons !== 0){
+    const index = data.footerBtns.findIndex((item) => item.id === 'cancel');
+    data.footerBtns[index].autoClose = false;
+  }
   return true;
 }
