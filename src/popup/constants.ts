@@ -1,14 +1,16 @@
 /**
  * Data
  * @param title      标题
- * @param okText     确认按钮内容
  * @param closable   是否显示右上角关闭按钮
  * @param centered   是否设置垂直居中
  * @param useFooter  是否使用工具条
- * @param cancelText 取消按钮内容
  * @param width      弹窗宽度
  * @param hideTitle  隐藏标题
- * @param isNew      是否为改造后的对话框
+ * @param bodyStyle  对话框样式
+ * @param footerLayout 工具条布局
+ * @param footerBtns 操作项
+ * @param maskClosable 点击蒙层关闭
+ * @param autoClose 
  */
 
 export enum Location {
@@ -34,22 +36,17 @@ export interface DialogButtonProps {
 }
 
 export interface Data {
-  // visible?: boolean;
-  // title: string;
-  // okText: string;
-  // closable: boolean;
+  //visible?: boolean;
+  title: string;
+  closable: boolean;
   centered: boolean;
   useFooter: boolean | number;
-  // cancelText: string;
   width?: number;
   hideTitle: boolean;
-  // isNew?: boolean;
-  // bodyStyle?: React.CSSProperties;
+  bodyStyle?: React.CSSProperties;
   footerLayout: AlignEnum;
   footerBtns: DialogButtonProps[];
-  // destroyOnClose?: boolean;
-  // maskClosable?: boolean;
-  // getContainer?: () => any;
+  maskClosable?: boolean;
 }
 
 export const DefaultEvent = ['ok', 'cancel'];

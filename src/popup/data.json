@@ -33,5 +33,6 @@
       "isConnected": false
     }
   ],
-  "closable": true
+  "closable": true,
+  "maskClosable": true
 }
