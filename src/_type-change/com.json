@@ -5,7 +5,7 @@
   "author_name": "车明君",
   "version": "1.0.0",
   "description": "类型转换",
-  "icon": "./icon.png",
+  "icon": "./icon.svg",
   "runtime": "./rt.tsx",
   "editors": "./editors.tsx",
   "rtType": "js",
