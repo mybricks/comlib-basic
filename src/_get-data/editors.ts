@@ -62,7 +62,7 @@ export default {
       },
       value: {
         get({data, inputs}, val) {
-          return data.value
+          return Object.prototype.toString.call(data.value) === '[object Object]' ? data.value : {};
         },
         set({data, inputs}, val) {
           data.value = val
@@ -77,7 +77,7 @@ export default {
       },
       value: {
         get({data, inputs}, val) {
-          return data.value
+          return Array.isArray(data.value) ? data.value : [];
         },
         set({data, inputs}, val) {
           data.value = val
