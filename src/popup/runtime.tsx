@@ -87,10 +87,35 @@ export default function ({env, _env, data, slots, outputs}) {
     )
   }
 
-  //调试和发布态
+  //调试态
   const debugPopup = (
     <div 
       className={css.debugMask} 
+      ref={ref}>
+        <Modal
+        visible = {true}
+        title={data.hideTitle ? undefined : env.i18n(data.title)}
+        width={data.width}
+        footer={data.useFooter ? renderFooter() : null}
+        onCancel={handleClose}
+        centered={data.centered}
+        bodyStyle={data.bodyStyle}
+
+        maskClosable={data.maskClosable}
+        wrapClassName={css.container}
+        closable={data.closable}
+        getContainer={()=>{
+          if(ref){
+            return ref.current
+          }
+        }}>
+        {slots['body'].render()}
+        </Modal>
+    </div>
+  )
+  //预览态（发布态）
+  const publishPopup = (
+    <div
       ref={ref}>
         <Modal
         visible = {true}
@@ -137,15 +162,17 @@ export default function ({env, _env, data, slots, outputs}) {
     </div>
   )
 
-  //调试和发布态
-  if (!env.edit) {
+  //调试
+  if (env.runtime) {
     return (
       <div className={css.mask}>
         {debugPopup}
       </div>
     )
-  }
-
   //编辑态
-  return editPopup;
+  }else if(env.edit){
+    return editPopup;
+  }
+  //预览态 (发布态)
+  return publishPopup;
 }
