@@ -103,16 +103,18 @@ function updateOutputSchema(output, code) {
     };
   });
 
-  try {
-    setTimeout(() => {
+  setTimeout(() => {
+    try {
       const fn = eval(decodeURIComponent(code.code || code));
       fn({
         inputValue: void 0,
         outputs: convertObject2Array(outputs),
         inputs: convertObject2Array(inputs)
       });
-    });
-  } catch (error) {}
+    } catch (error) {
+      console.error(error)
+    }
+  })
 }
 
 function getIoOrder(io) {
