@@ -104,11 +104,10 @@ export default function ({env, _env, data, slots, outputs}) {
         maskClosable={data.maskClosable}
         wrapClassName={css.container}
         closable={data.closable}
-        getContainer={()=>{
-          if(ref){
-            return ref.current
-          }
-        }}>
+        getContainer={ref.current ? ()=>{
+          return ref.current
+        }: false}
+        >
         {slots['body'].render()}
         </Modal>
     </div>
@@ -129,11 +128,10 @@ export default function ({env, _env, data, slots, outputs}) {
         maskClosable={data.maskClosable}
         wrapClassName={css.container}
         closable={data.closable}
-        getContainer={()=>{
-          if(ref){
-            return ref.current
-          }
-        }}>
+        getContainer={ref.current ? ()=>{
+          return ref.current
+        }: false}
+        >
         {slots['body'].render()}
         </Modal>
     </div>
