@@ -160,8 +160,8 @@ export default function ({env, _env, data, slots, outputs}) {
     </div>
   )
 
-  //调试
-  if (env.runtime) {
+  //调试态
+  if (env.runtime && env.runtime.debug) {
     return (
       <div className={css.mask}>
         {debugPopup}
