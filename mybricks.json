@@ -11,6 +11,7 @@
     "./src/_muilt-inputJs/com.json",
     "./src/text/com.json",
     "./src/popup/com.json",
+    "./src/drawer/com.json",
     "./src/rectangle/com.json",
     "./src/layout-grid/com.json",
     "./src/list-view/com.json",

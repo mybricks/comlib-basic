@@ -1,15 +1,14 @@
 {
-  "title": "对话框",
+  "title": "抽屉",
   "visibility": false,
-  "namespace": "mybricks.basic-comlib.popup",
-  "author": "CheMingjun",
-  "author_name": "车明君",
-  "version": "1.0.8",
-  "description": "对话框",
+  "namespace": "mybricks.basic-comlib.drawer",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "version": "1.0.0",
+  "description": "抽屉",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
-  "upgrade": "./upgrade.ts",
   "slots": [
     {
       "id": "body",

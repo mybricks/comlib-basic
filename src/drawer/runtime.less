@@ -1,0 +1,44 @@
+.mask {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+}
+
+.debugMask{
+  :global{
+    .ant-drawer {
+      position: absolute;
+    }
+  }
+}
+
+.antdDrawer{
+  :global{
+    .ant-drawer{
+      position: unset;
+    }
+  }
+}
+
+.footer {
+  &-btns {
+    margin-left: 8px;
+  }
+}
+
+.toolbar{
+  flex-direction: row;
+  flex-flow: row wrap;
+  display: flex
+}
+
+
+.slotContainer{
+  height: 100%;
+  overflow: auto
+}

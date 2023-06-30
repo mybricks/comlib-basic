@@ -12,6 +12,7 @@
     "./src/list-view/com.json",
     "./src/image/com.json",
     "./src/popup/com.json",
+    "./src/drawer/com.json",
     "./src/_type-change/com.json",
     "./src/_get-data/com.json",
     "./src/_muilt-inputJs/com.json",
