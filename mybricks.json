@@ -16,6 +16,7 @@
     "./src/layout-grid/com.json",
     "./src/list-view/com.json",
     "./src/image/com.json",
+    "./src/shape/com.json",
     "./src/_timer-delay/com.json",
     "./src/_timer-loop/com.json",
     "./src/_timer-debounce/com.json",
