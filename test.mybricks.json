@@ -12,6 +12,7 @@
     "./src/_merge-to-object/com.json",
     "./src/_muilt-inputJs/com.json",
     "./src/popup/com.json",
+    "./src/drawer/com.json",
     "./src/text/com.json",
     "./src/rectangle/com.json",
     "./src/layout-grid/com.json",

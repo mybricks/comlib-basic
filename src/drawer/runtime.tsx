@@ -1,6 +1,6 @@
 import React, { useCallback, useRef} from 'react';
 import { AlignEnum, Location } from './constants';
-import { Button, Modal } from 'antd';
+import { Button, Drawer } from 'antd';
 import * as Icons from '@ant-design/icons';
 
 import css from './runtime.less'
@@ -56,8 +56,8 @@ export default function ({env, _env, data, slots, outputs}) {
     return(
       <div
         data-toolbar 
-        className="toolbar"
-        style={{ justifyContent: data.footerLayout || AlignEnum.FlexEnd, display: 'flex' }}>
+        className={css.toolbar}
+        style={{ justifyContent: data.footerLayout || AlignEnum.FlexEnd }}>
         {(data.footerBtns || []).map((item) => {
           const {
             title,
@@ -77,6 +77,7 @@ export default function ({env, _env, data, slots, outputs}) {
               key={id}
               type = {type}
               hidden={!visible}
+              className={css['footer-btns']}
             >
               {useIcon && location !== Location.BACK && Icon}
               {showText && env.i18n(title)}
@@ -89,89 +90,90 @@ export default function ({env, _env, data, slots, outputs}) {
   }
 
   //调试态
-  const debugPopup = (
+  const debugDrawer = (
     <div 
       className={css.debugMask} 
       ref={ref}>
-        <Modal
-        visible = {true}
-        title={data.hideTitle ? undefined : env.i18n(data.title)}
-        width={data.width}
-        footer={data.useFooter ? renderFooter() : null}
-        onCancel={handleClose}
-        centered={data.centered}
-        bodyStyle={data.bodyStyle}
-
-        maskClosable={data.maskClosable}
-        wrapClassName={css.container}
-        closable={data.closable}
-        getContainer={ref.current ? ()=>{
-          return ref.current
-        }: false}
+        <Drawer
+          visible = {true}
+          title={data.hideTitle ? undefined : env.i18n(data.title)}
+          width={data.width !== 0 ? data.width : 520}
+          height={data.height !== 0 ? data.height : 800}
+          closable={data.closable}
+          footer={data.useFooter ? renderFooter() : null}
+          onClose={handleClose}
+          mask={false}
+          bodyStyle={data.bodyStyle}
+          placement={data.placement}
+          maskClosable={data.maskClosable}
+          getContainer={false}
         >
-        {slots['body'].render()}
-        </Modal>
+        <div className={css.slotContainer}>
+          {slots['body'].render()}
+        </div>
+        </Drawer>
     </div>
   )
-  //预览态（发布态）
-  const publishPopup = (
-    <div
+  //预览和发布态
+  const publishDrawer = (
+    <div 
       ref={ref}>
-        <Modal
-        visible = {true}
-        title={data.hideTitle ? undefined : env.i18n(data.title)}
-        width={data.width}
-        footer={data.useFooter ? renderFooter() : null}
-        onCancel={handleClose}
-        centered={data.centered}
-        bodyStyle={data.bodyStyle}
-
-        maskClosable={data.maskClosable}
-        wrapClassName={css.container}
-        closable={data.closable}
-        getContainer={ref.current ? ()=>{
-          return ref.current
-        }: false}
+        <Drawer
+          visible = {true}
+          title={data.hideTitle ? undefined : env.i18n(data.title)}
+          width={data.width !== 0 ? data.width : 520}
+          height={data.height !== 0 ? data.height : 800}
+          closable={data.closable}
+          footer={data.useFooter ? renderFooter() : null}
+          onClose={handleClose}
+          mask={false}
+          bodyStyle={data.bodyStyle}
+          placement={data.placement}
+          maskClosable={data.maskClosable}
+          getContainer={false}
         >
-        {slots['body'].render()}
-        </Modal>
+        <div className={css.slotContainer}>
+          {slots['body'].render()}
+        </div>
+        </Drawer>
     </div>
   )
   //编辑态
-  const editPopup = (
+  const editDrawer = (
     <div 
-      className={css.antdMask}
+      className={css.antdDrawer}
       ref={ref}
     >
-      <Modal
-        visible = {true}
-        title={data.hideTitle ? undefined : env.i18n(data.title)}
-        width={data.width}
-        footer={data.useFooter ? renderFooter() : null}
-        onCancel={handleClose}
-        mask={false}
-        transitionName=""
-        bodyStyle={data.bodyStyle}
-
-        wrapClassName={css.container}
-        closable={data.closable}
-        getContainer={false}>
-          {slots['body'].render()}
-      </Modal>
+      <Drawer
+      visible = {true}
+      title={data.hideTitle ? undefined : env.i18n(data.title)}
+      closable={data.closable}
+      footer={data.useFooter ? renderFooter() : null}
+      onClose={handleClose}
+      mask={false}
+      bodyStyle={data.bodyStyle}
+      maskClosable={data.maskClosable}
+      style={{height: data.height !== 0 ? data.height : 800, width: data.width !== 0 ? data.width : 520}}
+      getContainer={false}
+    >
+      <div className={css.slotContainer}>
+        {slots['body'].render()}
+      </div>
+    </Drawer>
     </div>
   )
-
+  
   //调试态
   if (env.runtime && env.runtime.debug) {
     return (
       <div className={css.mask}>
-        {debugPopup}
+        {debugDrawer}
       </div>
     )
   //编辑态
   }else if(env.edit){
-    return editPopup;
+    return editDrawer;
   }
   //预览态 (发布态)
-  return publishPopup;
+  return publishDrawer;
 }
