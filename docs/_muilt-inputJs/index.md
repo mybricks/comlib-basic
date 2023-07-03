@@ -1,7 +1,7 @@
 # JS计算组件
 
 <div align="center">
-   <img src="./icon.png" height="500"/>
+   <img src="./icon.png"/>
 </div>
 
 > 一个JS计算组件理解为一个JS函数，提供搭建过程中必要的JS逻辑代码执行能力，旨在解决一些复杂的数据处理，逻辑运算等问题
@@ -10,7 +10,7 @@
 在逻辑卡片中**右键**或者**连线时**弹出的逻辑组件中选择**JS计算组件**。如
 
 <div align="center">
-   <img src="./use.png" height="500"/>
+   <img src="./use.png"/>
 </div>
 
 ## 输入项
