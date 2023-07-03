@@ -1,3 +1,9 @@
+---
+title: JS计算组件
+description: 提供基于JS语法的代码编辑能力
+keywords: [Mybricks,Mybricks低代码,低代码,无代码,图形化编程]
+---
+
 # JS计算组件
 
 <div align="center">
