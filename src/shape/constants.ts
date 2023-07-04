@@ -1,29 +1,42 @@
-import { CSSProperties } from 'react';
 /**
  * 数据源
  * @export
  * @interface ShapeProps
  * @param type 形状
- * @param style 样式
- * @param rotate 旋转角度
- * @param isImgRotate 图片是否跟随旋转
- * @param size 内容大小
- * @param image 图片地址
- */
+ * @param position 三角形底边
+ * @param clipPath 三角形样式
+ * */
 export interface ShapeProps {
   type: ShapeType;
-  style: CSSProperties;
-  rotate: number;
-  isImgRotate: boolean;
-  size: number;
-  image?: string;
+  position: number;
+  clipPath: string;
 }
 
-export type ShapeType = "circle" | "square" | "triangle" | "ellipse";
+export type ShapeType = "circle" | "rectangle" | "triangle";
 
-export const clipPaths: Record<ShapeType, string> = {
-  square: "inset(0)",
-  ellipse: "ellipse(50% 25% at 50% 50%)",
-  circle: "circle(50% at 50% 50%)",
-  triangle: "polygon(50% 0%, 0% 100%, 100% 100%)",
-};
+export const rotateTriangle = (angle: number) => {
+  const centerX = 50, centerY = 50;
+  const radians = angle * (Math.PI / 180);
+  const cosTheta = Math.cos(radians);
+  const sinTheta = Math.sin(radians);
+  
+  const points = [
+    [50, 0],   // point1
+    [0, 100],  // point2
+    [100, 100] // point3
+  ];
+  
+  const rotatedPoints = points.map(([x, y]) => {
+    const shiftedX = x - centerX;
+    const shiftedY = y - centerY;
+  
+    const rotatedX = Math.round(shiftedX * cosTheta - shiftedY * sinTheta + centerX);
+    const rotatedY = Math.round(shiftedX * sinTheta + shiftedY * cosTheta + centerY);
+  
+    return [rotatedX, rotatedY];
+  });
+  
+  const [point1, point2, point3] = rotatedPoints;
+  
+  return `polygon(${point1[0]}% ${point1[1]}%, ${point2[0]}% ${point2[1]}%, ${point3[0]}% ${point3[1]}%)`;
+}
