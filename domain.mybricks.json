@@ -1,0 +1,13 @@
+{
+  "content": "",
+  "commitInfo": "init",
+  "comAry": [
+    "./src/_type-change/com.json",
+    "./src/_get-data/com.json",
+    "./src/_timer-delay/com.json",
+    "./src/_timer-loop/com.json",
+    "./src/_merge/com.json",
+    "./src/_object-merge/com.json"
+  ],
+  "target": "node"
+}
