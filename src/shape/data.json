@@ -1,8 +1,5 @@
 {
   "type": "circle",
-  "style": {},
-  "image": "",
-  "rotate": 0,
-  "size": 100,
-  "isImgRotate": true
+  "position": 0,
+  "clipPath": "polygon(50% 0%, 0% 100%, 100% 100%)"
 }
