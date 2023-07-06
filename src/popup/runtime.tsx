@@ -1,4 +1,4 @@
-import React, { useCallback, useRef} from 'react';
+import React, { useCallback, useMemo, useRef} from 'react';
 import { AlignEnum, Location } from './constants';
 import { Button, Modal } from 'antd';
 import * as Icons from '@ant-design/icons';
@@ -173,5 +173,7 @@ export default function ({env, _env, data, slots, outputs}) {
     return editPopup;
   }
   //预览态 (发布态)
-  return publishPopup;
+  return useMemo(() => {
+    return publishPopup;
+  },[])
 }
