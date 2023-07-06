@@ -28,7 +28,8 @@
       "title": "输出",
       "schema": {
         "type": "object"
-      }
+      },
+      "editable": true
     }
   ]
 }
