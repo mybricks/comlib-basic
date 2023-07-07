@@ -126,7 +126,7 @@ export default function ({env, _env, data, slots, outputs}) {
           closable={data.closable}
           footer={data.useFooter ? renderFooter() : null}
           onClose={handleClose}
-          mask={false}
+          
           bodyStyle={data.bodyStyle}
           placement={data.placement}
           maskClosable={data.maskClosable}
