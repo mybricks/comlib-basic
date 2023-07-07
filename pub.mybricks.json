@@ -6,8 +6,8 @@
   "content": "",
   "commitInfo": "init",
   "comAry": [
-    "./src/text/com.json",
     "./src/rectangle/com.json",
+    "./src/shape/com.json",
     "./src/layout-grid/com.json",
     "./src/list-view/com.json",
     "./src/image/com.json",
