@@ -21,9 +21,28 @@ export default {
         title: '内容',
         type: 'style',
         options: ['padding'],
-        initValue: { },
         target: '[data-item-type="wrapper"]',
         domTarget: '[data-item-type="wrapper"]'
+      },
+      {
+        title: '边框',
+        type: 'style',
+        ifVisible({ data }) {
+          return data.type === 'rectangle';
+        },
+        options: [ {type: 'border', config: {disableBorderWidth: true, disableBorderStyle: true, disableBorderColor: true}}, 'boxshadow'],
+        target: '[data-item-type="shape"]',
+        domTarget: '[data-item-type="shape"]'
+      },
+      {
+        title: '边框',
+        type: 'style',
+        ifVisible({ data }) {
+          return data.type !== 'rectangle';
+        },
+        options: ['boxshadow'],
+        target: '[data-item-type="shape"]',
+        domTarget: '[data-item-type="shape"]'
       },
       {
         title: '顶点位置',
