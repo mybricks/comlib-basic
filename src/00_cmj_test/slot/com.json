@@ -1,0 +1,18 @@
+{
+  "title": "测试-Slot",
+  "namespace": "cmj.test.slot",
+  "version": "1.0.0",
+  "description": "测试-Slot",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "runtime": "./runtime.tsx",
+  "slots": [
+    {
+      "id": "content",
+      "title": "content"
+    }
+  ],
+  "inputs": [
+  ],
+  "outputs": []
+}

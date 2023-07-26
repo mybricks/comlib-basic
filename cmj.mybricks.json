@@ -1,0 +1,50 @@
+{
+  "fileId": 7182,
+  "prodFileId": 30402,
+  "folderId": 28720,
+  "folderIdStaging": 7183,
+  "content": "",
+  "commitInfo": "init",
+  "comAry": [
+    "./src/00_cmj_test/slot/com.json",
+    "./src/_type-change/com.json",
+    "./src/_get-data/com.json",
+    "./src/_muilt-inputJs/com.json",
+    "./src/text/com.json",
+    "./src/popup/com.json",
+    "./src/drawer/com.json",
+    "./src/rectangle/com.json",
+    "./src/layout-grid/com.json",
+    "./src/list-view/com.json",
+    "./src/image/com.json",
+    "./src/shape/com.json",
+    "./src/_timer-delay/com.json",
+    "./src/_timer-loop/com.json",
+    "./src/_timer-debounce/com.json",
+    "./src/_timer-throttle/com.json",
+    "./src/_merge/com.json",
+    "./src/_object-merge/com.json",
+    "./src/_download/com.json",
+    "./src/_schema-simulator/com.json",
+    "./src/_copy/com.json"
+  ],
+  "componentType": "PC",
+  "externals": [
+    {
+      "name": "@ant-design/icons",
+      "library": "icons",
+      "urls": [
+        "https://assets.mybricks.world/pkg/@ant-design/icons-4.7.0/index.umd.min.js"
+      ]
+    },
+    {
+      "name": "antd",
+      "library": "antd",
+      "urls": [
+        "https://assets.mybricks.world/pkg/antd-4.21.6/antd.min.css",
+        "https://assets.mybricks.world/pkg/moment-2.9.1/moment.min.js",
+        "https://assets.mybricks.world/pkg/antd-4.21.6/antd.min.js"
+      ]
+    }
+  ]
+}
