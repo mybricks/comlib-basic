@@ -24,7 +24,8 @@
     "./src/_object-merge/com.json",
     "./src/_download/com.json",
     "./src/_schema-simulator/com.json",
-    "./src/_copy/com.json"
+    "./src/_copy/com.json",
+    "./src/dragable-layout/com.json"
   ],
   "componentType": "PC"
 }
