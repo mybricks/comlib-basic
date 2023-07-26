@@ -2,7 +2,8 @@
 
 export default function ({
   data,
-  output
+  output,
+  input
 }): boolean {
   /**
    * @description 隐藏标题（hideTitle）、垂直居中（centered）、对话框宽度（width）、显示工具条（useFooter）、页脚布局（footerLayout）、
@@ -72,6 +73,23 @@ export default function ({
   if(cons !== 0){
     const index = data.footerBtns.findIndex((item) => item.id === 'cancel');
     data.footerBtns[index].autoClose = false;
+  }
+
+  /**
+   * @description 1.0.10->1.0.11  新增 outputs -> apply(应用), inputs -> title(修改标题)
+   */
+  const schema = {
+    type: "string"
+  };
+  if (!input.get('title')) {
+    input.add('title', '修改标题', schema)
+  }
+
+  const follwSchem = {
+    type: "follow"
+  }
+  if (!output.get('apply')) {
+    output.add('apply', '应用', follwSchem)
   }
   return true;
 }

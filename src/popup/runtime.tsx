@@ -1,13 +1,23 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useMemo, useRef, useEffect } from 'react';
 import { AlignEnum, Location } from './constants';
 import { Button, Modal } from 'antd';
 import * as Icons from '@ant-design/icons';
 
 import css from './runtime.less'
 
-export default function ({ env, _env, data, slots, outputs }) {
+export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
   const ref = useRef<any>();
-  const isMobile = env?.canvas?.type === 'mobile'
+  const isMobile = env?.canvas?.type === 'mobile';
+
+  useEffect(()=>{
+    inputs['title']((val: string) => {
+      if (typeof val !== 'string') {
+        logger.error('title 必须为string类型');
+      } else {
+        data.title = val;
+      }
+    });
+  },[])
 
   //关闭按钮点击事件
   const handleClose = useCallback(() => {

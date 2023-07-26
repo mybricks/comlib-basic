@@ -4,7 +4,7 @@
   "namespace": "mybricks.basic-comlib.popup",
   "author": "CheMingjun",
   "author_name": "车明君",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "对话框",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
@@ -16,6 +16,15 @@
       "title": "内容"
     }
   ],
+  "inputs": [
+    {
+      "id": "title",
+      "title": "修改标题",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
   "outputs": [
     {
       "id": "ok",
@@ -24,6 +33,13 @@
     {
       "id": "cancel",
       "title": "取消"
+    },
+    {
+      "id": "apply",
+      "title": "应用",
+      "schema": {
+        "type": "follow"
+      }
     }
   ]
 }
