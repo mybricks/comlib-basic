@@ -4,15 +4,25 @@
   "namespace": "mybricks.basic-comlib.drawer",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "抽屉",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.ts",
+  "upgrade": "./upgrade.ts",
   "slots": [
     {
       "id": "body",
       "title": "内容"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "title",
+      "title": "修改标题",
+      "schema": {
+        "type": "string"
+      }
     }
   ],
   "outputs": [
@@ -23,6 +33,13 @@
     {
       "id": "cancel",
       "title": "取消"
+    },
+    {
+      "id": "apply",
+      "title": "应用",
+      "schema": {
+        "type": "follow"
+      }
     }
   ]
 }
