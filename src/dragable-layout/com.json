@@ -1,0 +1,33 @@
+{
+  "title": "布局",
+  "visibility": true,
+  "namespace": "mybricks.basic-comlib.dragable-layout",
+  "author": "tangxiaoxin",
+  "author_name": "tangxiaoxin",
+  "version": "1.0.0",
+  "description": "布局",
+  "runtime": "./runtime.tsx",
+  "runtime.edit": "./edit/runtime.tsx",
+  "data": "./data.json",
+  "editors": "./edit/index.ts",
+  "slots": [
+    {
+      "id": "col0",
+      "title": "列（竖向排列）"
+    },
+    {
+      "id": "col1",
+      "title": "列（竖向排列）"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "col0",
+      "title": "列点击"
+    },
+    {
+      "id": "col1",
+      "title": "列点击"
+    }
+  ]
+}

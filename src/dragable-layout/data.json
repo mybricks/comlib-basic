@@ -1,0 +1,13 @@
+{
+  "style": {},
+  "rows": [
+    {
+      "key": "row0",
+      "height": "auto",
+      "cols": [
+        { "key": "col0", "width": "auto" },
+        { "key": "col1", "width": "auto" }
+      ]
+    }
+  ]
+}

@@ -82,4 +82,12 @@ interface UpgradeParams<T> {
   setDeclaredStyle: (selector: string, style: React.CSSProperties) => void
 }
 
+type StyleModeType<T> = Partial<{
+  title: string;
+  initValue: CSSProperties;
+  target: string | ((props: EditorResult<T>) => string) | undefined;
+  domTarget: string;
+  options: Array<string | { type: string; config: Record<string, any> }>;
+}>;
+
 // type T_Props = {env, data, slots, inputs}

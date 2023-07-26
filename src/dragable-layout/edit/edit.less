@@ -1,0 +1,118 @@
+@import "../../theme.less";
+
+.draggingTip() {
+  position: absolute;
+  z-index: 999;
+  color: @color-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+
+  &.dashed {
+    &&::after {
+      border-style: dashed;
+    }
+    &&::before {
+      border-style: dashed;
+    }
+  }
+}
+
+.draggingTipW {
+  .draggingTip();
+  height: 17px;
+  width: 100%;
+  bottom: 0;
+  left: 0px;
+  right: 0px;
+  border-bottom-width: 1px;
+
+  &&::after {
+    content: '';
+    flex: 1;
+    border: 0px solid @color-primary;
+    border-bottom-width: 1px;
+    margin: 0px 10px;
+  }
+  &&::before {
+    content: '';
+    flex: 1;
+    border: 0px solid @color-primary;
+    border-bottom-width: 1px;
+    margin: 0px 5px;
+  }
+}
+
+.resizeW {
+  width: 7px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: -3px;
+  background-color: transparent;
+  z-index: 10000;
+  cursor: ew-resize !important;
+
+  &:hover {
+    visibility: visible;
+    background-color: @color-primary !important;
+  }
+
+  div {
+    pointer-events: none;
+    height: 100%;
+    width: 3px;
+    margin-left: 1px;
+    visibility: hidden;
+  }
+}
+
+.draggingTipH {
+  .draggingTip();
+  flex-direction: column;
+  width: 30px;
+  height: 100%;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  border-left-width: 1px;
+  &&::after {
+    content: '';
+    flex: 1;
+    border: 0px solid @color-primary;
+    border-left-width: 1px;
+    margin: 0px 10px;
+  }
+  &&::before {
+    content: '';
+    flex: 1;
+    border: 0px solid @color-primary;
+    border-left-width: 1px;
+    margin: 0px 5px;
+  }
+}
+
+.resizeH {
+  height: 5px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  background-color: transparent;
+  z-index: 10000;
+  cursor: ns-resize !important;
+
+  &:hover {
+    visibility: visible;
+    background-color: @color-primary !important;
+  }
+
+  div {
+    pointer-events: none;
+    width: 100%;
+    height: 3px;
+    margin-bottom: 1px;
+    visibility: hidden;
+  }
+}
