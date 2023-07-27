@@ -186,5 +186,5 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
   //预览态 (发布态)
   return useMemo(() => {
     return publishPopup;
-  }, [])
+  }, [data.title])
 }
