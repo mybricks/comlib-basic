@@ -8,6 +8,12 @@ import css from './runtime.less'
 export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
   const ref = useRef<any>();
   const isMobile = env?.canvas?.type === 'mobile';
+  const paddingMap = {
+    top: { paddingBottom: '50px' },
+    bottom: { paddingTop: '50px' },
+    left: { paddingRight: '50px' },
+    right: { paddingLeft: '50px' }
+  }
 
   useEffect(()=>{
     inputs['title']((val: string) => {
@@ -152,6 +158,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
   const editDrawer = (
     <div
       className={css.antdDrawer}
+      style={paddingMap[data.placement]}
       ref={ref}
     >
       <Drawer
