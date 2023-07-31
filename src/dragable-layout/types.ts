@@ -1,7 +1,9 @@
 export type Col = {
   key: string;
-  width: React.CSSProperties["width"];
   isDragging?: boolean;
+  widthMode?: WidthUnitEnum;
+  width: React.CSSProperties["width"];
+  span?: number;
   style?: React.CSSProperties;
   slotStyle?: React.CSSProperties;
 };
@@ -13,6 +15,13 @@ export type Row = {
   style?: React.CSSProperties;
   cols: Array<Col>;
 };
+
+export enum WidthUnitEnum {
+  Px = "px",
+  Auto = "auto",
+  Media = "@media",
+  Span = "%",
+}
 export interface Data {
   rows: Array<Row>;
   style?: React.CSSProperties;

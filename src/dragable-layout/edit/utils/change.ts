@@ -1,4 +1,4 @@
-import { Data, Row, Col } from "../../types";
+import { Data, Row, Col, WidthUnitEnum } from "../../types";
 import { uuid } from "../../../utils";
 import { getCol, getRow } from "./common";
 
@@ -13,6 +13,10 @@ export const createRow = ({
   return {
     key,
     height: "auto",
+    style: {
+      flexDirection: "row",
+      position: "relative"
+    },
     cols,
   };
 };
@@ -22,7 +26,9 @@ export const createCol = (props: EditorResult<Data>): Col => {
   addEffect({ key, ...props });
   return {
     key,
-    width: "auto",
+    width: 300,
+    widthMode: WidthUnitEnum.Auto,
+    span: 12,
     slotStyle: {
       display: "flex",
       position: "inherit",

@@ -7,8 +7,8 @@
 
 .row {
   display: flex;
-  flex-direction: row;
-
+  box-sizing: border-box;
+  column-gap: 0 !important;
   &:not(:first-of-type) {
     margin-top: -1px;
   }
@@ -17,7 +17,8 @@
 .col {
   position: relative;
   overflow: hidden;
-
+  box-sizing: border-box;
+  height: 100%;
   &:not(:first-of-type) {
     margin-left: -1px;
   }

@@ -1,5 +1,6 @@
-import React from "react";
-import { Data, Row, Col } from "./types";
+import React, { useMemo } from "react";
+import { Data, Row, Col, WidthUnitEnum } from "./types";
+import { SpanToken } from './constant'
 import runtimeStyles from "./runtime.less";
 export default (props: RuntimeParams<Data>) => {
   const { data, style } = props;
@@ -40,12 +41,22 @@ const Col = ({
   slots,
 }: { row: Row; col: Col } & RuntimeParams<Data>) => {
   const { key, slotStyle } = col;
-  const style = { ...(col.style ?? {}) };
-  if (col.width === "auto") {
-    style.flex = 1;
-  } else if (typeof col.width === "number") {
-    style.width = col.width;
-  }
+  const style = useMemo(() => {
+    const style = { ...(col.style ?? {}) };
+    if (col.widthMode === WidthUnitEnum.Auto) {
+      style.flex = 1;
+    }
+    if (col.widthMode === WidthUnitEnum.Px) {
+      style.width = col.width + 'px';
+    }
+    if (col.widthMode === WidthUnitEnum.Span) {
+      const percent = SpanToken[col.span ?? 12]
+      style.flex = `0 0 ${percent}`
+      style.maxWidth = percent
+    }
+    style.padding = `0 ${row.style?.columnGap as number / 2}px`
+    return style
+  }, [JSON.stringify(col.style), col.width, col.widthMode, col.span, row.style?.columnGap])
   return (
     <div
       className={`${runtimeStyles.col} mybricks-col`}

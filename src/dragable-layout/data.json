@@ -4,9 +4,13 @@
     {
       "key": "row0",
       "height": "auto",
+      "style": {
+        "flexDirection": "row",
+        "position": "relative"
+      },
       "cols": [
-        { "key": "col0", "width": "auto" },
-        { "key": "col1", "width": "auto" }
+        { "key": "col0", "width": 300, "widthMode": "auto", "span": 12 },
+        { "key": "col1", "width": 300, "widthMode": "auto", "span": 12 }
       ]
     }
   ]

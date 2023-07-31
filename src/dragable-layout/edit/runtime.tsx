@@ -1,6 +1,7 @@
-import React, { useCallback } from "react";
-import type { Data, Row, Col } from "../types";
+import React, { useCallback, useMemo } from "react";
+import { Data, Row, Col, WidthUnitEnum } from "../types";
 import { dragable } from "../../utils";
+import { SpanToken } from '../constant'
 import editStyle from "./edit.less";
 import runtimeStyle from "../runtime.less";
 export default (props: RuntimeParams<Data>) => {
@@ -98,6 +99,7 @@ const Col = ({
       }
       if (state === "ing") {
         col.width = currentWidth += dpo.dx;
+        col.widthMode = WidthUnitEnum.Px;
       }
       if (state === "finish") {
         if (editFinish) {
@@ -109,13 +111,27 @@ const Col = ({
     e.stopPropagation();
   }, []);
 
-  const style = { ...(col.style ?? {}) };
+  const columnGap = useMemo(() => {
+    if (row.style?.columnGap) return +row.style?.columnGap
+    return 0
+  }, [row.style?.columnGap])
 
-  if (col.width === "auto") {
-    style.flex = 1;
-  } else if (typeof col.width === "number") {
-    style.width = col.width;
-  }
+  const style = useMemo(() => {
+    const style = { ...(col.style ?? {}) };
+    if (col.widthMode === WidthUnitEnum.Auto) {
+      style.flex = 1;
+    }
+    if (col.widthMode === WidthUnitEnum.Px) {
+      style.width = col.width + 'px';
+    }
+    if (col.widthMode === WidthUnitEnum.Span) {
+      const percent = SpanToken[col.span ?? 12]
+      style.flex = `0 0 ${percent}`
+      style.maxWidth = percent
+    }
+    style.padding = `0 ${columnGap / 2}px`
+    return style
+  }, [JSON.stringify(col.style), col.width, col.widthMode, col.span, columnGap])
 
   const hasDragTarget = row.cols.some((_col) => _col.isDragging);
 
@@ -127,8 +143,8 @@ const Col = ({
       style={style}
       data-col-key={`${row.key},${key}`}
     >
-      {slots[key].render({ style: slotStyle })}
-      <div className={editStyle.resizeW} onMouseDown={(e) => dragWidth(e)} />
+      {slots[key]?.render({ style: slotStyle })}
+      <div className={editStyle.resizeW} style={{ right: columnGap / 2 - 3 }} onMouseDown={(e) => dragWidth(e)} />
       {hasDragTarget && (
         <div
           className={

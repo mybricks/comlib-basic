@@ -1,8 +1,8 @@
 import { Data, Row, Col } from "../../types";
 export const getRow = ({ data, focusArea }: EditorResult<Data>) => {
   const { rowKey } = focusArea.dataset;
-  const row = data.rows.find((row) => row.key === rowKey);
-  const index = data.rows.findIndex((row) => row.key === rowKey);
+  const row = data.rows.find((row) => row.key === rowKey) as Row;
+  const index = data.rows.findIndex((row) => row.key === rowKey) as number;
   return { row, index };
 };
 

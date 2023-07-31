@@ -1,5 +1,12 @@
 import type { Data, Row } from "../types";
-import { getRow, appendRow, addCol, removeRow } from "./utils";
+import {
+  getRow,
+  appendRow,
+  addCol,
+  removeRow,
+  createStyleForRow,
+  getFilterSelector,
+} from "./utils";
 export default {
   "[data-row-key]": {
     title: "行",
@@ -7,6 +14,27 @@ export default {
       if (!focusArea) return;
       cate[0].title = "配置";
       cate[0].items = [
+        {
+          title: "布局",
+          type: "layout",
+          options: {},
+          value: {
+            get(props: EditorResult<Data>) {
+              const { row } = getRow(props);
+              return { flexDirection: "row", ...row.style };
+            },
+            set(props: EditorResult<Data>, val: React.CSSProperties) {
+              const { row } = getRow(props);
+              row.style = {
+                ...(row?.style ?? {}),
+                ...val,
+                margin:
+                  "columnGap" in val ? `0 -${val.columnGap as number / 2}px` : "unset",
+                position: "relative", //行不能绝对定位
+              };
+            },
+          },
+        },
         {
           title: "行操作",
           items: [
@@ -103,5 +131,13 @@ export default {
         },
       ];
     },
+    style: createStyleForRow({
+      target({ id, focusArea }: EditorResult<Data>) {
+        const { index } = focusArea;
+        return `.mybricks-layout > .mybricks-row:nth-child(${
+          index + 1
+        })${getFilterSelector(id)}`;
+      },
+    }),
   },
 };
