@@ -8,11 +8,9 @@
   "comAry": [
     "./src/rectangle/com.json",
     "./src/shape/com.json",
-    "./src/layout-grid/com.json",
-    "./src/list-view/com.json",
-    "./src/image/com.json",
     "./src/popup/com.json",
     "./src/drawer/com.json",
+    "./src/dragable-layout/com.json",
     "./src/_type-change/com.json",
     "./src/_get-data/com.json",
     "./src/_muilt-inputJs/com.json",
