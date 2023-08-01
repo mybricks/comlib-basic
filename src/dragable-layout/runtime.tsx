@@ -1,9 +1,26 @@
-import React, { useMemo } from "react";
+import React, { useMemo, CSSProperties } from "react";
 import { Data, Row, Col, WidthUnitEnum, HeightUnitEnum } from "./types";
 import { SpanToken } from './constant'
 import runtimeStyles from "./runtime.less";
 export default (props: RuntimeParams<Data>) => {
-  const { data, style } = props;
+  const { data, style, inputs, onError, logger } = props;
+  inputs.setWidth((val: { coordinate: [number, number], width: CSSProperties['width'] }) => {
+    const { coordinate, width } = val;
+    const errorMsg = '找不到布局列，检查参数设置'
+    try {
+      const col = data.rows[coordinate[0] - 1].cols[coordinate[1] - 1];
+      if (!col) throw Error(errorMsg);
+      if (width === 'auto') {
+        col.widthMode = WidthUnitEnum.Auto;
+      } else {
+        col.widthMode = WidthUnitEnum.Px;
+      }
+      col.width = width;
+    } catch (error) {
+      logger.error(errorMsg);
+      onError?.(errorMsg);
+    }
+  });
   return (
     <div className={`${runtimeStyles.layout} mybricks-layout`} style={style}>
       {data.rows.map((row) => (
@@ -49,7 +66,7 @@ const Col = ({
       style.flex = 1;
     }
     if (col.widthMode === WidthUnitEnum.Px) {
-      style.width = col.width + 'px';
+      style.width = typeof col.width === 'number' ? col.width + 'px' : col.width;
     }
     if (col.widthMode === WidthUnitEnum.Span) {
       const percent = SpanToken[col.span ?? 12]

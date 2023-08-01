@@ -119,7 +119,7 @@ const Col = ({
       style.flex = 1;
     }
     if (col.widthMode === WidthUnitEnum.Px) {
-      style.width = col.width + "px";
+      style.width = typeof col.width === 'number' ? col.width + 'px' : col.width;
     }
     if (col.widthMode === WidthUnitEnum.Span) {
       const percent = SpanToken[col.span ?? 12];
