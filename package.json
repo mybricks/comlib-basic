@@ -1,6 +1,6 @@
 {
   "name": "@mybricks/comlib-basic",
-  "version": "1.0.21",
+  "version": "1.0.32",
   "description": "Mybricks通用组件库",
   "main": "index.js",
   "scripts": {

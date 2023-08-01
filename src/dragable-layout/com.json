@@ -6,6 +6,7 @@
   "author_name": "tangxiaoxin",
   "version": "1.0.0",
   "description": "布局",
+  "icon": "./icon.svg",
   "runtime": "./runtime.tsx",
   "runtime.edit": "./edit/runtime.tsx",
   "data": "./data.json",
