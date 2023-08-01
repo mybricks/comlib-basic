@@ -45,13 +45,14 @@
 }
 
 .resizeW {
-  width: 7px;
+  width: 4px;
   height: 100%;
   position: absolute;
   top: 0;
-  right: -3px;
+  right: 0px;
   background-color: transparent;
   z-index: 10000;
+  border-radius: 20px;
   cursor: ew-resize !important;
 
   &:hover {
@@ -94,11 +95,12 @@
 }
 
 .resizeH {
-  height: 5px;
+  height: 4px;
   width: 100%;
   position: absolute;
   left: 0;
-  bottom: -2px;
+  bottom: 0;
+  border-radius: 20px;
   background-color: transparent;
   z-index: 10000;
   cursor: ns-resize !important;

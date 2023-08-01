@@ -133,6 +133,18 @@ const Col = ({
     return style
   }, [JSON.stringify(col.style), col.width, col.widthMode, col.span, columnGap])
 
+  const dragText = useMemo(() => {
+    if (col.widthMode === WidthUnitEnum.Auto) {
+      return col.widthMode;
+    }
+    if (col.widthMode === WidthUnitEnum.Px) {
+      return col.width;
+    }
+    if (col.widthMode === WidthUnitEnum.Span) {
+      return `${col.span}栅格`
+    }
+  }, [col.widthMode, col.width])
+
   const hasDragTarget = row.cols.some((_col) => _col.isDragging);
 
   const isDragTarget = col.isDragging;
@@ -144,7 +156,7 @@ const Col = ({
       data-col-key={`${row.key},${key}`}
     >
       {slots[key]?.render({ style: slotStyle })}
-      <div className={editStyle.resizeW} style={{ right: columnGap / 2 - 3 }} onMouseDown={(e) => dragWidth(e)} />
+      <div className={editStyle.resizeW} style={{ right: columnGap / 2 }} onMouseDown={(e) => dragWidth(e)} />
       {hasDragTarget && (
         <div
           className={
@@ -153,7 +165,7 @@ const Col = ({
               : `${editStyle.draggingTipW} ${editStyle.dashed}`
           }
         >
-          {col.width}
+          {dragText}
         </div>
       )}
     </div>
