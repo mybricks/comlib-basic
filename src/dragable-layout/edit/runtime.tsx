@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
-import { Data, Row, Col, WidthUnitEnum } from "../types";
+import { Data, Row, Col, WidthUnitEnum, HeightUnitEnum } from "../types";
 import { dragable } from "../../utils";
-import { SpanToken } from '../constant'
+import { SpanToken } from "../constant";
 import editStyle from "./edit.less";
 import runtimeStyle from "../runtime.less";
 export default (props: RuntimeParams<Data>) => {
@@ -36,6 +36,7 @@ const Row = ({
       }
       if (state === "ing") {
         row.height = currentHeight += dpo.dy;
+        row.heightMode = HeightUnitEnum.Px;
       }
       if (state === "finish") {
         if (editFinish) {
@@ -47,12 +48,13 @@ const Row = ({
     e.stopPropagation();
   }, []);
 
-  const style = { ...(row.style ?? {}) };
-  if (row.height === "auto") {
-    style.flex = 1;
-  } else if (typeof row.height === "number") {
-    style.height = row.height;
-  }
+  const style = useMemo(() => {
+    const style = { ...(row.style ?? {}) };
+    if (row.heightMode === HeightUnitEnum.Px) {
+      style.height = row.height + "px";
+    }
+    return style;
+  }, [JSON.stringify(row.style), row.heightMode, row.height]);
 
   const hasDragTarget = data.rows.some((_row) => _row.isDragging);
 
@@ -111,27 +113,38 @@ const Col = ({
     e.stopPropagation();
   }, []);
 
-  const columnGap = useMemo(() => {
-    if (row.style?.columnGap) return +row.style?.columnGap
-    return 0
-  }, [row.style?.columnGap])
-
   const style = useMemo(() => {
     const style = { ...(col.style ?? {}) };
     if (col.widthMode === WidthUnitEnum.Auto) {
       style.flex = 1;
     }
     if (col.widthMode === WidthUnitEnum.Px) {
-      style.width = col.width + 'px';
+      style.width = col.width + "px";
     }
     if (col.widthMode === WidthUnitEnum.Span) {
-      const percent = SpanToken[col.span ?? 12]
-      style.flex = `0 0 ${percent}`
-      style.maxWidth = percent
+      const percent = SpanToken[col.span ?? 12];
+      style.flex = `0 0 ${percent}`;
+      style.maxWidth = percent;
     }
-    style.padding = `0 ${columnGap / 2}px`
-    return style
-  }, [JSON.stringify(col.style), col.width, col.widthMode, col.span, columnGap])
+    /**
+     * 栅格化实现
+     */
+    if (
+      row.style &&
+      "columnGap" in row.style &&
+      (row.style.columnGap as number) > 0
+    ) {
+      style.paddingLeft = `${(row.style.columnGap as number) / 2}px`;
+      style.paddingRight = `${(row.style.columnGap as number) / 2}px`;
+    }
+    return style;
+  }, [
+    JSON.stringify(col.style),
+    col.width,
+    col.widthMode,
+    col.span,
+    JSON.stringify(row.style),
+  ]);
 
   const dragText = useMemo(() => {
     if (col.widthMode === WidthUnitEnum.Auto) {
@@ -141,9 +154,9 @@ const Col = ({
       return col.width;
     }
     if (col.widthMode === WidthUnitEnum.Span) {
-      return `${col.span}栅格`
+      return `${col.span}栅格`;
     }
-  }, [col.widthMode, col.width])
+  }, [col.widthMode, col.width, col.span]);
 
   const hasDragTarget = row.cols.some((_col) => _col.isDragging);
 
@@ -156,7 +169,11 @@ const Col = ({
       data-col-key={`${row.key},${key}`}
     >
       {slots[key]?.render({ style: slotStyle })}
-      <div className={editStyle.resizeW} style={{ right: columnGap / 2 }} onMouseDown={(e) => dragWidth(e)} />
+      <div
+        className={editStyle.resizeW}
+        style={{ right: row.style?.columnGap ? +row.style?.columnGap / 2 : 0 }}
+        onMouseDown={(e) => dragWidth(e)}
+      />
       {hasDragTarget && (
         <div
           className={

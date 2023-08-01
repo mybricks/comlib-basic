@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Data, Row, Col, WidthUnitEnum } from "./types";
+import { Data, Row, Col, WidthUnitEnum, HeightUnitEnum } from "./types";
 import { SpanToken } from './constant'
 import runtimeStyles from "./runtime.less";
 export default (props: RuntimeParams<Data>) => {
@@ -18,12 +18,14 @@ export default (props: RuntimeParams<Data>) => {
 };
 
 const Row = ({ row, children }: { row: Row; children?: React.ReactNode }) => {
-  const style = { ...(row.style ?? {}) };
-  if (row.height === "auto") {
-    style.flex = 1;
-  } else if (typeof row.height === "number") {
-    style.height = row.height;
-  }
+  const style = useMemo(() => {
+    const style = { ...(row.style ?? {}) };
+    if (row.heightMode === HeightUnitEnum.Px) {
+      style.height = row.height + 'px';
+    }
+    return style
+  }, [JSON.stringify(row.style), row.heightMode, row.height])
+
   return (
     <div
       className={`${runtimeStyles.row} mybricks-row`}
@@ -54,9 +56,15 @@ const Col = ({
       style.flex = `0 0 ${percent}`
       style.maxWidth = percent
     }
-    style.padding = `0 ${row.style?.columnGap as number / 2}px`
+    /**
+     * 栅格化实现
+     */
+    if (row.style && 'columnGap' in row.style && row.style.columnGap as number > 0) {
+      style.paddingLeft = `${row.style.columnGap as number / 2}px`;
+      style.paddingRight = `${row.style.columnGap as number / 2}px`;
+    }
     return style
-  }, [JSON.stringify(col.style), col.width, col.widthMode, col.span, row.style?.columnGap])
+  }, [JSON.stringify(col.style), col.width, col.widthMode, col.span, JSON.stringify(row.style)])
   return (
     <div
       className={`${runtimeStyles.col} mybricks-col`}

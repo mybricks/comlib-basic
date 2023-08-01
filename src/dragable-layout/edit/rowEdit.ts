@@ -1,4 +1,4 @@
-import type { Data, Row } from "../types";
+import { Data, Row, HeightUnitEnum } from "../types";
 import {
   getRow,
   appendRow,
@@ -29,8 +29,11 @@ export default {
                 ...(row?.style ?? {}),
                 ...val,
                 margin:
-                  "columnGap" in val ? `0 -${val.columnGap as number / 2}px` : "unset",
+                  "columnGap" in val
+                    ? `0 -${(val.columnGap as number) / 2}px`
+                    : "unset",
                 position: "relative", //行不能绝对定位
+                display: "flex", //行flex布局
               };
             },
           },
@@ -131,13 +134,54 @@ export default {
         },
       ];
     },
-    style: createStyleForRow({
-      target({ id, focusArea }: EditorResult<Data>) {
-        const { index } = focusArea;
-        return `.mybricks-layout > .mybricks-row:nth-child(${
-          index + 1
-        })${getFilterSelector(id)}`;
+    style: [
+      createStyleForRow({
+        target({ id, focusArea }: EditorResult<Data>) {
+          const { index } = focusArea;
+          return `.mybricks-layout > .mybricks-row:nth-child(${
+            index + 1
+          })${getFilterSelector(id)}`;
+        },
+      }),
+      {
+        title: "宽度填充",
+        type: "Select",
+        options: [
+          { value: HeightUnitEnum.Auto, label: "自动填充" },
+          { value: HeightUnitEnum.Px, label: "固定宽度" },
+        ],
+        value: {
+          get(props: EditorResult<Data>) {
+            const { row } = getRow(props);
+            return row.heightMode ?? HeightUnitEnum.Auto;
+          },
+          set(props: EditorResult<Data>, value: HeightUnitEnum) {
+            const { row } = getRow(props);
+            row.heightMode = value;
+          },
+        },
       },
-    }),
+      {
+        title: "指定高度",
+        type: "Text",
+        options: {
+          type: "Number",
+        },
+        ifVisible(props: EditorResult<Data>) {
+          const { row } = getRow(props);
+          return row.heightMode === HeightUnitEnum.Px;
+        },
+        value: {
+          get(props: EditorResult<Data>) {
+            const { row } = getRow(props);
+            return row.height;
+          },
+          set(props: EditorResult<Data>, val: string) {
+            const { row } = getRow(props);
+            row.height = parseFloat(val);
+          },
+        },
+      },
+    ],
   },
 };

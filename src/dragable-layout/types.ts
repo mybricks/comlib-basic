@@ -10,6 +10,7 @@ export type Col = {
 
 export type Row = {
   key: string;
+  heightMode: HeightUnitEnum;
   height: React.CSSProperties["height"];
   isDragging?: boolean;
   style?: React.CSSProperties;
@@ -21,6 +22,11 @@ export enum WidthUnitEnum {
   Auto = "auto",
   Media = "@media",
   Span = "%",
+}
+
+export enum HeightUnitEnum {
+  Px = "px",
+  Auto = "auto",
 }
 export interface Data {
   rows: Array<Row>;

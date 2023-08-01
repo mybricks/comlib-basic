@@ -7,7 +7,7 @@ export const createStyleForGrid = ({ target }: StyleModeType<Data> = {}) => ({
 
 export const createStyleForRow = ({ target }: StyleModeType<Data> = {}) => ({
   title: "行",
-  options: ["background", { type: "size", config: { disableWidth: true } }],
+  options: ["background"],
   target,
 });
 

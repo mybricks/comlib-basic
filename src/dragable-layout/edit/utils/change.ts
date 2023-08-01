@@ -1,4 +1,4 @@
-import { Data, Row, Col, WidthUnitEnum } from "../../types";
+import { Data, Row, Col, WidthUnitEnum, HeightUnitEnum } from "../../types";
 import { uuid } from "../../../utils";
 import { getCol, getRow } from "./common";
 
@@ -13,9 +13,12 @@ export const createRow = ({
   return {
     key,
     height: "auto",
+    heightMode: HeightUnitEnum.Px,
     style: {
       flexDirection: "row",
-      position: "relative"
+      display: "flex",
+      flexWrap: "wrap",
+      position: "relative",
     },
     cols,
   };

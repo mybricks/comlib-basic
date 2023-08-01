@@ -4,13 +4,26 @@
     {
       "key": "row0",
       "height": "auto",
+      "heightMode": "auto",
       "style": {
         "flexDirection": "row",
-        "position": "relative"
+        "position": "relative",
+        "display": "flex",
+        "flexWrap": "wrap"
       },
       "cols": [
-        { "key": "col0", "width": 300, "widthMode": "auto", "span": 12 },
-        { "key": "col1", "width": 300, "widthMode": "auto", "span": 12 }
+        {
+          "key": "col0",
+          "width": 300,
+          "widthMode": "auto",
+          "span": 12
+        },
+        {
+          "key": "col1",
+          "width": 300,
+          "widthMode": "auto",
+          "span": 12
+        }
       ]
     }
   ]

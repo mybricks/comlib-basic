@@ -16,7 +16,7 @@ export default {
       cate[0].title = "配置";
       cate[0].items = [
         {
-          title: "宽度填充模式",
+          title: "宽度填充",
           type: "Select",
           options: [
             { value: WidthUnitEnum.Span, label: "24栅格" },
@@ -68,8 +68,8 @@ export default {
             get({ data, focusArea }: EditorResult<Data>) {
               return col?.width;
             },
-            set({ data, slot, focusArea }: EditorResult<Data>, value: number) {
-              col.width = value;
+            set({ data, slot, focusArea }: EditorResult<Data>, value: string) {
+              col.width = parseFloat(value);
             }
           }
         },
