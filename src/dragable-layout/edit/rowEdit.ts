@@ -149,7 +149,7 @@ export default {
         options: [
           { value: HeightUnitEnum.Auto, label: "自动填充" },
           { value: HeightUnitEnum.Px, label: "固定宽度" },
-          {value: HeightUnitEnum.Percent, label: "百分比" }
+          { value: HeightUnitEnum.Percent, label: "百分比" },
         ],
         value: {
           get(props: EditorResult<Data>) {
@@ -170,7 +170,9 @@ export default {
         },
         ifVisible(props: EditorResult<Data>) {
           const { row } = getRow(props);
-          return row.heightMode === HeightUnitEnum.Px;
+          return [HeightUnitEnum.Px, HeightUnitEnum.Percent].includes(
+            row.heightMode
+          );
         },
         value: {
           get(props: EditorResult<Data>) {
