@@ -30,6 +30,7 @@ export enum HeightUnitEnum {
   Percent = "%"
 }
 export interface Data {
+  resizable?: boolean;
   rows: Array<Row>;
   style?: React.CSSProperties;
 }

@@ -34,6 +34,21 @@ export default {
           },
         },
       ];
+      cate[1].title = "高级";
+      cate[1].items = [
+        {
+          title: "宽度可调整",
+          type: "switch",
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return !!data.resizable;
+            },
+            set({ data }: EditorResult<Data>, val: boolean) {
+              data.resizable = val;
+            },
+          },
+        },
+      ];
     },
     style: [
       createStyleForGrid({

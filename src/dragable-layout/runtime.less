@@ -8,7 +8,6 @@
 .row {
   display: flex !important;
   position: relative !important;
-  flex: 1;
   box-sizing: border-box;
   column-gap: 0 !important;
   &:not(:first-of-type) {
@@ -22,5 +21,26 @@
   height: 100%;
   &:not(:first-of-type) {
     margin-left: -1px;
+  }
+}
+
+.resizable {
+  position: relative;
+  &:not(:last-of-type) {
+    border-right: 1px solid rgba(221, 221, 221, 0.8);
+  }
+}
+
+.resizer {
+  width: 4px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: -2px;
+  z-index: 10000;
+  cursor: col-resize;
+  &:hover {
+    border-radius: 20px;
+    background-color: rgba(221, 221, 221, 0.8);
   }
 }

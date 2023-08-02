@@ -1,6 +1,7 @@
-import React, { useMemo, CSSProperties } from "react";
+import React, { useMemo, useCallback, CSSProperties } from "react";
 import { Data, Row, Col, WidthUnitEnum, HeightUnitEnum } from "./types";
 import { SpanToken } from './constant'
+import { dragable } from '../utils'
 import runtimeStyles from "./runtime.less";
 export default (props: RuntimeParams<Data>) => {
   const { data, style, inputs, onError, logger } = props;
@@ -61,8 +62,29 @@ const Col = ({
   row,
   col,
   slots,
+  data
 }: { row: Row; col: Col } & RuntimeParams<Data>) => {
   const { key, slotStyle } = col;
+
+  const dragWidth = useCallback((e) => {
+    let currentWidth;
+    dragable(e, ({ dpo }, state) => {
+      if (state === "start") {
+        const colEle = e.target.parentNode;
+        currentWidth = colEle.offsetWidth;
+        col.isDragging = true;
+      }
+      if (state === "ing") {
+        col.width = currentWidth += dpo.dx;
+        col.widthMode = WidthUnitEnum.Px;
+      }
+      if (state === "finish") {
+        col.isDragging = false;
+      }
+    });
+    e.stopPropagation();
+  }, []);
+
   const style = useMemo(() => {
     const style = { ...(col.style ?? {}) };
     if (col.widthMode === WidthUnitEnum.Auto) {
@@ -85,13 +107,27 @@ const Col = ({
     }
     return style
   }, [JSON.stringify(col.style), col.width, col.widthMode, col.span, JSON.stringify(row.style)])
+
+  const [resizer, resizableClass] = useMemo(() => {
+    if (data.resizable) {
+      const jsx = <div
+        className={runtimeStyles.resizer}
+        onMouseDown={(e) => dragWidth(e)}
+      />
+      const className = runtimeStyles.resizable;
+      return [jsx, className]
+    }
+    return []
+  }, [data.resizable])
+
   return (
     <div
-      className={`${runtimeStyles.col} mybricks-col`}
+      className={`${runtimeStyles.col} mybricks-col ${resizableClass}`}
       style={style}
       data-col-key={`${row.key},${key}`}
     >
       {slots[key].render({ style: slotStyle })}
+      {resizer}
     </div>
   );
 };
