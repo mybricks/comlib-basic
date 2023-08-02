@@ -144,11 +144,12 @@ export default {
         },
       }),
       {
-        title: "宽度填充",
+        title: "高度填充",
         type: "Select",
         options: [
           { value: HeightUnitEnum.Auto, label: "自动填充" },
           { value: HeightUnitEnum.Px, label: "固定宽度" },
+          {value: HeightUnitEnum.Percent, label: "百分比" }
         ],
         value: {
           get(props: EditorResult<Data>) {

@@ -51,7 +51,10 @@ const Row = ({
   const style = useMemo(() => {
     const style = { ...(row.style ?? {}) };
     if (row.heightMode === HeightUnitEnum.Px) {
-      style.height = row.height + "px";
+      style.height = typeof row.height === 'number' ? row.height + "px" : row.height;
+    }
+    if (row.heightMode === HeightUnitEnum.Percent) {
+      style.height = typeof row.height === 'number' ? row.height + "%" : row.height;
     }
     return style;
   }, [JSON.stringify(row.style), row.heightMode, row.height]);

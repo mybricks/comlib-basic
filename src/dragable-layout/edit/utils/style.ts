@@ -1,7 +1,7 @@
 import { Data } from "../../types";
 export const createStyleForGrid = ({ target }: StyleModeType<Data> = {}) => ({
   title: "容器",
-  options: ["background", "border", "padding"],
+  options: ["background", "border", "padding", "size"],
   target,
 });
 

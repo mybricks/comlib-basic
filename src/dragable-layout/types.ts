@@ -27,6 +27,7 @@ export enum WidthUnitEnum {
 export enum HeightUnitEnum {
   Px = "px",
   Auto = "auto",
+  Percent = "%"
 }
 export interface Data {
   rows: Array<Row>;
