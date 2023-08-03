@@ -1,0 +1,41 @@
+{
+  "title": "RSA加密",
+  "namespace": "mybricks.basic-comlib._rsa-encryption",
+  "version": "1.0.0",
+  "description": "RSA加密",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "rtType": "js",
+  "inputs": [
+    {
+      "id": "input",
+      "title": "输入项",
+      "schema": [
+        {
+          "name": "key",
+          "title": "密钥",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "title": "加密内容",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "encryptionValue",
+      "title": "输出加密结果",
+      "schema": {
+        "type": "string"
+      },
+      "editable": true
+    }
+  ]
+}
