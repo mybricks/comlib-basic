@@ -9,7 +9,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
   const ref = useRef<any>();
   const isMobile = env?.canvas?.type === 'mobile';
 
-  useEffect(()=>{
+  useEffect(() => {
     inputs['title']((val: string) => {
       if (typeof val !== 'string') {
         logger.error('title 必须为string类型');
@@ -17,7 +17,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         data.title = val;
       }
     });
-  },[])
+  }, [])
 
   //关闭按钮点击事件
   const handleClose = useCallback(() => {
@@ -99,92 +99,87 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
     )
   }
 
-  //调试态
-  const debugPopup = (
-    <div
-      className={css.debugMask}
-      ref={ref}>
-      <Modal
-        visible={true}
-        title={data.hideTitle ? undefined : env.i18n(data.title)}
-        width={isMobile ? '100%' : data.width}
-        footer={data.useFooter ? renderFooter() : null}
-        onCancel={handleClose}
-        centered={data.centered}
-        bodyStyle={data.bodyStyle}
 
-        maskClosable={data.maskClosable}
-        wrapClassName={css.container}
-        closable={data.closable}
-        getContainer={ref.current ? () => {
-          return ref.current
-        } : false}
-      >
-        {slots['body'].render()}
-      </Modal>
-    </div>
+  //调试态
+  const debugPopup = (<Modal
+    visible={true}
+    title={data.hideTitle ? undefined : env.i18n(data.title)}
+    width={isMobile ? '100%' : data.width}
+    footer={data.useFooter ? renderFooter() : null}
+    onCancel={handleClose}
+    centered={data.centered}
+    bodyStyle={data.bodyStyle}
+
+    maskClosable={data.maskClosable}
+    wrapClassName={css.container}
+    closable={data.closable}
+    getContainer={false}
+  >
+    {slots['body'].render()}
+  </Modal>
   )
   //预览态（发布态）
   const publishPopup = (
-    <div
-      ref={ref}>
-      <Modal
-        visible={true}
-        title={data.hideTitle ? undefined : env.i18n(data.title)}
-        width={isMobile ? '100%' : data.width}
-        footer={data.useFooter ? renderFooter() : null}
-        onCancel={handleClose}
-        centered={data.centered}
-        bodyStyle={data.bodyStyle}
+    <Modal
+      visible={true}
+      title={data.hideTitle ? undefined : env.i18n(data.title)}
+      width={isMobile ? '100%' : data.width}
+      footer={data.useFooter ? renderFooter() : null}
+      onCancel={handleClose}
+      centered={data.centered}
+      bodyStyle={data.bodyStyle}
 
-        maskClosable={data.maskClosable}
-        wrapClassName={css.container}
-        closable={data.closable}
-        getContainer={ref.current ? () => {
-          return ref.current
-        } : false}
-      >
-        {slots['body'].render()}
-      </Modal>
-    </div>
+      maskClosable={data.maskClosable}
+      wrapClassName={css.container}
+      closable={data.closable}
+      getContainer={false}
+    >
+      {slots['body'].render()}
+    </Modal>
   )
   //编辑态
   const editPopup = (
-    <div
-      className={css.antdMask}
-      ref={ref}
-    >
-      <Modal
-        visible={true}
-        title={data.hideTitle ? undefined : env.i18n(data.title)}
-        width={isMobile ? '100%' : data.width}
-        footer={data.useFooter ? renderFooter() : null}
-        onCancel={handleClose}
-        mask={false}
-        transitionName=""
-        bodyStyle={data.bodyStyle}
+    <Modal
+      visible={true}
+      title={data.hideTitle ? undefined : env.i18n(data.title)}
+      width={isMobile ? '100%' : data.width}
+      footer={data.useFooter ? renderFooter() : null}
+      onCancel={handleClose}
+      mask={false}
+      transitionName=""
+      bodyStyle={data.bodyStyle}
 
-        wrapClassName={css.container}
-        closable={data.closable}
-        getContainer={false}>
-        {slots['body'].render()}
-      </Modal>
-    </div>
+      wrapClassName={css.container}
+      closable={data.closable}
+      getContainer={false}
+    >
+      {slots['body'].render()}
+    </Modal>
   )
 
   //调试态
-  if (env.runtime && env.runtime.debug) {
-    return (
-      <div className={css.mask}>
-        {debugPopup}
+  const content = useMemo(() => {
+    if (env.runtime && env.runtime.debug) {
+      return (
+        <div
+          className={css.debugMask}
+        >
+          <div className={css.mask}>
+            {debugPopup}
+          </div>
+        </div>
+      )
+      //编辑态
+    } else if (env.edit) {
+      return <div
+        className={css.antdMask}
+      >
+        {editPopup}
       </div>
-    )
-    //编辑态
-  } else if (env.edit) {
-    return editPopup;
-  }
-  //预览态 (发布态)
-  return useMemo(() => {
-    return publishPopup;
-  }, [data.title])
+    }
+    //预览态 (发布态)
+    return publishPopup
+  }, [data.title, env.runtime, env.runtime.debug])
+
+  return content
 }
