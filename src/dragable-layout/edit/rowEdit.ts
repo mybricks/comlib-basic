@@ -28,12 +28,6 @@ export default {
               row.style = {
                 ...(row?.style ?? {}),
                 ...val,
-                margin:
-                  "columnGap" in val
-                    ? `0 -${(val.columnGap as number) / 2}px`
-                    : "unset",
-                position: "relative", //行不能绝对定位
-                display: "flex", //行flex布局
               };
             },
           },
@@ -171,7 +165,7 @@ export default {
         ifVisible(props: EditorResult<Data>) {
           const { row } = getRow(props);
           return [HeightUnitEnum.Px, HeightUnitEnum.Percent].includes(
-            row.heightMode
+            row?.heightMode
           );
         },
         value: {

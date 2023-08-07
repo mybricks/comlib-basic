@@ -4,7 +4,7 @@
   "namespace": "mybricks.basic-comlib.dragable-layout",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "布局",
   "icon": "./icon.svg",
   "runtime": "./runtime.tsx",

@@ -19,6 +19,8 @@ export const createRow = ({
       display: "flex",
       flexWrap: "wrap",
       position: "relative",
+      justifyContent: "flex-start",
+      alignItems: "flex-start",
     },
     cols,
   };

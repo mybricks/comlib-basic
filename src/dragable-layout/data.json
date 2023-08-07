@@ -9,7 +9,9 @@
         "flexDirection": "row",
         "position": "relative",
         "display": "flex",
-        "flexWrap": "wrap"
+        "flexWrap": "wrap",
+        "justifyContent": "flex-start",
+        "alignItems": "flex-start"
       },
       "cols": [
         {

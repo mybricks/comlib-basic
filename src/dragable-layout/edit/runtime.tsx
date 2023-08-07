@@ -35,7 +35,7 @@ const Row = ({
         row.isDragging = true;
       }
       if (state === "ing") {
-        row.height = currentHeight += dpo.dy;
+        row.height = currentHeight += dpo.dy / env?.canvas?.zoom ?? 1;
         row.heightMode = HeightUnitEnum.Px;
       }
       if (state === "finish") {
@@ -90,6 +90,7 @@ const Col = ({
   row,
   col,
   slots,
+  outputs,
   env,
 }: { row: Row; col: Col } & RuntimeParams<Data>) => {
   const { key, slotStyle } = col;
@@ -103,7 +104,7 @@ const Col = ({
         col.isDragging = true;
       }
       if (state === "ing") {
-        col.width = currentWidth += dpo.dx;
+        col.width = currentWidth += dpo.dx / env?.canvas?.zoom ?? 1;
         col.widthMode = WidthUnitEnum.Px;
       }
       if (state === "finish") {
@@ -132,14 +133,14 @@ const Col = ({
     /**
      * 栅格化实现
      */
-    if (
-      row.style &&
-      "columnGap" in row.style &&
-      (row.style.columnGap as number) > 0
-    ) {
-      style.paddingLeft = `${(row.style.columnGap as number) / 2}px`;
-      style.paddingRight = `${(row.style.columnGap as number) / 2}px`;
-    }
+    // if (
+    //   row.style &&
+    //   "columnGap" in row.style &&
+    //   (row.style.columnGap as number) > 0
+    // ) {
+    //   style.paddingLeft = `${(row.style.columnGap as number) / 2}px`;
+    //   style.paddingRight = `${(row.style.columnGap as number) / 2}px`;
+    // }
     return style;
   }, [
     JSON.stringify(col.style),
@@ -174,7 +175,6 @@ const Col = ({
       {slots[key]?.render({ style: slotStyle })}
       <div
         className={editStyle.resizeW}
-        style={{ right: row.style?.columnGap ? +row.style?.columnGap / 2 : 0 }}
         onMouseDown={(e) => dragWidth(e)}
       />
       {hasDragTarget && (

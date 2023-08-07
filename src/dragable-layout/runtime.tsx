@@ -26,7 +26,7 @@ export default (props: RuntimeParams<Data>) => {
   );
 
   const onResize = (row: Row, col: Col) => {
-    const index = row.cols.findIndex(({key}) => key===col.key)
+    const index = row.cols.findIndex(({ key }) => key === col.key)
     row.cols[index] = { ...col }
   }
 
@@ -73,6 +73,7 @@ const Col = ({
   col,
   slots,
   data,
+  outputs,
   onResize
 }: { row: Row; col: Col; onResize?: (row: Row, col: Col) => void } & RuntimeParams<Data>) => {
   const { key, slotStyle } = col;
@@ -114,14 +115,14 @@ const Col = ({
     /**
      * 栅格化实现
      */
-    if (
-      row.style &&
-      "columnGap" in row.style &&
-      (row.style.columnGap as number) > 0
-    ) {
-      style.paddingLeft = `${(row.style.columnGap as number) / 2}px`;
-      style.paddingRight = `${(row.style.columnGap as number) / 2}px`;
-    }
+    // if (
+    //   row.style &&
+    //   "columnGap" in row.style &&
+    //   (row.style.columnGap as number) > 0
+    // ) {
+    //   style.paddingLeft = `${(row.style.columnGap as number) / 2}px`;
+    //   style.paddingRight = `${(row.style.columnGap as number) / 2}px`;
+    // }
     return style;
   }, [
     JSON.stringify(col.style),
@@ -145,11 +146,17 @@ const Col = ({
     return [];
   }, [data.resizable]);
 
+  const handlerClick = (e) => {
+    !!key && outputs[key]();
+    e.stopPropagation();
+  }
+
   return (
     <div
       className={`${runtimeStyles.col} mybricks-col ${resizableClass}`}
       style={style}
       data-col-key={`${row.key},${key}`}
+      onClick={handlerClick}
     >
       {slots[key].render({ style: slotStyle })}
       {resizer}
