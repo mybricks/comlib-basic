@@ -35,7 +35,7 @@ const Row = ({
         row.isDragging = true;
       }
       if (state === "ing") {
-        row.height = currentHeight += dpo.dy / env?.canvas?.zoom ?? 1;
+        row.height = currentHeight += dpo.dy / (env?.canvas?.zoom ?? 1);
         row.heightMode = HeightUnitEnum.Px;
       }
       if (state === "finish") {
@@ -104,7 +104,7 @@ const Col = ({
         col.isDragging = true;
       }
       if (state === "ing") {
-        col.width = currentWidth += dpo.dx / env?.canvas?.zoom ?? 1;
+        col.width = currentWidth += dpo.dx / (env?.canvas?.zoom ?? 1);
         col.widthMode = WidthUnitEnum.Px;
       }
       if (state === "finish") {
