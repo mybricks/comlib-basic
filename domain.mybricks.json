@@ -1,6 +1,7 @@
 {
   "content": "",
   "commitInfo": "init",
+  "namespace": "mybricks.basic-comlib",
   "comAry": [
     "./src/_type-change/com.json",
     "./src/_get-data/com.json",
