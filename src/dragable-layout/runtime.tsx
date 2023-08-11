@@ -61,7 +61,7 @@ const Row = ({ row, children }: { row: Row; children?: React.ReactNode }) => {
     <div
       className={`${runtimeStyles.row} mybricks-row`}
       style={style}
-      data-row-key={row.key}
+      data-layout-row-key={row.key}
     >
       {children}
     </div>
@@ -155,7 +155,7 @@ const Col = ({
     <div
       className={`${runtimeStyles.col} mybricks-col ${resizableClass}`}
       style={style}
-      data-col-key={`${row.key},${key}`}
+      data-layout-col-key={`${row.key},${key}`}
       onClick={handlerClick}
     >
       {slots[key].render({ style: slotStyle })}

@@ -1,13 +1,13 @@
 import { Data, Row, Col } from "../../types";
 export const getRow = ({ data, focusArea }: EditorResult<Data>) => {
-  const { rowKey } = focusArea.dataset;
-  const row = data.rows.find((row) => row.key === rowKey) as Row;
-  const index = data.rows.findIndex((row) => row.key === rowKey) as number;
+  const { layoutRowKey } = focusArea.dataset;
+  const row = data.rows.find((row) => row.key === layoutRowKey) as Row;
+  const index = data.rows.findIndex((row) => row.key === layoutRowKey) as number;
   return { row, index };
 };
 
 export const getCol = ({ data, focusArea }: EditorResult<Data>) => {
-  const { colKey: key } = focusArea.dataset;
+  const { layoutColKey: key } = focusArea.dataset;
   const [rowKey, colKey] = key.split(",");
   const row = data.rows.find((row) => row.key === rowKey) as Row;
   const col = row?.cols.find((col) => col.key === colKey) as Col;

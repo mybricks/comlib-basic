@@ -8,7 +8,7 @@ import {
   getFilterSelector,
 } from "./utils";
 export default {
-  "[data-col-key]": {
+  "[data-layout-col-key]": {
     title: "列",
     items(props: EditorResult<Data>, ...cate) {
       if (!props.focusArea) return;
@@ -180,7 +180,7 @@ export default {
         const { id, focusArea } = props;
         const { row, col } = getCol(props);
         const key = `${row.key},${col.key}`;
-        return `.mybricks-layout div[data-col-key="${key}"]${getFilterSelector(
+        return `.mybricks-layout div[data-layout-col-key="${key}"]${getFilterSelector(
           id
         )}`;
       },

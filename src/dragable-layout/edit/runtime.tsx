@@ -67,7 +67,7 @@ const Row = ({
     <div
       className={`${runtimeStyle.row} mybricks-row`}
       style={style}
-      data-row-key={row.key}
+      data-layout-row-key={row.key}
     >
       {children}
       <div className={editStyle.resizeH} onMouseDown={(e) => dragHeight(e)} />
@@ -170,7 +170,7 @@ const Col = ({
     <div
       className={`${runtimeStyle.col} mybricks-col`}
       style={style}
-      data-col-key={`${row.key},${key}`}
+      data-layout-col-key={`${row.key},${key}`}
     >
       {slots[key]?.render({ style: slotStyle })}
       <div

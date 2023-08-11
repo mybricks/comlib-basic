@@ -8,7 +8,7 @@ import {
   getFilterSelector,
 } from "./utils";
 export default {
-  "[data-row-key]": {
+  "[data-layout-row-key]": {
     title: "行",
     items({ data, focusArea }: EditorResult<Data>, ...cate) {
       if (!focusArea) return;
