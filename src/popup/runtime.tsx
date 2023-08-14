@@ -157,8 +157,8 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
     </Modal>
   )
 
-  //调试态
-  const content = useMemo(() => {
+  const getContent = () => {
+    //调试态
     if (env.runtime && env.runtime.debug) {
       return (
         <div
@@ -179,7 +179,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
     }
     //预览态 (发布态)
     return publishPopup
-  }, [data.title, env.runtime, env.runtime.debug])
+  }
 
-  return content
+  return getContent()
 }
