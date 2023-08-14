@@ -132,7 +132,6 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
       maskClosable={data.maskClosable}
       wrapClassName={css.container}
       closable={data.closable}
-      getContainer={false}
     >
       {slots['body'].render()}
     </Modal>
