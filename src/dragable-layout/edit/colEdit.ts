@@ -7,6 +7,7 @@ import {
   createStyleForCol,
   getFilterSelector,
 } from "./utils";
+import { MAX_SPAN } from '../constant'
 export default {
   "[data-layout-col-key]": {
     title: "列",
@@ -37,10 +38,10 @@ export default {
           type: 'Slider',
           options: [
             {
-              max: 24,
+              max: MAX_SPAN,
               min: 1,
               steps: 1,
-              formatter: '/24'
+              formatter: `/${MAX_SPAN}`
             }
           ],
           ifVisible(props: EditorResult<Data>) {

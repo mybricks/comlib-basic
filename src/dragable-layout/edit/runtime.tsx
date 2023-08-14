@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from "react";
 import { Data, Row, Col, WidthUnitEnum, HeightUnitEnum } from "../types";
 import { dragable } from "../../utils";
-import { SpanToken } from "../constant";
+import { getPercentBySpan } from "../constant";
 import editStyle from "./edit.less";
 import runtimeStyle from "../runtime.less";
 export default (props: RuntimeParams<Data>) => {
@@ -126,7 +126,7 @@ const Col = ({
       style.width = typeof col.width === 'number' ? col.width + 'px' : col.width;
     }
     if (col.widthMode === WidthUnitEnum.Span) {
-      const percent = SpanToken[col.span ?? 12];
+      const percent = getPercentBySpan(col.span);
       style.flex = `0 0 ${percent}`;
       style.maxWidth = percent;
     }
