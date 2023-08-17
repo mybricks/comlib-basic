@@ -15,7 +15,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
     right: { paddingLeft: '50px' }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     inputs['title']((val: string) => {
       if (typeof val !== 'string') {
         logger.error('title 必须为string类型');
@@ -23,7 +23,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         data.title = val;
       }
     });
-  },[])
+  }, [])
 
   //关闭按钮点击事件
   const handleClose = useCallback(() => {
@@ -146,7 +146,6 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         bodyStyle={data.bodyStyle}
         placement={isMobile ? 'bottom' : data.placement}
         maskClosable={data.maskClosable}
-        getContainer={false}
       >
         <div className={css.slotContainer}>
           {slots['body'].render()}
