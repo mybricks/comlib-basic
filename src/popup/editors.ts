@@ -406,32 +406,7 @@ export default {
     ]
   },
   '[data-handler-button]': {
-    title: '按钮',
-    items: [
-      {
-        title: '显示',
-        type: 'Switch',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            return !!findConfig({ data, focusArea }, 'visible');
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-            findConfig({ data, focusArea }).visible = !!value;
-          }
-        }
-      },
-      {
-        title: '名称',
-        type: 'Text',
-        value: {
-          get({ data, focusArea }) {
-            return findConfig({ data, focusArea }, 'title')
-          },
-          set({ data, focusArea }, value: string) {
-            findConfig({ data, focusArea }).title = value;
-          }
-        }
-      },
+    style: [
       {
         title: '基础样式',
         items: [
@@ -460,6 +435,50 @@ export default {
         ]
       },
       icon('handlerButton'),
+      {
+        title: '默认',
+        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+        target({ focusArea, data }) {
+          return `button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]`;
+        }
+      },
+      {
+        title: 'Hover',
+        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+        target({ focusArea, data }) {
+          return `button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]:hover`;
+        },
+        domTarget({ focusArea, data }) {
+          return `button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]`;
+        }
+      }
+    ],
+    title: '按钮',
+    items: [
+      {
+        title: '显示',
+        type: 'Switch',
+        value: {
+          get({ data, focusArea }: EditorResult<Data>) {
+            return !!findConfig({ data, focusArea }, 'visible');
+          },
+          set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+            findConfig({ data, focusArea }).visible = !!value;
+          }
+        }
+      },
+      {
+        title: '名称',
+        type: 'Text',
+        value: {
+          get({ data, focusArea }) {
+            return findConfig({ data, focusArea }, 'title')
+          },
+          set({ data, focusArea }, value: string) {
+            findConfig({ data, focusArea }).title = value;
+          }
+        }
+      },
       {
         title: '事件',
         items: [
