@@ -437,14 +437,22 @@ export default {
       icon('handlerButton'),
       {
         title: '默认',
-        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+        options: [
+          'border', 
+          { type: 'font', config: { disableTextAlign: true } }, 
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
         target({ focusArea, data }) {
           return `button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]`;
         }
       },
       {
         title: 'Hover',
-        options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+        options: [
+          'border', 
+          { type: 'font', config: { disableTextAlign: true } }, 
+          { type: 'background', config: { disableBackgroundImage: true } }
+        ],
         target({ focusArea, data }) {
           return `button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]:hover`;
         },
