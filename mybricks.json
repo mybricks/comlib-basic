@@ -29,7 +29,8 @@
     "./src/_schema-simulator/com.json",
     "./src/_copy/com.json",
     "./src/dragable-layout/com.json",
-    "./src/_rsa-encryption/com.json"
+    "./src/_rsa-encryption/com.json",
+    "./src/grid/com.json"
   ],
   "componentType": "PC",
   "externals": [

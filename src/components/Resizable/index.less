@@ -1,0 +1,32 @@
+.resizable {
+  position: relative;
+}
+.resizer-r {
+  position: absolute;
+  height: 100%;
+  width: 4px;
+  top: 0;
+  right: -2px;
+  pointer-events: auto;
+  border-radius: 20px;
+  z-index: 1000;
+  user-select: none;
+  &:hover {
+    cursor: ew-resize !important;
+  }
+}
+
+.resizer-b {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  left: 0;
+  bottom: -2px;
+  pointer-events: auto;
+  border-radius: 20px;
+  z-index: 1000;
+  user-select: none;
+  &:hover {
+    cursor: ns-resize !important;
+  }
+}

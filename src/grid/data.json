@@ -1,0 +1,53 @@
+{
+  "rows": [
+    {
+      "key": "row0",
+      "height": "auto",
+      "heightMode": "auto",
+      "cols": [
+        {
+          "key": "col0",
+          "width": 33.33,
+          "widthMode": "auto",
+          "slotStyle": {
+            "display": "flex",
+            "position": "inherit",
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "flexWrap": "nowrap",
+            "overflow": "inherit"
+          }
+        },
+        {
+          "key": "col1",
+          "width": 33.33,
+          "widthMode": "auto",
+          "slotStyle": {
+            "display": "flex",
+            "position": "inherit",
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "flexWrap": "nowrap",
+            "overflow": "inherit"
+          }
+        },
+        {
+          "key": "col2",
+          "width": 33.33,
+          "widthMode": "auto",
+          "slotStyle": {
+            "display": "flex",
+            "position": "inherit",
+            "flexDirection": "column",
+            "alignItems": "flex-start",
+            "justifyContent": "flex-start",
+            "flexWrap": "nowrap",
+            "overflow": "inherit"
+          }
+        }
+      ]
+    }
+  ]
+}

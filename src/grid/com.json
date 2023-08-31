@@ -1,0 +1,66 @@
+{
+    "title": "布局（b）",
+    "visibility": true,
+    "namespace": "mybricks.basic-comlib.grid",
+    "author": "tangxiaoxin",
+    "author_name": "tangxiaoxin",
+    "version": "1.0.0",
+    "description": "布局（b）",
+    "icon": "./icon.svg",
+    "runtime": "./runtime.tsx",
+    "runtime.edit": "./editor/runtime.edit.tsx",
+    "data": "./data.json",
+    "editors": "./editor/edit.ts",
+    "inputs": [
+      {
+        "id": "setWidth",
+        "title": "设置列宽",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "coordinate": {
+              "title": "列坐标",
+              "type": "enum",
+              "items": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "width": {
+              "title": "宽度",
+              "type": "string"
+            }
+          }
+        },
+        "desc": "设置布局列宽度，如[1,2]表示第一行第二列"
+      }
+    ],
+    "slots": [
+      {
+        "id": "col0",
+        "title": "拖拽组件到这里"
+      },
+      {
+        "id": "col1",
+        "title": "拖拽组件到这里"
+      },
+      {
+        "id": "col2",
+        "title": "拖拽组件到这里"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "col0",
+        "title": "列点击"
+      },
+      {
+        "id": "col1",
+        "title": "列点击"
+      }
+    ]
+  }
