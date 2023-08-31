@@ -5,9 +5,9 @@ import {
   createStyleForCol,
   getFilterSelector,
   setSlotLayout,
-  removeEffect,
   appendCol,
-  deleteCol
+  deleteCol,
+  updateColWidthMode,
 } from "../utils";
 export default {
   "[data-layout-col-key]": {
@@ -30,7 +30,7 @@ export default {
               return col.widthMode ?? WidthUnitEnum.Auto;
             },
             set(props: EditorResult<Data>, value: WidthUnitEnum) {
-              col.widthMode = value;
+              updateColWidthMode(props, { widthMode: value });
             },
           },
         },
@@ -47,8 +47,8 @@ export default {
             get({ data, focusArea }: EditorResult<Data>) {
               return col?.width;
             },
-            set({ data, slot, focusArea }: EditorResult<Data>, value: string) {
-              col.width = parseFloat(value);
+            set(props: EditorResult<Data>, value: string) {
+              updateColWidthMode(props, { width: parseFloat(value) });
             },
           },
         },
@@ -67,8 +67,8 @@ export default {
             get({ data, focusArea }: EditorResult<Data>) {
               return col?.width;
             },
-            set({ data, slot, focusArea }: EditorResult<Data>, value: string) {
-              col.width = parseFloat(value);
+            set(props: EditorResult<Data>, value: string) {
+              updateColWidthMode(props, { width: parseFloat(value) });
             },
           },
         },
@@ -160,7 +160,7 @@ export default {
               type: "Button",
               value: {
                 set(props: EditorResult<Data>) {
-                  deleteCol(props)
+                  deleteCol(props);
                 },
               },
             },

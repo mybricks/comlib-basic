@@ -20,7 +20,7 @@ const defaultRow = {
     key: uuid(),
     width: 33.33,
     widthMode: WidthUnitEnum.Auto,
-    slotStyle: defaultSlotStyle
+    slotStyle: defaultSlotStyle,
   })),
 };
 
@@ -185,5 +185,20 @@ export const deleteCol = (props: EditorResult<Data>) => {
     const col = row.cols[index];
     removeEffect({ col, ...props });
     row.cols.splice(index, 1);
+  });
+};
+
+export const updateColWidthMode = (
+  props: EditorResult<Data>,
+  { width, widthMode }: Partial<{ width: number; widthMode: WidthUnitEnum }>
+) => {
+  const { index } = getCol(props);
+  props.data.rows.forEach((row) => {
+    if(width) {
+      row.cols[index].width = width;
+    }
+    if(widthMode){
+      row.cols[index].widthMode = widthMode;
+    }
   });
 };
