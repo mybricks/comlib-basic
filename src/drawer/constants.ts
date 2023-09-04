@@ -46,6 +46,7 @@ export interface Data {
   footerBtns: DialogButtonProps[];
   closable: boolean;
   maskClosable?: boolean;
+  isTitleCustom?: boolean
 }
 
 export const DefaultEvent = ['ok', 'cancel'];

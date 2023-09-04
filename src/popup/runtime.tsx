@@ -103,7 +103,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
   //调试态
   const debugPopup = (<Modal
     visible={true}
-    title={data.hideTitle ? undefined : env.i18n(data.title)}
+    title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() :env.i18n(data.title))}
     width={isMobile ? '100%' : data.width}
     footer={data.useFooter ? renderFooter() : null}
     onCancel={handleClose}
@@ -122,7 +122,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
   const publishPopup = (
     <Modal
       visible={true}
-      title={data.hideTitle ? undefined : env.i18n(data.title)}
+      title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() :env.i18n(data.title))}
       width={isMobile ? '100%' : data.width}
       footer={data.useFooter ? renderFooter() : null}
       onCancel={handleClose}
@@ -140,7 +140,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
   const editPopup = (
     <Modal
       visible={true}
-      title={data.hideTitle ? undefined : env.i18n(data.title)}
+      title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() :env.i18n(data.title))}
       width={isMobile ? '100%' : data.width}
       footer={data.useFooter ? renderFooter() : null}
       onCancel={handleClose}
