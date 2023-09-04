@@ -34,5 +34,6 @@
     }
   ],
   "closable": true,
-  "maskClosable": true
+  "maskClosable": true,
+  "isTitleCustom": false
 }

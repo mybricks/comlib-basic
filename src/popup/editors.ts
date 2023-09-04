@@ -303,12 +303,32 @@ export default {
       {
         title: '内容',
         type: 'text',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !data.isTitleCustom;
+        },
         value: {
           get({data}) {
             return data.title
           },
           set({data}, title) {
             data.title = title
+          }
+        }
+      },
+      {
+        title: '自定义',
+        type: 'switch',
+        value: {
+          get({data}) {
+            return data.isTitleCustom
+          },
+          set({data,slot}, value) {
+            data.isTitleCustom = value;
+            if (data.isTitleCustom === true) {
+              slot.add('title', '标题');
+            } else {
+              slot.remove('title', '标题');
+            }
           }
         }
       }

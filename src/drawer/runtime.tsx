@@ -113,7 +113,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
       ref={ref}>
       <Drawer
         visible={true}
-        title={data.hideTitle ? undefined : env.i18n(data.title)}
+        title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() :env.i18n(data.title))}
         width={data.width || 520}
         height={isMobile ? '100%' : data.height !== 0 ? data.height : 800}
         closable={data.closable}
@@ -137,7 +137,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
       ref={ref}>
       <Drawer
         visible={true}
-        title={data.hideTitle ? undefined : env.i18n(data.title)}
+        title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() :env.i18n(data.title))}
         width={data.width || 520}
         height={isMobile ? '100%' : data.height !== 0 ? data.height : 800}
         closable={data.closable}
@@ -162,7 +162,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
     >
       <Drawer
         visible={true}
-        title={data.hideTitle ? undefined : env.i18n(data.title)}
+        title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() :env.i18n(data.title))}
         closable={data.closable}
         footer={data.useFooter ? renderFooter() : null}
         onClose={handleClose}

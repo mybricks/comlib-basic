@@ -91,5 +91,12 @@ export default function ({
   if (!output.get('apply')) {
     output.add('apply', '应用', follwSchem)
   }
+
+  /**
+   * @description 1.0.17->1.0.18  新增 自定义标题
+   */
+  if(typeof data.isTitleCustom === "undefined"){
+    data.isTitleCustom = false
+  }
   return true;
 }
