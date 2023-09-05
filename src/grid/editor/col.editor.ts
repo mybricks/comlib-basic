@@ -184,9 +184,11 @@ export default {
     style: createStyleForCol({
       target(props: EditorResult<Data>) {
         const { id } = props;
-        const { row, col } = getCol(props);
+        const { row, col, index } = getCol(props);
         const key = `${row.key},${col.key}`;
-        return `.mybricks-layout div[data-layout-col-key="${key}"] div.slot:not(:is(#${id} div[data-isslot="1"] *))`;
+        return `.mybricks-layout .mybricks-row .mybricks-col:nth-child(${
+          index + 1
+        })${getFilterSelector(id)}`;
       },
     }),
   },
