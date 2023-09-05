@@ -1,11 +1,11 @@
 {
-    "title": "布局（b）",
+    "title": "布局",
     "visibility": true,
     "namespace": "mybricks.basic-comlib.grid",
     "author": "tangxiaoxin",
     "author_name": "tangxiaoxin",
-    "version": "1.0.1",
-    "description": "布局（b）",
+    "version": "1.0.2",
+    "description": "布局",
     "icon": "./icon.svg",
     "runtime": "./runtime.tsx",
     "runtime.edit": "./editor/runtime.edit.tsx",
@@ -47,10 +47,6 @@
       {
         "id": "col1",
         "title": "拖拽组件到这里"
-      },
-      {
-        "id": "col2",
-        "title": "拖拽组件到这里"
       }
     ],
     "outputs": [
@@ -60,10 +56,6 @@
       },
       {
         "id": "col1",
-        "title": "列点击"
-      },
-      {
-        "id": "col2",
         "title": "列点击"
       }
     ]

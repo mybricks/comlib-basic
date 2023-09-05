@@ -7,7 +7,7 @@
       "cols": [
         {
           "key": "col0",
-          "width": 33.33,
+          "width": 50,
           "widthMode": "auto",
           "slotStyle": {
             "display": "flex",
@@ -21,21 +21,7 @@
         },
         {
           "key": "col1",
-          "width": 33.33,
-          "widthMode": "auto",
-          "slotStyle": {
-            "display": "flex",
-            "position": "inherit",
-            "flexDirection": "column",
-            "alignItems": "flex-start",
-            "justifyContent": "flex-start",
-            "flexWrap": "nowrap",
-            "overflow": "inherit"
-          }
-        },
-        {
-          "key": "col2",
-          "width": 33.33,
+          "width": 50,
           "widthMode": "auto",
           "slotStyle": {
             "display": "flex",

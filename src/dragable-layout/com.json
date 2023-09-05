@@ -1,6 +1,6 @@
 {
   "title": "布局",
-  "visibility": true,
+  "visibility": false,
   "namespace": "mybricks.basic-comlib.dragable-layout",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",

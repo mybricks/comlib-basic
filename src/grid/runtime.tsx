@@ -57,11 +57,13 @@ export default ({
                     className={styles.resizer}
                     key={col.key}
                     onResize={({ width }) => {
-                      row.cols[index] = {
-                        ...col,
-                        width,
-                        widthMode: WidthUnitEnum.Px,
-                      };
+                      data.rows.forEach(row => {
+                        row.cols[index] = {
+                          ...col,
+                          width,
+                          widthMode: WidthUnitEnum.Px,
+                        };
+                      })
                     }}
                   >
                     <Col {...colProps}>

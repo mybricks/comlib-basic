@@ -16,9 +16,9 @@ const defaultRow = {
   key: uuid(),
   height: HeightUnitEnum.Auto,
   heightMode: HeightUnitEnum.Auto,
-  cols: Array.from({ length: 3 }, () => ({
+  cols: Array.from({ length: 2 }, () => ({
     key: uuid(),
-    width: 33.33,
+    width: 50,
     widthMode: WidthUnitEnum.Auto,
     slotStyle: defaultSlotStyle,
   })),
