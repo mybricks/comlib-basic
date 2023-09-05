@@ -186,9 +186,7 @@ export default {
         const { id } = props;
         const { row, col } = getCol(props);
         const key = `${row.key},${col.key}`;
-        return `.mybricks-layout div[data-layout-col-key="${key}"]${getFilterSelector(
-          id
-        )}`;
+        return `.mybricks-layout div[data-layout-col-key="${key}"] div.slot:not(:is(#${id} div[data-isslot="1"] *))`;
       },
     }),
   },

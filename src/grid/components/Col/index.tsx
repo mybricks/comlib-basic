@@ -19,9 +19,16 @@ export interface ColProps {
   col: ColType;
   className?: string;
   children?: ReactNode;
+  onClick?: (col: ColType) => void;
 }
 
-const Col = ({ col, className, children, ...rest }: ColProps) => {
+const Col = ({
+  col,
+  className,
+  children,
+  onClick,
+  ...rest
+}: ColProps) => {
   const colStyle = useMemo(() => {
     const style = { ...(col.style ?? {}) };
     if (col.widthMode === WidthUnitEnum.Auto) {
@@ -46,8 +53,17 @@ const Col = ({ col, className, children, ...rest }: ColProps) => {
     return classnames.join(" ");
   }, [className]);
 
+  const handleClick = (e, col) => {
+    typeof onClick ==='function' && onClick(col)
+  }
+
   return (
-    <div style={colStyle} className={classnames} {...rest}>
+    <div
+      style={colStyle}
+      className={classnames}
+      onClick={(e) => handleClick(e, col)}
+      {...rest}
+    >
       {children}
     </div>
   );

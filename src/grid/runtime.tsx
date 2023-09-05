@@ -1,12 +1,13 @@
 import React, { CSSProperties } from "react";
-import { Layout, Row, Col, WidthUnitEnum } from "./components";
-import { Data, DataColType, DataRowType } from "./types";
-import Resizable, { ResizableProps } from "../components/Resizable";
+import { Layout, Row, Col, WidthUnitEnum, ColType } from "./components";
+import { Data } from "./types";
+import Resizable from "../components/Resizable";
 import styles from "./runtime.less";
 export default ({
   data,
   slots,
   inputs,
+  outputs,
   logger,
   onError,
 }: RuntimeParams<Data>) => {
@@ -30,19 +31,31 @@ export default ({
     }
   );
 
+  const onColClick = ({ key }: ColType) => {
+    console.log(key)
+    !!key && outputs[key]();
+  };
+
   return (
     <Layout className={"mybricks-layout"}>
       {data.rows.map((row) => (
         <Row row={row} key={row.key} className={"mybricks-row"}>
           {row.cols.map((col, index) => {
+            const colProps = {
+              col,
+              key: col.key,
+              className: "mybricks-col",
+              'data-layout-col-key': `${row.key},${col.key}`,
+              onClick: onColClick,
+            };
             if (data.resizable) {
               const isLastCol = index === row.cols.length - 1;
               if (!isLastCol) {
                 return (
-                  <ResizableCol
+                  <Resizable
+                    axis="x"
+                    className={styles.resizer}
                     key={col.key}
-                    row={row}
-                    col={col}
                     onResize={({ width }) => {
                       row.cols[index] = {
                         ...col,
@@ -51,23 +64,22 @@ export default ({
                       };
                     }}
                   >
-                    {slots[col.key]?.render({ style: col.slotStyle })}
-                  </ResizableCol>
+                    <Col {...colProps}>
+                      {slots[col.key]?.render({ style: col.slotStyle })}
+                    </Col>
+                  </Resizable>
                 );
               } else {
+                colProps.col = { ...col, widthMode: WidthUnitEnum.Auto }; //last col auto
                 return (
-                  <Col
-                    col={{ ...col, widthMode: WidthUnitEnum.Auto }}
-                    key={col.key}
-                    className={"mybricks-col"}
-                  >
+                  <Col {...colProps}>
                     {slots[col.key]?.render({ style: col.slotStyle })}
                   </Col>
                 );
               }
             } else {
               return (
-                <Col col={col} key={col.key} className={"mybricks-col"}>
+                <Col {...colProps}>
                   {slots[col.key]?.render({ style: col.slotStyle })}
                 </Col>
               );
@@ -76,29 +88,5 @@ export default ({
         </Row>
       ))}
     </Layout>
-  );
-};
-
-const ResizableCol = ({
-  row,
-  col,
-  children,
-  onResize,
-}: {
-  row: DataRowType;
-  col: DataColType;
-  children?: React.ReactNode;
-  onResize: ResizableProps["onResize"];
-}) => {
-  return (
-    <Resizable axis="x" onResize={onResize} className={styles.resizer}>
-      <Col
-        col={col}
-        className={"mybricks-col"}
-        data-layout-col-key={`${row.key},${col.key}`}
-      >
-        {children}
-      </Col>
-    </Resizable>
   );
 };

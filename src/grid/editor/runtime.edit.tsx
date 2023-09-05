@@ -5,7 +5,7 @@ import { Layout, Row, Col, HeightUnitEnum, WidthUnitEnum } from "../components";
 
 import editStyles from "./edit.less";
 
-const DIVLayout = (props: RuntimeParams<Data>) => {
+const EditLayout = (props: RuntimeParams<Data>) => {
   const { data } = props;
   return (
     <Layout className={"mybricks-layout"}>
@@ -65,6 +65,7 @@ const ResizableRow = ({
         row.isDragging = false;
         editFinishRef.current && editFinishRef.current();
       }}
+      zoom={env.canvas?.zoom}
     >
       <Row row={row} className={"mybricks-row"} data-layout-row-key={row.key}>
         {children}
@@ -144,6 +145,7 @@ const ResizableCol = ({
           row.cols[index].isDragging = false;
         });
       }}
+      zoom={env.canvas?.zoom}
     >
       <Col
         col={col}
@@ -167,34 +169,4 @@ const ResizableCol = ({
   );
 };
 
-const TableLayout = (props: RuntimeParams<Data>) => {
-  const { data, slots } = props;
-  return (
-    <table className={editStyles.table}>
-      <tbody>
-        {data.rows.map((row) => (
-          <tr style={{ height: row.height }} key={row.key}>
-            {row.cols.map((col, index) => (
-              <Resizable
-                axis="both"
-                key={col.key}
-                onResize={(size) => {
-                  data.rows.forEach((row) => {
-                    row.height = size.height;
-                    row.cols[index].width = size.width;
-                  });
-                }}
-              >
-                <td style={{ width: col.width, height: row.height }}>
-                  {slots[col.key]?.render({ style: col.slotStyle })}
-                </td>
-              </Resizable>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-};
-
-export default DIVLayout;
+export default EditLayout;

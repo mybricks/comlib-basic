@@ -55,7 +55,7 @@ export default {
       }),
       createStyleForCol({
         target: ({ id }: EditorResult<Data>) =>
-          `.mybricks-layout .mybricks-col${getFilterSelector(id)}`,
+          `.mybricks-layout .mybricks-col div.slot:not(:is(#${id} div[data-isslot="1"] *))`,
       }),
     ],
   },

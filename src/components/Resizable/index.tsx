@@ -46,8 +46,8 @@ const Resizable = ({
     const dy = offset[1];
     onResize &&
       onResize({
-        width: Math.max(Math.floor(width + dx / zoom), 0),
-        height: Math.max(Math.floor(height + dy / zoom), 0),
+        width: Math.max(Math.floor((width + dx) / zoom), 0),
+        height: Math.max(Math.floor((height + dy) / zoom), 0),
       });
   };
 

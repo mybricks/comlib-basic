@@ -17,7 +17,7 @@ export const createStyleForCol = ({ target }: StyleModeType<Data>) => ({
     "background",
     "border",
     "padding",
-    { type: "size", config: { disableWidth: true } },
+    // { type: "size", config: { disableWidth: true } },
     "overflow",
   ],
   target,
