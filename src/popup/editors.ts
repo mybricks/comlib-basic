@@ -1,6 +1,6 @@
 import { isEmptyString, uuid } from './utils';
 import visibleOpt from './utils'
-import { DefaultEvent, AlignEnum, Data, DialogButtonProps, Location } from './constants';
+import { DefaultEvent, AlignEnum, Data, DialogButtonProps, Location, InputIds } from './constants';
 
 function findConfig({ data, focusArea }, propKey?: string) {
   if (!focusArea) return;
@@ -278,7 +278,10 @@ export default {
                 type: "default",
                 visible: true,
                 autoClose: true,
-                isConnected: false
+                isConnected: false,
+                disabled: false,
+                useDynamicDisabled: false,
+                useDynamicHidden: false
               };
               addBtn(defaultBtn);
               return defaultBtn;
@@ -481,80 +484,140 @@ export default {
         }
       }
     ],
-    title: '按钮',
-    items: [
-      {
-        title: '显示',
-        type: 'Switch',
-        value: {
-          get({ data, focusArea }: EditorResult<Data>) {
-            return !!findConfig({ data, focusArea }, 'visible');
-          },
-          set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-            findConfig({ data, focusArea }).visible = !!value;
-          }
-        }
-      },
-      {
-        title: '名称',
-        type: 'Text',
-        value: {
-          get({ data, focusArea }) {
-            return findConfig({ data, focusArea }, 'title')
-          },
-          set({ data, focusArea }, value: string) {
-            findConfig({ data, focusArea }).title = value;
-          }
-        }
-      },
-      {
-        title: '事件',
-        items: [
-          {
-            title: '点击自动关闭对话框',
-            description: '开启时, 单击按钮会自动关闭对话框。特殊处理：当需要向外输出数据时, 对话框在数据输出后关闭。',
-            type: 'switch',
-            ifVisible({ data, focusArea }: EditorResult<Data>) {
-              return findConfig({ data, focusArea }, 'id') === 'cancel';
+    items: ({}: EditorResult<Data>, cate1, cate2) => {
+      cate1.title = '按钮',
+      cate1.items = [
+        {
+          title: '显示',
+          type: 'Switch',
+          value: {
+            get({ data, focusArea }: EditorResult<Data>) {
+              return !!findConfig({ data, focusArea }, 'visible');
             },
-            value: {
-              get({ data, focusArea }: EditorResult<Data>) {
-                return findConfig({ data, focusArea }, 'autoClose');
-              },
-              set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-                findConfig({ data, focusArea }).autoClose = value;
-              }
-            }
-          },
-          {
-            title: '点击',
-            type: '_event',
-            options({data, focusArea}) {
-              return {
-                outputId: findConfig({ data, focusArea }, 'id')
-              }
+            set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+              findConfig({ data, focusArea }).visible = !!value;
             }
           }
-        ]
-      },
-      {
-        title: '删除',
-        type: 'Button',
-        ifVisible({ data, focusArea }) {
-          return !DefaultEvent.includes(findConfig({ data, focusArea }, 'id'));
         },
-        value: {
-          set({ data, output, focusArea }: EditorResult<Data>) {
-            const footerBtns = data.footerBtns;
-            const itemId = findConfig({ data, focusArea }, 'id');
-            const index = footerBtns.findIndex((item) => item.id === itemId);
-            const item = data.footerBtns[index];
-
-            output.remove(item.id);
-            footerBtns.splice(index, 1);
+        {
+          title: '名称',
+          type: 'Text',
+          value: {
+            get({ data, focusArea }) {
+              return findConfig({ data, focusArea }, 'title')
+            },
+            set({ data, focusArea }, value: string) {
+              findConfig({ data, focusArea }).title = value;
+            }
+          }
+        },
+        {
+          title: '事件',
+          items: [
+            {
+              title: '点击自动关闭对话框',
+              description: '开启时, 单击按钮会自动关闭对话框。特殊处理：当需要向外输出数据时, 对话框在数据输出后关闭。',
+              type: 'switch',
+              ifVisible({ data, focusArea }: EditorResult<Data>) {
+                return findConfig({ data, focusArea }, 'id') === 'cancel';
+              },
+              value: {
+                get({ data, focusArea }: EditorResult<Data>) {
+                  return findConfig({ data, focusArea }, 'autoClose');
+                },
+                set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+                  findConfig({ data, focusArea }).autoClose = value;
+                }
+              }
+            },
+            {
+              title: '点击',
+              type: '_event',
+              options({data, focusArea}) {
+                return {
+                  outputId: findConfig({ data, focusArea }, 'id')
+                }
+              }
+            }
+          ]
+        },
+        {
+          title: '删除',
+          type: 'Button',
+          ifVisible({ data, focusArea }) {
+            return !DefaultEvent.includes(findConfig({ data, focusArea }, 'id'));
+          },
+          value: {
+            set({ data, output, focusArea }: EditorResult<Data>) {
+              const footerBtns = data.footerBtns;
+              const itemId = findConfig({ data, focusArea }, 'id');
+              const index = footerBtns.findIndex((item) => item.id === itemId);
+              const item = data.footerBtns[index];
+  
+              output.remove(item.id);
+              footerBtns.splice(index, 1);
+            }
           }
         }
-      }
-    ]
+      ],
+      cate2.title = '高级',
+      cate2.items = [
+        {
+          title: '动态启用/禁用',
+          type: 'Switch',
+          value: {
+            get({ data, focusArea }: EditorResult<Data>) {
+              return !!findConfig({ data, focusArea }, 'useDynamicDisabled');
+            },
+            set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+              if (!focusArea) return;
+              const id = findConfig({ data, focusArea }, 'id');
+              const title =  findConfig({ data, focusArea }, 'title');
+              const eventKey1 = `${InputIds.SetEnable}_${id}`;
+              const eventKey2 = `${InputIds.SetDisable}_${id}`;
+      
+              const event1 = input.get(eventKey1);
+              const event2 = input.get(eventKey2);
+              if (value) {
+                !event1 && input.add(eventKey1, `启用-"${title}"`, {type: 'any'});
+                !event2 && input.add(eventKey2, `禁用-"${title}"`, {type: 'any'});
+              } else {
+                event1 && input.remove(eventKey1);
+                event2 && input.remove(eventKey2);
+              }
+              findConfig({ data, focusArea }).useDynamicDisabled = value;
+            }
+          }
+        },
+        {
+          title: '动态显示/隐藏',
+          type: 'Switch',
+          value: {
+            get({ data, focusArea }: EditorResult<Data>) {
+              return !!findConfig({ data, focusArea }, 'useDynamicHidden')
+            },
+            set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+              if (!focusArea) return;
+              const id = findConfig({ data, focusArea }, 'id');
+              const title =  findConfig({ data, focusArea }, 'title');
+              const eventKey1 = `${InputIds.SetShow}_${id}`;
+              const eventKey2 = `${InputIds.SetHidden}_${id}`;
+      
+              const event1 = input.get(eventKey1);
+              const event2 = input.get(eventKey2);
+              if (value) {
+                !event1 && input.add(eventKey1, `显示-"${title}"`, {type: 'any'});
+                !event2 && input.add(eventKey2, `隐藏-"${title}"`, {type: 'any'});
+              } else {
+                event1 && input.remove(eventKey1);
+                event2 && input.remove(eventKey2);
+              }
+              findConfig({ data, focusArea }).useDynamicHidden = value;
+            }
+          }
+        }
+      ]
+    }
+    
   }
 }

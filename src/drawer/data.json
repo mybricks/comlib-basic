@@ -18,7 +18,10 @@
       "type": "default",
       "visible": true,
       "autoClose": true,
-      "isConnected": false
+      "isConnected": false,
+      "useDynamicDisabled": false,
+      "useDynamicHidden": false,
+      "disabled": false
     },
     {
       "id": "ok",
@@ -31,7 +34,10 @@
       "showText": true,
       "visible": true,
       "autoClose": true,
-      "isConnected": false
+      "isConnected": false,
+      "useDynamicDisabled": false,
+      "useDynamicHidden": false,
+      "disabled": false
     }
   ],
   "closable": true,

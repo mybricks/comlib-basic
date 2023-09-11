@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useEffect } from 'react';
-import { AlignEnum, Location } from './constants';
+import { AlignEnum, Location, InputIds } from './constants';
 import { Button, Modal } from 'antd';
 import * as Icons from '@ant-design/icons';
 
@@ -17,6 +17,23 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         data.title = val;
       }
     });
+    if (env.runtime) {
+      (data.footerBtns || []).forEach((item) => {
+        const { id } = item;
+        inputs[`${InputIds.SetDisable}_${id}`]?.(() => {
+          item.disabled = true;
+        });
+        inputs[`${InputIds.SetEnable}_${id}`]?.(() => {
+          item.disabled = false;
+        });
+        inputs[`${InputIds.SetHidden}_${id}`]?.(() => {
+          item.visible = false;
+        });
+        inputs[`${InputIds.SetShow}_${id}`]?.(() => {
+          item.visible = true;
+        })
+      });
+    }
   }, [])
 
   //关闭按钮点击事件
@@ -78,7 +95,8 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
             useIcon,
             location,
             icon,
-            showText
+            showText,
+            disabled
           } = item;
           const Icon = useIcon && Icons && Icons[icon as string]?.render();
           return (
@@ -88,6 +106,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
               key={id}
               type={type}
               hidden={!visible}
+              disabled={disabled}
             >
               {useIcon && location !== Location.BACK && Icon}
               {showText && env.i18n(title)}

@@ -98,5 +98,20 @@ export default function ({
   if(typeof data.isTitleCustom === "undefined"){
     data.isTitleCustom = false
   }
+
+  /**
+   * @description 1.0.18->1.0.19  新增 操作项，禁用启用
+  */
+  data.footerBtns?.forEach(act => {
+    if (act && act.disabled === undefined) {
+      act.disabled = false;
+    }
+    if(act && act.useDynamicDisabled === undefined){
+      act.useDynamicDisabled = false;
+    }
+    if(act && act.useDynamicHidden === undefined){
+      act.useDynamicHidden = false;
+    }
+  })
   return true;
 }
