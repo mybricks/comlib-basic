@@ -284,7 +284,10 @@ export default {
                 type: "default",
                 visible: true,
                 autoClose: true,
-                isConnected: false
+                isConnected: false,
+                disabled: false,
+                useDynamicDisabled: false,
+                useDynamicHidden: false
               };
               addBtn(defaultBtn);
               return defaultBtn;
