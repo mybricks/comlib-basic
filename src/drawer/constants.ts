@@ -32,6 +32,9 @@ export interface DialogButtonProps {
   useBtnLoading?: boolean;
   autoClose?: boolean;
   type: string;
+  useDynamicDisabled: boolean;
+  useDynamicHidden: boolean;
+  disabled: boolean;
 }
 
 export interface Data {
@@ -57,3 +60,11 @@ export enum AlignEnum {
   Center = 'center',
   FlexEnd = 'flex-end'
 }
+
+export const InputIds = {
+  SetDisable: 'setDisable',
+  SetEnable: 'setEnable',
+
+  SetHidden: 'setHidden',
+  SetShow: 'setShow',
+};
