@@ -91,7 +91,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
       <div
         data-toolbar
         className={isMobile ? css.mobileFooter : "toolbar"}
-        style={{ justifyContent: data.footerLayout || AlignEnum.FlexEnd }}>
+        style={{ justifyContent: data.footerLayout || AlignEnum.FlexEnd, display: 'flex' }}>
         {(data.footerBtns || []).map((item) => {
           const {
             title,
