@@ -5,7 +5,7 @@ import * as Icons from '@ant-design/icons';
 
 import css from './runtime.less'
 
-export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
+export default function ({ id, env, _env, data, slots, outputs, inputs, logger }) {
   const ref = useRef<any>();
   const isMobile = env?.canvas?.type === 'mobile';
 
@@ -149,7 +149,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
       bodyStyle={data.bodyStyle}
 
       maskClosable={data.maskClosable}
-      wrapClassName={css.container}
+      wrapClassName={`${css.container} ${id}`}
       closable={data.closable}
     >
       {slots['body'].render()}

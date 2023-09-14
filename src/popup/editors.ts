@@ -468,8 +468,9 @@ export default {
           { type: 'font', config: { disableTextAlign: true } }, 
           { type: 'background', config: { disableBackgroundImage: true } }
         ],
+        global: true,
         target({ focusArea, data }) {
-          return `button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]`;
+          return `.{id} button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]`;
         }
       },
       {
@@ -479,8 +480,9 @@ export default {
           { type: 'font', config: { disableTextAlign: true } }, 
           { type: 'background', config: { disableBackgroundImage: true } }
         ],
+        global: true,
         target({ focusArea, data }) {
-          return `button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]:hover`;
+          return `.{id} button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]:hover`;
         },
         domTarget({ focusArea, data }) {
           return `button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]`;
