@@ -40,3 +40,7 @@ export const rotateTriangle = (angle: number) => {
   
   return `polygon(${point1[0]}% ${point1[1]}%, ${point2[0]}% ${point2[1]}%, ${point3[0]}% ${point3[1]}%)`;
 }
+
+export const INPUTS = {
+  SetStyle: 'setStyle',
+}
