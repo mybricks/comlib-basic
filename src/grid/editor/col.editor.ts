@@ -186,9 +186,9 @@ export default {
         const { id } = props;
         const { row, col, index } = getCol(props);
         const key = `${row.key},${col.key}`;
-        return `.mybricks-layout .mybricks-row .mybricks-col:nth-child(${
+        return `> .mybricks-layout > .mybricks-row > .mybricks-col:nth-child(${
           index + 1
-        })${getFilterSelector(id)}`;
+        })`;
       },
     }),
   },

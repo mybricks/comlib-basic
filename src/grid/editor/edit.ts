@@ -50,12 +50,11 @@ export default {
     },
     style: [
       createStyleForGrid({
-        target: ({ id }: EditorResult<Data>) =>
-          `.mybricks-layout${getFilterSelector(id)}`,
+        target: ({ id }: EditorResult<Data>) => `> .mybricks-layout`,
       }),
       createStyleForCol({
         target: ({ id }: EditorResult<Data>) =>
-          `.mybricks-layout .mybricks-col${getFilterSelector(id)}`,
+          `> .mybricks-layout > .mybricks-row > .mybricks-col`,
       }),
     ],
   },

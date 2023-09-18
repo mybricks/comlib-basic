@@ -72,6 +72,7 @@ interface EditorResult<T> {
 }
 
 interface UpgradeParams<T> {
+  id: string
   data: T
   output: any
   input: any
@@ -80,6 +81,8 @@ interface UpgradeParams<T> {
   setAutoRun: (auto?: boolean) => void
   isAutoRun: () => boolean
   setDeclaredStyle: (selector: string, style: React.CSSProperties) => void
+  getDeclaredStyle: (selector: string) => ({selector: string, css: React.CSSProperties})
+  removeDeclaredStyle: (selector: string) => void
 }
 
 type StyleModeType<T> = Partial<{
