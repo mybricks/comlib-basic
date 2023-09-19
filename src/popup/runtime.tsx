@@ -120,22 +120,23 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
 
 
   //调试态
-  const debugPopup = (<Modal
-    visible={true}
-    title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() :env.i18n(data.title))}
-    width={isMobile ? '100%' : data.width}
-    footer={data.useFooter ? renderFooter() : null}
-    onCancel={handleClose}
-    centered={data.centered}
-    bodyStyle={data.bodyStyle}
+  const debugPopup = (
+      <Modal
+        visible={true}
+        title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() :env.i18n(data.title))}
+        width={isMobile ? '100%' : data.width}
+        footer={data.useFooter ? renderFooter() : null}
+        onCancel={handleClose}
+        centered={data.centered}
+        bodyStyle={data.bodyStyle}
 
-    maskClosable={data.maskClosable}
-    wrapClassName={css.container}
-    closable={data.closable}
-    getContainer={false}
-  >
+        maskClosable={data.maskClosable}
+        wrapClassName={css.container}
+        closable={data.closable}
+        getContainer={false}
+      >
     {slots['body'].render()}
-  </Modal>
+    </Modal>
   )
   //预览态（发布态）
   const publishPopup = (

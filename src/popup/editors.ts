@@ -156,6 +156,12 @@ export default {
         options: [ { type: 'background', config: { disableBackgroundImage: true } } ],
         global: true,
         target: '.{id} .ant-modal-body'
+      },
+      {
+        title: '整体',
+        options: [ 'background', 'padding' ],
+        global: true,
+        target: [`.{id} .ant-modal-content`]
       }
     ],
     items: ({}, cate1, cate2) => {
