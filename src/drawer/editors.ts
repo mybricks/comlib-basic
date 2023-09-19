@@ -172,7 +172,8 @@ export default {
       {
         title: '内容',
         options: [ { type: 'background', config: { disableBackgroundImage: true } } ],
-        target: '.ant-drawer-body'
+        global: true,
+        target: '.{id} .ant-drawer-body'
       }
     ],
     items: ({}, cate1, cate2) => {

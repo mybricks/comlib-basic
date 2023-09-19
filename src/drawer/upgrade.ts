@@ -3,7 +3,10 @@
 export default function ({
   input,
   output,
-  data
+  data,
+  setDeclaredStyle,
+  getDeclaredStyle,
+  removeDeclaredStyle
 }): boolean {
   /**
    * @description 1.0.2->1.0.3  新增 outputs -> apply(应用), inputs -> title(修改标题)
@@ -43,5 +46,19 @@ export default function ({
       act.useDynamicHidden = false;
     }
   })
+
+  /**
+   * @description 1.0.8->1.0.9  更改target
+  */
+  const preBodyStyle = getDeclaredStyle(`.ant-drawer-body`);
+
+  let bodyCss: React.CSSProperties = {};
+  
+  if (preBodyStyle) {
+    bodyCss = { ...preBodyStyle.css };
+    removeDeclaredStyle(`.ant-drawer-body`);
+    setDeclaredStyle('.{id} .ant-drawer-body', bodyCss);
+  }
+
   return true;
 }

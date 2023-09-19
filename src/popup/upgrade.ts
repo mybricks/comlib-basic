@@ -3,7 +3,10 @@
 export default function ({
   data,
   output,
-  input
+  input,
+  setDeclaredStyle,
+  getDeclaredStyle,
+  removeDeclaredStyle
 }): boolean {
   /**
    * @description 隐藏标题（hideTitle）、垂直居中（centered）、对话框宽度（width）、显示工具条（useFooter）、页脚布局（footerLayout）、
@@ -111,6 +114,41 @@ export default function ({
     }
     if(act && act.useDynamicHidden === undefined){
       act.useDynamicHidden = false;
+    }
+  })
+
+
+  /**
+   * @description 1.0.20->1.0.21  更改target
+  */
+  const preBodyStyle = getDeclaredStyle(`.ant-modal-body`);
+  const preStyleList = data.footerBtns.map((item)=>{
+    getDeclaredStyle(`button[data-handler-button="${item.id}"]`);
+  })
+  const preHoverStyleList = data.footerBtns.map((item)=>{
+    getDeclaredStyle(`button[data-handler-button="${item.id}"]:hover`);
+  })
+
+
+  let bodyCss: React.CSSProperties = {}, css: React.CSSProperties = {}, hoverCss: React.CSSProperties = {};
+  
+  if (preBodyStyle) {
+    bodyCss = { ...preBodyStyle.css };
+    removeDeclaredStyle(`.ant-modal-body`);
+    setDeclaredStyle('.{id} .ant-modal-body', bodyCss);
+  }
+  preStyleList.map((item)=>{
+    if (item) {
+      css = { ...item.css };
+      removeDeclaredStyle(`button[data-handler-button="${item.id}"]`);
+      setDeclaredStyle('.{id} button[data-handler-button="${item.id}"]', css);
+    }
+  })
+  preHoverStyleList.map((item)=>{
+    if(item) {
+      hoverCss = { ...item.css };
+      removeDeclaredStyle(`button[data-handler-button="${item.id}"]:hover`);
+      setDeclaredStyle('.{id} button[data-handler-button="${item.id}"]:hover', css);
     }
   })
   return true;
