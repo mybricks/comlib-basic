@@ -154,7 +154,8 @@ export default {
       {
         title: '内容',
         options: [ { type: 'background', config: { disableBackgroundImage: true } } ],
-        target: '.ant-modal-body'
+        global: true,
+        target: '.{id} .ant-modal-body'
       }
     ],
     items: ({}, cate1, cate2) => {
