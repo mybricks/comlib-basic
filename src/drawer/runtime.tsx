@@ -142,6 +142,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         bodyStyle={data.bodyStyle}
         placement={isMobile ? 'bottom' : data.placement}
         maskClosable={data.maskClosable}
+        keyboard={data.keyboard}
         getContainer={false}
       >
         <div className={css.slotContainer}>
@@ -165,6 +166,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         bodyStyle={data.bodyStyle}
         placement={isMobile ? 'bottom' : data.placement}
         maskClosable={data.maskClosable}
+        keyboard={data.keyboard}
       >
         <div className={css.slotContainer}>
           {slots['body'].render()}

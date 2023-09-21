@@ -131,6 +131,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
         bodyStyle={data.bodyStyle}
 
         maskClosable={data.maskClosable}
+        keyboard={data.keyboard}
         wrapClassName={css.container}
         closable={data.closable}
         getContainer={false}
@@ -150,6 +151,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
       bodyStyle={data.bodyStyle}
 
       maskClosable={data.maskClosable}
+      keyboard={data.keyboard}
       wrapClassName={`${css.container} ${id}`}
       closable={data.closable}
     >

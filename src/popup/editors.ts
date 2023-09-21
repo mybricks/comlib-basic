@@ -229,6 +229,18 @@ export default {
             }
           }
         },
+        {
+          title: '键盘esc关闭',
+          type: 'switch',
+          value: {
+            get({ data }) {
+              return !!data.keyboard;
+            },
+            set({ data }, val: boolean) {
+              data.keyboard = val;
+            }
+          }
+        }
       ];
       cate2.title = '操作区';
       cate2.items = [
@@ -308,41 +320,53 @@ export default {
     }
   },
   '.ant-modal-title': {
-    title: '标题',
-    items: [
+    style: [
       {
-        title: '内容',
-        type: 'text',
-        ifVisible({ data }: EditorResult<Data>) {
-          return !data.isTitleCustom;
-        },
-        value: {
-          get({data}) {
-            return data.title
-          },
-          set({data}, title) {
-            data.title = title
-          }
+        title: '默认',
+        options: [ 'font' ],
+        global: true,
+        target({ id }) {
+          return `.{id} .ant-modal-title`;
         }
       },
-      {
-        title: '自定义',
-        type: 'switch',
-        value: {
-          get({data}) {
-            return data.isTitleCustom
+    ],
+    items: ({}: EditorResult<Data>, cate1) => {
+      cate1.title = '标题',
+      cate1.items = [
+        {
+          title: '内容',
+          type: 'text',
+          ifVisible({ data }: EditorResult<Data>) {
+            return !data.isTitleCustom;
           },
-          set({data,slot}, value) {
-            data.isTitleCustom = value;
-            if (data.isTitleCustom === true) {
-              slot.add('title', '标题');
-            } else {
-              slot.remove('title', '标题');
+          value: {
+            get({data}) {
+              return data.title
+            },
+            set({data}, title) {
+              data.title = title
+            }
+          }
+        },
+        {
+          title: '自定义',
+          type: 'switch',
+          value: {
+            get({data}) {
+              return data.isTitleCustom
+            },
+            set({data,slot}, value) {
+              data.isTitleCustom = value;
+              if (data.isTitleCustom === true) {
+                slot.add('title', '标题');
+              } else {
+                slot.remove('title', '标题');
+              }
             }
           }
         }
-      }
-    ]
+      ]
+    },
   },
   '.ant-modal-close': {
     title: '关闭按钮',
@@ -469,31 +493,35 @@ export default {
       },
       icon('handlerButton'),
       {
-        title: '默认',
-        options: [
-          'border', 
-          { type: 'font', config: { disableTextAlign: true } }, 
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        global: true,
-        target({ focusArea, data }) {
-          return `.{id} button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]`;
-        }
-      },
-      {
-        title: 'Hover',
-        options: [
-          'border', 
-          { type: 'font', config: { disableTextAlign: true } }, 
-          { type: 'background', config: { disableBackgroundImage: true } }
-        ],
-        global: true,
-        target({ focusArea, data }) {
-          return `.{id} button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]:hover`;
-        },
-        domTarget({ focusArea, data }) {
-          return `button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]`;
-        }
+        items: [
+          {
+             catelog: '默认',
+             options: [
+               'border', 
+               { type: 'font', config: { disableTextAlign: true } }, 
+               { type: 'background', config: { disableBackgroundImage: true } }
+             ],
+             global: true,
+             target({ focusArea, data }) {
+               return `.{id} button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]`;
+             }
+           },
+           {
+             catelog: 'Hover',
+             options: [
+               'border', 
+               { type: 'font', config: { disableTextAlign: true } }, 
+               { type: 'background', config: { disableBackgroundImage: true } }
+             ],
+             global: true,
+             target({ focusArea, data }) {
+               return `.{id} button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]:hover`;
+             },
+             domTarget({ focusArea, data }) {
+               return `button[data-handler-button="${findConfig({ data, focusArea }, 'id')}"]`;
+             }
+           }
+        ]
       }
     ],
     items: ({}: EditorResult<Data>, cate1, cate2) => {

@@ -42,5 +42,6 @@
   ],
   "closable": true,
   "maskClosable": true,
-  "isTitleCustom": false
+  "isTitleCustom": false,
+  "keyboard": true
 }

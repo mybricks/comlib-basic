@@ -229,6 +229,18 @@ export default {
             }
           }
         },
+        {
+          title: '键盘esc关闭',
+          type: 'switch',
+          value: {
+            get({ data }) {
+              return !!data.keyboard;
+            },
+            set({ data }, val: boolean) {
+              data.keyboard = val;
+            }
+          }
+        }
       ];
       cate2.title = '操作区';
       cate2.items = [

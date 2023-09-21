@@ -60,5 +60,12 @@ export default function ({
     setDeclaredStyle('.{id} .ant-drawer-body', bodyCss);
   }
 
+  /**
+   * @description 1.0.9->1.0.10  新增是否支持键盘 esc 关闭 keyboard
+  */
+  if(typeof data.keyboard === "undefined"){
+    data.keyboard = true
+  }
+
   return true;
 }
