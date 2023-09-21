@@ -152,10 +152,22 @@ export default {
         }
       },
       {
-        title: '内容',
-        options: [ { type: 'background', config: { disableBackgroundImage: true } } ],
+        title: '顶部区域',
+        options: ['background', 'border', 'padding' ],
+        global: true,
+        target: '.{id} .ant-modal-header'
+      },
+      {
+        title: '内容区域',
+        options: [ 'background', 'padding' ],
         global: true,
         target: '.{id} .ant-modal-body'
+      },
+      {
+        title: '底部区域',
+        options: [ 'background', 'border', 'padding' ],
+        global: true,
+        target: '.{id} .ant-modal-footer'
       },
       {
         title: '整体',
@@ -369,6 +381,24 @@ export default {
     },
   },
   '.ant-modal-close': {
+    style: [
+      {
+        catelog: '默认',
+        options: [ { type: 'font', config: { disableTextAlign: true } } ],
+        global: true,
+        target({ id }) {
+          return `.{id} .anticon`;
+        }
+      },
+      {
+        catelog: 'Hover',
+        options: [ { type: 'font', config: { disableTextAlign: true } } ],
+        global: true,
+        target({ id }) {
+          return `.{id} .anticon:hover`;
+        }
+      }
+    ],
     title: '关闭按钮',
     items: [
       {
@@ -497,7 +527,7 @@ export default {
           {
              catelog: '默认',
              options: [
-               'border', 
+               'border',
                { type: 'font', config: { disableTextAlign: true } }, 
                { type: 'background', config: { disableBackgroundImage: true } }
              ],
