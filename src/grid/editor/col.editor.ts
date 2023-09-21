@@ -122,15 +122,22 @@ export default {
               },
               value: {
                 set(props: EditorResult<Data>) {
-                  const { index } = getCol(props);
+                  const { row, index } = getCol(props);
                   if (index < 1) return;
-                  const { data } = props;
-                  data.rows.forEach((row) => {
+                  if (row.useCustom) {
                     [row.cols[index - 1], row.cols[index]] = [
                       row.cols[index],
                       row.cols[index - 1],
                     ];
-                  });
+                  } else {
+                    const { data } = props;
+                    data.rows.filter(row => !row.useCustom).forEach((row) => {
+                      [row.cols[index - 1], row.cols[index]] = [
+                        row.cols[index],
+                        row.cols[index - 1],
+                      ];
+                    });
+                  }
                 },
               },
             },
@@ -145,13 +152,20 @@ export default {
                 set(props: EditorResult<Data>) {
                   const { row, index } = getCol(props);
                   if (index === row.cols.length - 1) return;
-                  const { data } = props;
-                  data.rows.forEach((row) => {
+                  if (row.useCustom) {
                     [row.cols[index], row.cols[index + 1]] = [
                       row.cols[index + 1],
                       row.cols[index],
                     ];
-                  });
+                  } else {
+                    const { data } = props;
+                    data.rows.filter(row => !row.useCustom).forEach((row) => {
+                      [row.cols[index], row.cols[index + 1]] = [
+                        row.cols[index + 1],
+                        row.cols[index],
+                      ];
+                    });
+                  }
                 },
               },
             },

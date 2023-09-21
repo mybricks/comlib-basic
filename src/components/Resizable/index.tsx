@@ -6,6 +6,7 @@ import React, {
   CSSProperties,
   useMemo,
   Children,
+  useCallback,
 } from "react";
 import styles from "./index.less";
 
@@ -77,6 +78,7 @@ const Resizable = ({
           onMouseMove={(offset) => resizeHandler(axis, offset)}
           onMouseUp={() => resizeStopHandler(axis)}
           className={className}
+          targetData={rest}
         />
       )),
     ]
@@ -89,6 +91,7 @@ type ResizeBarProps = {
   onMouseMove: (offset: OffsetType) => void;
   onMouseUp: () => void;
   className?: string;
+  targetData?: any
 };
 
 const ResizeBar = ({
@@ -97,6 +100,7 @@ const ResizeBar = ({
   onMouseMove,
   onMouseUp,
   className,
+  targetData
 }: ResizeBarProps) => {
   const startPosition = useRef<OffsetType>([0, 0]);
   const mouseDownHandler = (e: React.MouseEvent) => {
@@ -119,12 +123,33 @@ const ResizeBar = ({
     onMouseUp && onMouseUp();
   };
 
+  const mouseOverHandler = useCallback(() => {
+    const hoverEvent = new CustomEvent('hover', {
+      detail: {
+        axis,
+        targetData
+      }
+    })
+    document.dispatchEvent(hoverEvent)
+  }, [axis])
+
+  const mouseLeaveHandler = useCallback(() => {
+    const leaveEvent = new CustomEvent('leave', {
+      detail: {
+        axis,
+        targetData
+      }
+    })
+    document.dispatchEvent(leaveEvent)
+  }, [axis])
+
   return (
     <div
-      className={`${axis === "x" ? styles["resizer-r"] : styles["resizer-b"]} ${
-        className ?? ""
-      }`}
+      className={`${axis === "x" ? styles["resizer-r"] : styles["resizer-b"]} ${className ?? ""
+        }`}
       onMouseDown={mouseDownHandler}
+      onMouseOver={mouseOverHandler}
+      onMouseLeave={mouseLeaveHandler}
     />
   );
 };

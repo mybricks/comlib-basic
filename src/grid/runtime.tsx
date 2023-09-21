@@ -32,7 +32,6 @@ export default ({
   );
 
   const onColClick = ({ key }: ColType) => {
-    console.log(key)
     !!key && outputs[key]();
   };
 

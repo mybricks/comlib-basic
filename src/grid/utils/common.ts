@@ -142,15 +142,26 @@ export const appendCol = (
   position: "BEFORE" | "AFTER" = "AFTER"
 ) => {
   const { data } = props;
-  const { index } = getCol(props);
-  data.rows.forEach((row) => {
+  const { row, col, index } = getCol(props);
+  if (row.useCustom) {
     const col = createCol(props);
     if (position === "BEFORE") {
       row.cols.splice(index, 0, col);
     } else if (position === "AFTER") {
       row.cols.splice(index + 1, 0, col);
     }
-  });
+  } else {
+    data.rows
+      .filter((row) => !row.useCustom)
+      .forEach((row) => {
+        const col = createCol(props);
+        if (position === "BEFORE") {
+          row.cols.splice(index, 0, col);
+        } else if (position === "AFTER") {
+          row.cols.splice(index + 1, 0, col);
+        }
+      });
+  }
 };
 
 export const setSlotLayout = ({
@@ -180,25 +191,65 @@ export const deleteRow = (props: EditorResult<Data>) => {
 };
 
 export const deleteCol = (props: EditorResult<Data>) => {
-  const { index } = getCol(props);
-  props.data.rows.forEach((row) => {
-    const col = row.cols[index];
+  const { row, col, index } = getCol(props);
+  if (row.useCustom) {
     removeEffect({ col, ...props });
     row.cols.splice(index, 1);
-  });
+  } else {
+    props.data.rows
+      .filter((row) => !row.useCustom)
+      .forEach((row) => {
+        const col = row.cols[index];
+        removeEffect({ col, ...props });
+        row.cols.splice(index, 1);
+      });
+  }
 };
 
 export const updateColWidthMode = (
   props: EditorResult<Data>,
   { width, widthMode }: Partial<{ width: number; widthMode: WidthUnitEnum }>
 ) => {
-  const { index } = getCol(props);
-  props.data.rows.forEach((row) => {
-    if(width) {
-      row.cols[index].width = width;
+  const { row, col, index } = getCol(props);
+  if (row.useCustom) {
+    if (width) {
+      col.width = width;
     }
-    if(widthMode){
-      row.cols[index].widthMode = widthMode;
+    if (widthMode) {
+      col.widthMode = widthMode;
     }
+  } else {
+    props.data.rows
+      .filter((row) => !row.useCustom)
+      .forEach((row) => {
+        if (width) {
+          row.cols[index].width = width;
+        }
+        if (widthMode) {
+          row.cols[index].widthMode = widthMode;
+        }
+      });
+  }
+};
+
+export const canToggleToStandard = (
+  row: DataRowType,
+  props: EditorResult<Data>
+) => {
+  const firstStandardRow = props.data.rows.find((row) => !row.useCustom);
+  if (!firstStandardRow || row.cols.length === firstStandardRow?.cols.length) {
+    return true;
+  }
+  return false;
+};
+
+export const reviseStandardColWidth = (
+  row: DataRowType,
+  props: EditorResult<Data>
+) => {
+  const firstStandardRow = props.data.rows.find((row) => !row.useCustom);
+  firstStandardRow?.cols.forEach((col, index) => {
+    row.cols[index].widthMode = col.widthMode;
+    row.cols[index].width = col.width;
   });
 };

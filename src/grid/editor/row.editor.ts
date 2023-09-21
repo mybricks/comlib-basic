@@ -1,11 +1,20 @@
 import { Data } from "../types";
-import { getRow, appendRow, deleteRow } from "../utils";
+import {
+  getRow,
+  appendRow,
+  deleteRow,
+  canToggleToStandard,
+  reviseStandardColWidth,
+} from "../utils";
 import { HeightUnitEnum, WidthUnitEnum } from "../components";
+import { message } from "antd";
 export default {
   "[data-layout-row-key]": {
     title: "行",
-    items({ data, focusArea }: EditorResult<Data>, ...cate) {
-      if (!focusArea) return;
+    items(props: EditorResult<Data>, ...cate) {
+      if (!props.focusArea) return;
+      const { data } = props;
+      const { row } = getRow(props);
       cate[0].title = "常规";
       cate[0].items = [
         {
@@ -16,12 +25,40 @@ export default {
           },
           value: {
             get({ data }: EditorResult<Data>) {
-              return data.rows[0].style?.columnGap ?? 0;
+              console.log(row.style?.columnGap ?? 0);
+              return row.style?.columnGap ?? 0;
             },
             set({ data }: EditorResult<Data>, val: string) {
-              data.rows.forEach((row) => {
+              if (row.useCustom) {
                 row.style = { ...row.style, columnGap: parseFloat(val) };
-              });
+              } else {
+                data.rows
+                  .filter((row) => !row.useCustom)
+                  .forEach((row) => {
+                    row.style = { ...row.style, columnGap: parseFloat(val) };
+                  });
+              }
+            },
+          },
+        },
+        {
+          title: "自定义",
+          type: "switch",
+          value: {
+            get({ data }: EditorResult<Data>) {
+              return !!row.useCustom;
+            },
+            set(props: EditorResult<Data>, val: boolean) {
+              if (val) {
+                row.useCustom = val;
+              } else {
+                if (canToggleToStandard(row, props)) {
+                  reviseStandardColWidth(row, props);
+                  row.useCustom = val;
+                } else {
+                  message.warn("当前行不能转换成标准行");
+                }
+              }
             },
           },
         },
@@ -87,11 +124,19 @@ export default {
               type: "Button",
               value: {
                 set({ data }: EditorResult<Data>, val: string) {
-                  data.rows.forEach((row) => {
+                  if (row.useCustom) {
                     row.cols.forEach((col) => {
                       col.widthMode = WidthUnitEnum.Auto;
                     });
-                  });
+                  } else {
+                    data.rows
+                      .filter((row) => !row.useCustom)
+                      .forEach((row) => {
+                        row.cols.forEach((col) => {
+                          col.widthMode = WidthUnitEnum.Auto;
+                        });
+                      });
+                  }
                 },
               },
             },

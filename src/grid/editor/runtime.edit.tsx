@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { Data, DataColType, DataRowType } from "../types";
 import Resizable from "../../components/Resizable";
 import { Layout, Row, Col, HeightUnitEnum, WidthUnitEnum } from "../components";
@@ -99,6 +99,48 @@ const ResizableCol = ({
 } & RuntimeParams<Data>) => {
   const editFinishRef = useRef<Function>();
 
+  useEffect(() => {
+    const eventHandle = (e) => {
+      if (e.detail.axis === 'y') return;
+      const [rowKey, colKey] = e.detail.targetData['data-layout-col-key'].split(',');
+      const targetIndex = data.rows.find(row => row.key === rowKey)?.cols.findIndex(col => col.key === colKey) ?? 0
+      data.rows.forEach(row => {
+        row.cols.forEach(col => { col.isHover = false })
+      })
+      if (e.type === 'hover') {
+        if (row.useCustom) {
+          if(row.cols[targetIndex]){
+            row.cols[targetIndex].isHover = true;
+          }
+        } else {
+          data.rows.filter(row => !row.useCustom).forEach(row => {
+            if(row.cols[targetIndex]){
+              row.cols[targetIndex].isHover = true
+            }
+          })
+        }
+      } else {
+        if (row.useCustom) {
+          if(row.cols[targetIndex]) {
+            row.cols[targetIndex].isHover = false;
+          }
+        } else {
+          data.rows.filter(row => !row.useCustom).forEach(row => {
+            if(row.cols[targetIndex]) {
+              row.cols[targetIndex].isHover = false
+            }
+          })
+        }
+      }
+    }
+    document.addEventListener('hover', eventHandle);
+    document.addEventListener('leave', eventHandle)
+    return () => {
+      document.removeEventListener('hover', eventHandle)
+      document.removeEventListener('leave', eventHandle)
+    }
+  }, [row.useCustom])
+
   const dragText = useMemo(() => {
     if (col.widthMode === WidthUnitEnum.Auto) {
       return col.widthMode;
@@ -123,29 +165,49 @@ const ResizableCol = ({
     return classnames;
   }, [row.isDragging, col.isDragging]);
 
+  const hoverClassName = useMemo(() => {
+    return col.isHover ? editStyles.hover : undefined
+  }, [col.isHover])
+
   return (
     <Resizable
       axis="x"
       key={col.key}
       onResizeStart={() => {
         editFinishRef.current = env.edit.focusPaasive();
-        data.rows.forEach((row) => {
-          row.cols[index].isDragging = true;
-        });
+        if (row.useCustom) {
+          col.isDragging = true;
+        } else {
+          data.rows.filter(row => !row.useCustom).forEach((row) => {
+            row.cols[index].isDragging = true;
+          });
+        }
+
       }}
       onResize={(size) => {
-        data.rows.forEach((row) => {
-          row.cols[index].width = size.width;
-          row.cols[index].widthMode = WidthUnitEnum.Px;
-        });
+        if (row.useCustom) {
+          col.width = size.width;
+          col.widthMode = WidthUnitEnum.Px;
+        } else {
+          data.rows.filter(row => !row.useCustom).forEach((row) => {
+            row.cols[index].width = size.width;
+            row.cols[index].widthMode = WidthUnitEnum.Px;
+          });
+        }
       }}
       onResizeStop={() => {
         editFinishRef.current && editFinishRef.current();
-        data.rows.forEach((row) => {
-          row.cols[index].isDragging = false;
-        });
+        if (row.useCustom) {
+          col.isDragging = false;
+        } else {
+          data.rows.filter(row => !row.useCustom).forEach((row) => {
+            row.cols[index].isDragging = false;
+          });
+        }
+
       }}
       zoom={env.canvas?.zoom}
+      className={hoverClassName}
     >
       <Col
         col={col}

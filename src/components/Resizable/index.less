@@ -4,11 +4,11 @@
 .resizer-r {
   position: absolute;
   height: 100%;
-  width: 4px;
+  width: 3px;
   top: 0;
-  right: -2px;
+  right: 0;
   pointer-events: auto;
-  border-radius: 20px;
+  border-radius: 10px;
   z-index: 1000;
   user-select: none;
   &:hover {
@@ -19,14 +19,15 @@
 .resizer-b {
   position: absolute;
   width: 100%;
-  height: 4px;
+  height: 3px;
   left: 0;
-  bottom: -2px;
+  bottom: 0;
   pointer-events: auto;
-  border-radius: 20px;
+  border-radius: 10px;
   z-index: 1000;
   user-select: none;
   &:hover {
     cursor: ns-resize !important;
+    background-color: rgba(250, 100, 0, 0.8);
   }
 }
