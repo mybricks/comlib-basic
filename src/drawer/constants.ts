@@ -10,6 +10,7 @@
  * @param footerBtns 操作项
  * @param closable   是否显示右上角关闭按钮
  * @param maskClosable 点击蒙层关闭
+ * @param keyboard 键盘 esc 关闭
  */
 
 export enum Location {
@@ -50,6 +51,7 @@ export interface Data {
   closable: boolean;
   maskClosable?: boolean;
   isTitleCustom?: boolean
+  keyboard?: boolean;
 }
 
 export const DefaultEvent = ['ok', 'cancel'];

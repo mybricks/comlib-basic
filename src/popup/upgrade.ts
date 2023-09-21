@@ -151,5 +151,12 @@ export default function ({
       setDeclaredStyle('.{id} button[data-handler-button="${item.id}"]:hover', css);
     }
   })
+
+  /**
+   * @description 1.0.21->1.0.22  新增是否支持键盘 esc 关闭 keyboard
+  */
+  if(typeof data.keyboard === "undefined"){
+    data.keyboard = true
+  }
   return true;
 }
