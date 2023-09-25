@@ -103,31 +103,20 @@ const ResizableCol = ({
     const eventHandle = (e) => {
       if (e.detail.axis === 'y') return;
       const [rowKey, colKey] = e.detail.targetData['data-layout-col-key'].split(',');
-      const targetIndex = data.rows.find(row => row.key === rowKey)?.cols.findIndex(col => col.key === colKey) ?? 0
+      const targetRow = data.rows.find(row => row.key === rowKey)
+      const targetIndex = targetRow?.cols.findIndex(col => col.key === colKey) ?? 0
       data.rows.forEach(row => {
         row.cols.forEach(col => { col.isHover = false })
       })
       if (e.type === 'hover') {
-        if (row.useCustom) {
-          if(row.cols[targetIndex]){
+        if (targetRow?.useCustom) {
+          if (row.cols[targetIndex]) {
             row.cols[targetIndex].isHover = true;
           }
         } else {
           data.rows.filter(row => !row.useCustom).forEach(row => {
-            if(row.cols[targetIndex]){
+            if (row.cols[targetIndex]) {
               row.cols[targetIndex].isHover = true
-            }
-          })
-        }
-      } else {
-        if (row.useCustom) {
-          if(row.cols[targetIndex]) {
-            row.cols[targetIndex].isHover = false;
-          }
-        } else {
-          data.rows.filter(row => !row.useCustom).forEach(row => {
-            if(row.cols[targetIndex]) {
-              row.cols[targetIndex].isHover = false
             }
           })
         }
