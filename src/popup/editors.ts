@@ -153,25 +153,25 @@ export default {
       },
       {
         title: '顶部区域',
-        options: ['background', 'border', 'padding' ],
+        options: ['background', 'border', 'padding', 'opacity' ],
         global: true,
         target: '.{id} .ant-modal-header'
       },
       {
         title: '内容区域',
-        options: [ 'background', 'padding' ],
+        options: [ 'background', 'padding', 'opacity' ],
         global: true,
         target: '.{id} .ant-modal-body'
       },
       {
         title: '底部区域',
-        options: [ 'background', 'border', 'padding' ],
+        options: [ 'background', 'border', 'padding', 'opacity' ],
         global: true,
         target: '.{id} .ant-modal-footer'
       },
       {
         title: '整体',
-        options: [ 'background', 'padding' ],
+        options: [ 'background', 'padding', 'opacity' ],
         global: true,
         target: [`.{id} .ant-modal-content`]
       }
