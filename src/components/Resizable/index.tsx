@@ -78,7 +78,6 @@ const Resizable = ({
           onMouseMove={(offset) => resizeHandler(axis, offset)}
           onMouseUp={() => resizeStopHandler(axis)}
           className={className}
-          targetData={rest}
         />
       )),
     ]
@@ -91,7 +90,6 @@ type ResizeBarProps = {
   onMouseMove: (offset: OffsetType) => void;
   onMouseUp: () => void;
   className?: string;
-  targetData?: any
 };
 
 const ResizeBar = ({
@@ -100,8 +98,8 @@ const ResizeBar = ({
   onMouseMove,
   onMouseUp,
   className,
-  targetData
 }: ResizeBarProps) => {
+  const resizerBarRef = useRef<HTMLDivElement>(null);
   const startPosition = useRef<OffsetType>([0, 0]);
   const mouseDownHandler = (e: React.MouseEvent) => {
     startPosition.current = [e.clientX, e.clientY];
@@ -124,29 +122,33 @@ const ResizeBar = ({
   };
 
   const mouseOverHandler = useCallback(() => {
-    const hoverEvent = new CustomEvent('hover', {
-      detail: {
-        axis,
-        targetData
-      }
-    })
-    document.dispatchEvent(hoverEvent)
-  }, [axis])
+    if (resizerBarRef.current) {
+      const hoverEvent = new CustomEvent("hover", {
+        detail: {
+          axis,
+        },
+      });
+      resizerBarRef.current.parentNode?.dispatchEvent(hoverEvent);
+    }
+  }, [axis, resizerBarRef.current]);
 
   const mouseLeaveHandler = useCallback(() => {
-    const leaveEvent = new CustomEvent('leave', {
-      detail: {
-        axis,
-        targetData
-      }
-    })
-    document.dispatchEvent(leaveEvent)
-  }, [axis])
+    if (resizerBarRef.current) {
+      const leaveEvent = new CustomEvent("leave", {
+        detail: {
+          axis,
+        },
+      });
+      resizerBarRef.current.parentNode?.dispatchEvent(leaveEvent);
+    }
+  }, [axis, resizerBarRef.current]);
 
   return (
     <div
-      className={`${axis === "x" ? styles["resizer-r"] : styles["resizer-b"]} ${className ?? ""
-        }`}
+      ref={resizerBarRef}
+      className={`${axis === "x" ? styles["resizer-r"] : styles["resizer-b"]} ${
+        className ?? ""
+      }`}
       onMouseDown={mouseDownHandler}
       onMouseOver={mouseOverHandler}
       onMouseLeave={mouseLeaveHandler}

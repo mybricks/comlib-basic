@@ -197,12 +197,9 @@ export default {
     },
     style: createStyleForCol({
       target(props: EditorResult<Data>) {
-        const { id } = props;
-        const { row, col, index } = getCol(props);
+        const { row, col } = getCol(props);
         const key = `${row.key},${col.key}`;
-        return `> .mybricks-layout > .mybricks-row > .mybricks-col:nth-child(${
-          index + 1
-        })`;
+        return `> .mybricks-layout > .mybricks-row > div[data-layout-col-key="${key}"]`;
       },
     }),
   },

@@ -9,6 +9,9 @@ export default ({
 }: UpgradeParams<Data>): boolean => {
   data.rows.forEach((row) => {
     row.cols.forEach((col, index) => {
+      /**
+       * :not selector style
+       */
       const preGlobalColSelector = `.mybricks-layout .mybricks-col${getFilterSelector(
         id
       )}`;
@@ -16,9 +19,15 @@ export default ({
       if (preGlobalStyle) {
         const css = { ...preGlobalStyle.css };
         removeDeclaredStyle(preGlobalColSelector);
-        setDeclaredStyle("> .mybricks-layout > .mybricks-row > .mybricks-col", css);
+        setDeclaredStyle(
+          "> .mybricks-layout > .mybricks-row > .mybricks-col",
+          css
+        );
       }
 
+      /**
+       * remove :not selector, replace with child selector
+       */
       const preColSelector = `.mybricks-layout .mybricks-row .mybricks-col:nth-child(${
         index + 1
       })${getFilterSelector(id)}`;
@@ -30,6 +39,20 @@ export default ({
         })`;
         removeDeclaredStyle(preColSelector);
         setDeclaredStyle(newSelector, css);
+      }
+      /**
+       * remove unified selector, replace with col single style
+       */
+      const unifiedColSelector = `> .mybricks-layout > .mybricks-row > .mybricks-col:nth-child(${
+        index + 1
+      })`;
+      const unifiedColStyle = getDeclaredStyle(unifiedColSelector);
+      if (unifiedColStyle) {
+        const css = { ...unifiedColStyle.css };
+        const key = `${row.key},${col.key}`;
+        const singleColSelector = `> .mybricks-layout > .mybricks-row > div[data-layout-col-key="${key}"]`;
+        removeDeclaredStyle(unifiedColSelector);
+        setDeclaredStyle(singleColSelector, css);
       }
     });
     const preContainerSelector = `.mybricks-layout${getFilterSelector(id)}`;

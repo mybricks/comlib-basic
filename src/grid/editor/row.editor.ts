@@ -25,7 +25,6 @@ export default {
           },
           value: {
             get({ data }: EditorResult<Data>) {
-              console.log(row.style?.columnGap ?? 0);
               return row.style?.columnGap ?? 0;
             },
             set({ data }: EditorResult<Data>, val: string) {
@@ -159,7 +158,7 @@ export default {
         type: "Select",
         options: [
           { value: HeightUnitEnum.Auto, label: "自动填充" },
-          { value: HeightUnitEnum.Px, label: "固定宽度" },
+          { value: HeightUnitEnum.Px, label: "固定高度" },
           { value: HeightUnitEnum.Percent, label: "百分比" },
         ],
         value: {

@@ -97,38 +97,40 @@ const ResizableCol = ({
   col: DataColType;
   index: number;
 } & RuntimeParams<Data>) => {
+  const colRef = useRef<HTMLDivElement>(null);
   const editFinishRef = useRef<Function>();
 
   useEffect(() => {
     const eventHandle = (e) => {
-      if (e.detail.axis === 'y') return;
-      const [rowKey, colKey] = e.detail.targetData['data-layout-col-key'].split(',');
-      const targetRow = data.rows.find(row => row.key === rowKey)
-      const targetIndex = targetRow?.cols.findIndex(col => col.key === colKey) ?? 0
-      data.rows.forEach(row => {
-        row.cols.forEach(col => { col.isHover = false })
-      })
-      if (e.type === 'hover') {
-        if (targetRow?.useCustom) {
-          if (row.cols[targetIndex]) {
-            row.cols[targetIndex].isHover = true;
+      if (e.detail.axis === "y") return;
+      data.rows.forEach((row) => {
+        row.cols.forEach((col) => {
+          col.isHover = false;
+        });
+      });
+      if (e.type === "hover") {
+        if (row?.useCustom) {
+          if (row.cols[index]) {
+            row.cols[index].isHover = true;
           }
         } else {
-          data.rows.filter(row => !row.useCustom).forEach(row => {
-            if (row.cols[targetIndex]) {
-              row.cols[targetIndex].isHover = true
-            }
-          })
+          data.rows
+            .filter((row) => !row.useCustom)
+            .forEach((row) => {
+              if (row.cols[index]) {
+                row.cols[index].isHover = true;
+              }
+            });
         }
       }
-    }
-    document.addEventListener('hover', eventHandle);
-    document.addEventListener('leave', eventHandle)
+    };
+    colRef.current?.addEventListener("hover", eventHandle);
+    colRef.current?.addEventListener("leave", eventHandle);
     return () => {
-      document.removeEventListener('hover', eventHandle)
-      document.removeEventListener('leave', eventHandle)
-    }
-  }, [row.useCustom])
+      colRef.current?.removeEventListener("hover", eventHandle);
+      colRef.current?.removeEventListener("leave", eventHandle);
+    };
+  }, [JSON.stringify(row), index, colRef]);
 
   const dragText = useMemo(() => {
     if (col.widthMode === WidthUnitEnum.Auto) {
@@ -155,8 +157,10 @@ const ResizableCol = ({
   }, [row.isDragging, col.isDragging]);
 
   const hoverClassName = useMemo(() => {
-    return col.isHover ? editStyles.hover : undefined
-  }, [col.isHover])
+    return col.isHover ? editStyles.hover : undefined;
+  }, [col.isHover]);
+
+  const basis = 100 / row.cols.length;
 
   return (
     <Resizable
@@ -167,21 +171,24 @@ const ResizableCol = ({
         if (row.useCustom) {
           col.isDragging = true;
         } else {
-          data.rows.filter(row => !row.useCustom).forEach((row) => {
-            row.cols[index].isDragging = true;
-          });
+          data.rows
+            .filter((row) => !row.useCustom)
+            .forEach((row) => {
+              row.cols[index].isDragging = true;
+            });
         }
-
       }}
       onResize={(size) => {
         if (row.useCustom) {
           col.width = size.width;
           col.widthMode = WidthUnitEnum.Px;
         } else {
-          data.rows.filter(row => !row.useCustom).forEach((row) => {
-            row.cols[index].width = size.width;
-            row.cols[index].widthMode = WidthUnitEnum.Px;
-          });
+          data.rows
+            .filter((row) => !row.useCustom)
+            .forEach((row) => {
+              row.cols[index].width = size.width;
+              row.cols[index].widthMode = WidthUnitEnum.Px;
+            });
         }
       }}
       onResizeStop={() => {
@@ -189,21 +196,24 @@ const ResizableCol = ({
         if (row.useCustom) {
           col.isDragging = false;
         } else {
-          data.rows.filter(row => !row.useCustom).forEach((row) => {
-            row.cols[index].isDragging = false;
-          });
+          data.rows
+            .filter((row) => !row.useCustom)
+            .forEach((row) => {
+              row.cols[index].isDragging = false;
+            });
         }
-
       }}
       zoom={env.canvas?.zoom}
       className={hoverClassName}
     >
       <Col
+        ref={colRef}
         col={col}
         className={classnames}
         data-layout-col-key={`${row.key},${col.key}`}
+        basis={basis}
       >
-        {slots[col.key]?.render({ style: col.slotStyle })}
+        {slots[col.key]?.render({ key: col.key, style: col.slotStyle })}
         {isDragging && (
           <div
             className={

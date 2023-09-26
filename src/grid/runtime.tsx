@@ -42,6 +42,7 @@ export default ({
           {row.cols.map((col, index) => {
             const colProps = {
               col,
+              basis: 100 / row.cols.length,
               key: col.key,
               className: "mybricks-col",
               'data-layout-col-key': `${row.key},${col.key}`,
@@ -66,7 +67,7 @@ export default ({
                     }}
                   >
                     <Col {...colProps}>
-                      {slots[col.key]?.render({ style: col.slotStyle })}
+                      {slots[col.key]?.render({ key: col.key, style: col.slotStyle })}
                     </Col>
                   </Resizable>
                 );
@@ -74,14 +75,14 @@ export default ({
                 colProps.col = { ...col, widthMode: WidthUnitEnum.Auto }; //last col auto
                 return (
                   <Col {...colProps}>
-                    {slots[col.key]?.render({ style: col.slotStyle })}
+                    {slots[col.key]?.render({ key: col.key, style: col.slotStyle })}
                   </Col>
                 );
               }
             } else {
               return (
                 <Col {...colProps}>
-                  {slots[col.key]?.render({ style: col.slotStyle })}
+                  {slots[col.key]?.render({ key: col.key, style: col.slotStyle })}
                 </Col>
               );
             }
