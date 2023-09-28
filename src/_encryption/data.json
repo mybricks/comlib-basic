@@ -1,0 +1,9 @@
+{
+  "encryptionAlgorithm": "SM2",
+  "encryptionType": "public",
+  "cipherMode": 1,
+  "BlockCipherModes": 1,
+  "iv": "0123456789abcdeffedcba9876543210",
+  "inputEncoding": "utf8",
+  "outputEncoding": "base64"
+}

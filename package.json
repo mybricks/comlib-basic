@@ -18,10 +18,9 @@
   },
   "homepage": "https://github.com/mybricks/comlib-basic#readme",
   "dependencies": {
-
-    
     "antd": "^4.18.5",
     "copy-to-clipboard": "^3.3.3",
+    "gm-crypto": "^0.1.12",
     "jsencrypt": "^3.3.2",
     "lodash": "^4.17.21",
     "react": "^18.2.0"
