@@ -1,7 +1,7 @@
 {
   "title": "资源下载",
   "namespace": "mybricks.normal-pc.download",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "rtType": "js",
   "author": "MyBricks",
   "author_name": "MyBricks",
