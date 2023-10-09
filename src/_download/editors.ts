@@ -67,7 +67,7 @@ export default {
       },
     },
     {
-      title: "名称",
+      title: "文件名称",
       type: "text",
       ifVisible({ data }: EditorResult<Data>) {
         return data.nameConfig === 0;
@@ -86,7 +86,7 @@ export default {
       },
     },
     {
-      title: "下载类型",
+      title: "下载源",
       type: "select",
       options: {
         options: downloadOptions,

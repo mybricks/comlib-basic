@@ -1,9 +1,7 @@
 import { Data, DownloadType } from "./constants";
 
 const defaultFilename = "download";
-const getType = (obj) => {
-  return Object.prototype.toString.call(obj).match(/\[object (.*)\]/)[1];
-};
+
 const matchFilename = (url) => {
   try {
     if (/(http|https):\/\/([\w.]+\/?)\S*/.test(url)) {
@@ -15,7 +13,6 @@ const matchFilename = (url) => {
 };
 
 const getBlob = (source: any, mimeType: string | undefined) => {
-  console.log(source instanceof Blob);
   if (source instanceof Blob) {
     return source;
   }
@@ -44,29 +41,36 @@ const download = (blob: Blob, filename: string) => {
   URL.revokeObjectURL(blobUrl);
 };
 
-export default function ({ data, env, inputs, onError }: RuntimeParams<Data>) {
-  const { filename, nameConfig, downloadType, saveType } = data;
+export default function ({
+  data,
+  env,
+  inputs,
+  onError,
+  logger,
+}: RuntimeParams<Data>) {
+  const { filename, downloadType, saveType } = data;
   const { runtime } = env;
   if (runtime) {
     inputs.url(async (val) => {
       if (val) {
-        if (downloadType === DownloadType.Local) {
-          const _filename = val.filename ?? filename ?? defaultFilename;
-          const blob = getBlob(val.url ?? val, saveType);
+        try {
+          if (downloadType === DownloadType.Local) {
+            const _filename = val.filename ?? filename ?? defaultFilename;
+            const blob = getBlob(val.url ?? val, saveType);
+            download(blob, _filename);
+            return;
+          }
+          const url = new URL(val.url ?? val);
+          const blob = await fetchBlob(url.href);
+          const _filename =
+            val.filename ??
+            matchFilename(url.href) ??
+            filename ??
+            defaultFilename;
           download(blob, _filename);
-          return;
-        }
-        if (nameConfig === 0 && getType(val) === "String") {
-          const _filename = filename || matchFilename(val) || defaultFilename;
-          const blob = await fetchBlob(val);
-          download(blob, _filename);
-        } else if (nameConfig === 1 && getType(val) === "Object") {
-          const { url, filename } = val;
-          const _filename = filename ?? defaultFilename;
-          const blob = await fetchBlob(url);
-          download(blob, _filename);
-        } else {
-          onError("[资源下载]：数据类型错误")
+        } catch (error) {
+          logger.error("[资源下载]：数据类型错误");
+          onError("[资源下载]：数据类型错误");
         }
       }
     });
