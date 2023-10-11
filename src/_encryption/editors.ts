@@ -20,10 +20,6 @@ export default {
             label: "SM4国密算法",
             value: "SM4",
           },
-          {
-            label: "RSA",
-            value: "RSA",
-          },
         ];
       },
       value: {
@@ -74,9 +70,6 @@ export default {
     {
       title: "输入编码格式",
       type: "select",
-      ifVisible({ data }: EditorResult<Data>) {
-        return data.encryptionAlgorithm !== "RSA";
-      },
       options() {
         return bufferEncodings();
       },
@@ -92,9 +85,6 @@ export default {
     {
       title: "输出编码格式",
       type: "select",
-      ifVisible({ data }: EditorResult<Data>) {
-        return data.encryptionAlgorithm !== "RSA";
-      },
       options() {
         return bufferEncodings();
       },
