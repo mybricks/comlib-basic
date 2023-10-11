@@ -1,7 +1,7 @@
 {
-  "title": "加解密",
+  "title": "SM国密加密",
   "namespace": "mybricks.basic-comlib._encryption",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "加密",
   "author": "MyBricks",
   "author_name": "MyBricks",

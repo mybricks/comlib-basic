@@ -8,7 +8,7 @@
  * @param outputEncoding 输出内容(明/密文)编码格式
  */
 export interface Data {
-  encryptionAlgorithm: "SM2" | "SM3" | "SM4" | "RSA";
+  encryptionAlgorithm: "SM2" | "SM3" | "SM4";
   encryptionType: "public" | "private";
   cipherMode?: 1 | 0;
   BlockCipherModes?: 1 | 0;
