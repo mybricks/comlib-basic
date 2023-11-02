@@ -2,15 +2,10 @@ import React, { CSSProperties } from "react";
 import { Layout, Row, Col, WidthUnitEnum, ColType } from "./components";
 import { Data } from "./types";
 import Resizable from "../components/Resizable";
+import { RuntimeContext } from "./context";
 import styles from "./runtime.less";
-export default ({
-  data,
-  slots,
-  inputs,
-  outputs,
-  logger,
-  onError,
-}: RuntimeParams<Data>) => {
+export default (props: RuntimeParams<Data>) => {
+  const { data, slots, inputs, outputs, logger, onError } = props;
   inputs.setWidth(
     (val: { coordinate: [number, number]; width: CSSProperties["width"] }) => {
       const { coordinate, width } = val;
@@ -36,59 +31,70 @@ export default ({
   };
 
   return (
-    <Layout className={"mybricks-layout"}>
-      {data.rows.map((row) => (
-        <Row row={row} key={row.key} className={"mybricks-row"}>
-          {row.cols.map((col, index) => {
-            const colProps = {
-              col,
-              basis: 100 / row.cols.length,
-              key: col.key,
-              className: "mybricks-col",
-              'data-layout-col-key': `${row.key},${col.key}`,
-              onClick: onColClick,
-            };
-            if (data.resizable) {
-              const isLastCol = index === row.cols.length - 1;
-              if (!isLastCol) {
-                return (
-                  <Resizable
-                    axis="x"
-                    className={styles.resizer}
-                    key={col.key}
-                    onResize={({ width }) => {
-                      data.rows.forEach(row => {
-                        row.cols[index] = {
-                          ...col,
-                          width,
-                          widthMode: WidthUnitEnum.Px,
-                        };
-                      })
-                    }}
-                  >
+    <RuntimeContext.Provider value={{ ...props }}>
+      <Layout className={"mybricks-layout"}>
+        {data.rows.map((row) => (
+          <Row row={row} key={row.key} className={"mybricks-row"}>
+            {row.cols.map((col, index) => {
+              const colProps = {
+                col,
+                basis: 100 / row.cols.length,
+                key: col.key,
+                className: "mybricks-col",
+                "data-layout-col-key": `${row.key},${col.key}`,
+                onClick: onColClick,
+              };
+              if (data.resizable) {
+                const isLastCol = index === row.cols.length - 1;
+                if (!isLastCol) {
+                  return (
+                    <Resizable
+                      axis="x"
+                      className={styles.resizer}
+                      key={col.key}
+                      onResize={({ width }) => {
+                        data.rows.forEach((row) => {
+                          row.cols[index] = {
+                            ...col,
+                            width,
+                            widthMode: WidthUnitEnum.Px,
+                          };
+                        });
+                      }}
+                    >
+                      <Col {...colProps}>
+                        {slots[col.key]?.render({
+                          key: col.key,
+                          style: col.slotStyle,
+                        })}
+                      </Col>
+                    </Resizable>
+                  );
+                } else {
+                  colProps.col = { ...col, widthMode: WidthUnitEnum.Auto }; //last col auto
+                  return (
                     <Col {...colProps}>
-                      {slots[col.key]?.render({ key: col.key, style: col.slotStyle })}
+                      {slots[col.key]?.render({
+                        key: col.key,
+                        style: col.slotStyle,
+                      })}
                     </Col>
-                  </Resizable>
-                );
+                  );
+                }
               } else {
-                colProps.col = { ...col, widthMode: WidthUnitEnum.Auto }; //last col auto
                 return (
                   <Col {...colProps}>
-                    {slots[col.key]?.render({ key: col.key, style: col.slotStyle })}
+                    {slots[col.key]?.render({
+                      key: col.key,
+                      style: col.slotStyle,
+                    })}
                   </Col>
                 );
               }
-            } else {
-              return (
-                <Col {...colProps}>
-                  {slots[col.key]?.render({ key: col.key, style: col.slotStyle })}
-                </Col>
-              );
-            }
-          })}
-        </Row>
-      ))}
-    </Layout>
+            })}
+          </Row>
+        ))}
+      </Layout>
+    </RuntimeContext.Provider>
   );
 };

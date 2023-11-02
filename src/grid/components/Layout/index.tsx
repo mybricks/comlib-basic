@@ -1,5 +1,6 @@
-import React, { useMemo, useRef } from "react";
+import React, { useContext, useMemo, useRef } from "react";
 import { useResizeObserver } from '../../../hooks/useResizeObserver'
+import { RuntimeContext } from '../../context'
 import styles from "./index.less";
 
 interface LayoutProps {
@@ -8,6 +9,7 @@ interface LayoutProps {
 }
 
 const Layout = ({ className, children, ...rest }: LayoutProps) => {
+  const { env } = useContext(RuntimeContext)
   const layoutRef = useRef<HTMLDivElement>(null)
   const classnames = useMemo(() => {
     const classnames = [styles.layout];
@@ -19,9 +21,11 @@ const Layout = ({ className, children, ...rest }: LayoutProps) => {
 
   useResizeObserver(layoutRef, (entries: ResizeObserverEntry[]) => {
     if (!layoutRef.current) return;
-    const { contentRect } = entries[0]
-    layoutRef.current.style.height = `${contentRect.height}px`
-    layoutRef.current.style.overflowY = 'auto'
+    if (env && (env.edit || env.runtime?.debug)) {
+      const { contentRect } = entries[0]
+      layoutRef.current.style.height = `${contentRect.height}px`
+      layoutRef.current.style.overflowY = 'auto'
+    }
   })
 
   return <div ref={layoutRef} className={classnames} {...rest}>{children}</div>;

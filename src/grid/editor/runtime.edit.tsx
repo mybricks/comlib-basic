@@ -2,27 +2,30 @@ import React, { useEffect, useMemo, useRef } from "react";
 import { Data, DataColType, DataRowType } from "../types";
 import Resizable from "../../components/Resizable";
 import { Layout, Row, Col, HeightUnitEnum, WidthUnitEnum } from "../components";
+import { RuntimeContext } from "../context";
 
 import editStyles from "./edit.less";
 
 const EditLayout = (props: RuntimeParams<Data>) => {
   const { data } = props;
   return (
-    <Layout className={"mybricks-layout"}>
-      {data.rows.map((row) => (
-        <ResizableRow key={row.key} row={row} {...props}>
-          {row.cols.map((col, index) => (
-            <ResizableCol
-              key={col.key}
-              col={col}
-              row={row}
-              index={index}
-              {...props}
-            />
-          ))}
-        </ResizableRow>
-      ))}
-    </Layout>
+    <RuntimeContext.Provider value={{ ...props }}>
+      <Layout className={"mybricks-layout"}>
+        {data.rows.map((row) => (
+          <ResizableRow key={row.key} row={row} {...props}>
+            {row.cols.map((col, index) => (
+              <ResizableCol
+                key={col.key}
+                col={col}
+                row={row}
+                index={index}
+                {...props}
+              />
+            ))}
+          </ResizableRow>
+        ))}
+      </Layout>
+    </RuntimeContext.Provider>
   );
 };
 
