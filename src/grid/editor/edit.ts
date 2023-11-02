@@ -9,6 +9,9 @@ import {
 import RowEditor from "./row.editor";
 import ColEditor from "./col.editor";
 export default {
+  '@resize': {
+    options: ['height']
+  },
   ":root": {
     items({ data }: EditorResult<Data>, ...cate) {
       cate[0].title = "常规";
