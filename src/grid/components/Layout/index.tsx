@@ -1,6 +1,6 @@
 import React, { useContext, useMemo, useRef } from "react";
-import { useResizeObserver } from '../../../hooks/useResizeObserver'
-import { RuntimeContext } from '../../context'
+import { useMutationObserver } from "../../../hooks/useMutationObserver";
+import { RuntimeContext } from "../../context";
 import styles from "./index.less";
 
 interface LayoutProps {
@@ -9,8 +9,9 @@ interface LayoutProps {
 }
 
 const Layout = ({ className, children, ...rest }: LayoutProps) => {
-  const { env } = useContext(RuntimeContext)
-  const layoutRef = useRef<HTMLDivElement>(null)
+  const { env } = useContext(RuntimeContext);
+  const layoutRef = useRef<HTMLDivElement>(null);
+  const mountStatusRef = useRef<boolean>(false);
   const classnames = useMemo(() => {
     const classnames = [styles.layout];
     if (className) {
@@ -19,16 +20,32 @@ const Layout = ({ className, children, ...rest }: LayoutProps) => {
     return classnames.join(" ");
   }, [className]);
 
-  useResizeObserver(layoutRef, (entries: ResizeObserverEntry[]) => {
-    if (!layoutRef.current) return;
+  useMutationObserver(layoutRef, (mutationList: MutationRecord[]) => {
     if (env && (env.edit || env.runtime?.debug)) {
-      const { contentRect } = entries[0]
-      layoutRef.current.style.height = `${contentRect.height}px`
-      layoutRef.current.style.overflowY = 'auto'
+      if (!mountStatusRef.current) {
+        mountStatusRef.current = true;
+        return;
+      }
+      mutationList.forEach((mutation) => {
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "style"
+        ) {
+          const style = window.getComputedStyle(mutation.target as Element);
+          console.log(style.height);
+          if (!layoutRef.current) return;
+          layoutRef.current.style.height = style.height;
+          layoutRef.current.style.overflowY = "auto";
+        }
+      });
     }
-  })
+  });
 
-  return <div ref={layoutRef} className={classnames} {...rest}>{children}</div>;
+  return (
+    <div ref={layoutRef} className={classnames} {...rest}>
+      {children}
+    </div>
+  );
 };
 
 export default Layout;
