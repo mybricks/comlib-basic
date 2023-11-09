@@ -32,7 +32,6 @@ const Layout = ({ className, children, ...rest }: LayoutProps) => {
           mutation.attributeName === "style"
         ) {
           const style = window.getComputedStyle(mutation.target as Element);
-          console.log(style.height);
           if (!layoutRef.current) return;
           layoutRef.current.style.height = style.height;
           layoutRef.current.style.overflowY = "auto";
