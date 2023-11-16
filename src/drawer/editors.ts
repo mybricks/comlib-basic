@@ -15,7 +15,7 @@ function findConfig({ data, focusArea }, propKey?: string) {
 
 //新增按钮操作
 let btnsLength,
-    addBtn;
+  addBtn;
 
 const initParams = (data: Data, output) => {
   btnsLength = (data.footerBtns || []).length;
@@ -101,7 +101,7 @@ function icon(dataset: string) {
 }
 
 export default {
-  '@init'({style}) {
+  '@init'({ style }) {
     style.width = '100%'
     style.height = '100%'
   },
@@ -145,7 +145,7 @@ export default {
           get({ data }) {
             return data.width;
           },
-          set({ data }, value: number) {        
+          set({ data }, value: number) {
             data.width = value;
           }
         }
@@ -171,17 +171,20 @@ export default {
       },
       {
         title: '内容',
-        options: [ { type: 'background', config: { disableBackgroundImage: true } } ],
+        options: [{ type: 'background', config: { disableBackgroundImage: true } }],
         global: true,
         target: '.{id} .ant-drawer-body'
       }
     ],
-    items: ({}, cate1, cate2) => {
+    items: ({ env }, cate1, cate2) => {
       cate1.title = '常规';
       cate1.items = [
         {
           title: '标题',
           type: 'Text',
+          options: {
+            locale: true,
+          },
           value: {
             get({ data }) {
               return data.title;
@@ -283,7 +286,7 @@ export default {
             editable: false,
             customOptRender: visibleOpt,
             getTitle: (item) => {
-              return item?.title;
+              return env.i18n(item?.title);
             },
             onAdd: () => {
               const defaultBtn = {
@@ -325,14 +328,17 @@ export default {
       {
         title: '内容',
         type: 'text',
+        options: {
+          locale: true,
+        },
         ifVisible({ data }: EditorResult<Data>) {
           return !data.isTitleCustom;
         },
         value: {
-          get({data}) {
+          get({ data }) {
             return data.title
           },
-          set({data}, title) {
+          set({ data }, title) {
             data.title = title
           }
         }
@@ -341,10 +347,10 @@ export default {
         title: '自定义',
         type: 'switch',
         value: {
-          get({data}) {
+          get({ data }) {
             return data.isTitleCustom
           },
-          set({data,slot}, value) {
+          set({ data, slot }, value) {
             data.isTitleCustom = value;
             if (data.isTitleCustom === true) {
               slot.add('title', '标题');
@@ -373,246 +379,249 @@ export default {
       }
     ]
   },
-  '[data-toolbar]': {
-    title: '操作区',
-    items: [
-      {
-        title: '显示',
-        type: 'Switch',
-        value: {
-          get({ data }) {
-            return data.useFooter;
-          },
-          set({ data }, value: boolean) {
-            data.useFooter = value;
-          }
-        }
-      },
-      {
-        title: '对齐方式',
-        type: 'Radio',
-        options: [
-          { value: AlignEnum.FlexStart, label: '居左' },
-          { value: AlignEnum.Center, label: '居中' },
-          { value: AlignEnum.FlexEnd, label: '居右' }
-        ],
-        value: {
-          get({ data }) {
-            return data.footerLayout;
-          },
-          set({ data }, value: AlignEnum) {
-            data.footerLayout = value;
-          }
-        }
-      },
-      {
-        title: '操作列表',
-        description: '选中拖拽各项左侧手柄，可改变按钮的相对位置',
-        type: 'array',
-        options: {
-          addText: '添加操作',
-          deletable: false,
-          editable: false,
-          customOptRender: visibleOpt,
-          getTitle: (item) => {
-            return item?.title;
-          },
-          onAdd: () => {
-            const defaultBtn = {
-              title: `操作项${btnsLength + 1}`,
-              id: uuid(),
-              icon: "",
-              useIcon: false,
-              showText: true,
-              dynamicHidden: true,
-              dynamicDisabled: true,
-              type: "default",
-              visible: true,
-              autoClose: true,
-              isConnected: false,
-              disabled: false,
-              useDynamicDisabled: false,
-              useDynamicHidden: false
-            };
-            addBtn(defaultBtn);
-            return defaultBtn;
-          },
-        },
-        value: {
-          get({ data, output }: EditorResult<Data>) {
-            initParams(data, output);
-            return data.footerBtns || [];
-          },
-          set({ data }: EditorResult<Data>, val: any[]) {
-            data.footerBtns = val;
-          }
-        }
-      }
-    ]
-  },
-  '[data-handler-button]': {
-    title: '按钮',
-    items: ({}: EditorResult<Data>, cate1, cate2)=>{
-      cate1.title = '按钮',
+  '[data-toolbar]': ({ env }, cate1) => {
+    cate1.title = '操作区',
       cate1.items = [
         {
           title: '显示',
           type: 'Switch',
           value: {
-            get({ data, focusArea }: EditorResult<Data>) {
-              return !!findConfig({ data, focusArea }, 'visible');
+            get({ data }) {
+              return data.useFooter;
             },
-            set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-              findConfig({ data, focusArea }).visible = !!value;
+            set({ data }, value: boolean) {
+              data.useFooter = value;
             }
           }
         },
         {
-          title: '名称',
-          type: 'Text',
+          title: '对齐方式',
+          type: 'Radio',
+          options: [
+            { value: AlignEnum.FlexStart, label: '居左' },
+            { value: AlignEnum.Center, label: '居中' },
+            { value: AlignEnum.FlexEnd, label: '居右' }
+          ],
           value: {
-            get({ data, focusArea }) {
-              return findConfig({ data, focusArea }, 'title')
+            get({ data }) {
+              return data.footerLayout;
             },
-            set({ data, focusArea }, value: string) {
-              findConfig({ data, focusArea }).title = value;
+            set({ data }, value: AlignEnum) {
+              data.footerLayout = value;
             }
           }
         },
         {
-          title: '基础样式',
-          items: [
-            {
-              title: '风格',
-              type: 'Select',
-              options() {
-                return [
-                  { value: 'default', label: '默认' },
-                  { value: 'primary', label: '主按钮' },
-                  { value: 'dashed', label: '虚线按钮' },
-                  { value: 'danger', label: '危险按钮' },
-                  { value: 'link', label: '链接按钮' },
-                  { value: 'text', label: '文字按钮' }
-                ];
-              },
-              value: {
-                get({ data, focusArea }: EditorResult<Data>) {
-                  return findConfig({ data, focusArea }, 'type');
-                },
-                set({ data, focusArea }: EditorResult<Data>, value: string) {
-                  findConfig({ data, focusArea }).type = value;
-                }
-              }
-            }
-          ]
-        },
-        icon('handlerButton'),
-        {
-          title: '事件',
-          items: [
-            {
-              title: '点击自动关闭抽屉',
-              description: '开启时, 单击按钮会自动关闭抽屉。特殊处理：当需要向外输出数据时, 抽屉在数据输出后关闭。',
-              type: 'switch',
-              ifVisible({ data, focusArea }: EditorResult<Data>) {
-                return findConfig({ data, focusArea }, 'id') === 'cancel';
-              },
-              value: {
-                get({ data, focusArea }: EditorResult<Data>) {
-                  return findConfig({ data, focusArea }, 'autoClose');
-                },
-                set({ data, focusArea }: EditorResult<Data>, value: boolean) {
-                  findConfig({ data, focusArea }).autoClose = value;
-                }
-              }
+          title: '操作列表',
+          description: '选中拖拽各项左侧手柄，可改变按钮的相对位置',
+          type: 'array',
+          options: {
+            addText: '添加操作',
+            deletable: false,
+            editable: false,
+            customOptRender: visibleOpt,
+            getTitle: (item) => {
+              return env.i18n(item?.title);
             },
-            {
-              title: '点击',
-              type: '_event',
-              options({data, focusArea}) {
-                return {
-                  outputId: findConfig({ data, focusArea }, 'id')
-                }
-              }
-            }
-          ]
-        },
-        {
-          title: '删除',
-          type: 'Button',
-          ifVisible({ data, focusArea }) {
-            return !DefaultEvent.includes(findConfig({ data, focusArea }, 'id'));
+            onAdd: () => {
+              const defaultBtn = {
+                title: `操作项${btnsLength + 1}`,
+                id: uuid(),
+                icon: "",
+                useIcon: false,
+                showText: true,
+                dynamicHidden: true,
+                dynamicDisabled: true,
+                type: "default",
+                visible: true,
+                autoClose: true,
+                isConnected: false,
+                disabled: false,
+                useDynamicDisabled: false,
+                useDynamicHidden: false
+              };
+              addBtn(defaultBtn);
+              return defaultBtn;
+            },
           },
           value: {
-            set({ data, output, focusArea }: EditorResult<Data>) {
-              const footerBtns = data.footerBtns;
-              const itemId = findConfig({ data, focusArea }, 'id');
-              const index = footerBtns.findIndex((item) => item.id === itemId);
-              const item = data.footerBtns[index];
-  
-              output.remove(item.id);
-              footerBtns.splice(index, 1);
-            }
-          }
-        }
-      ],
-      cate2.title = '高级',
-      cate2.items = [
-        {
-          title: '动态启用/禁用',
-          type: 'Switch',
-          value: {
-            get({ data, focusArea }: EditorResult<Data>) {
-              return !!findConfig({ data, focusArea }, 'useDynamicDisabled');
+            get({ data, output }: EditorResult<Data>) {
+              initParams(data, output);
+              return data.footerBtns || [];
             },
-            set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
-              if (!focusArea) return;
-              const id = findConfig({ data, focusArea }, 'id');
-              const title =  findConfig({ data, focusArea }, 'title');
-              const eventKey1 = `${InputIds.SetEnable}_${id}`;
-              const eventKey2 = `${InputIds.SetDisable}_${id}`;
-      
-              const event1 = input.get(eventKey1);
-              const event2 = input.get(eventKey2);
-              if (value) {
-                !event1 && input.add(eventKey1, `启用-"${title}"`, {type: 'any'});
-                !event2 && input.add(eventKey2, `禁用-"${title}"`, {type: 'any'});
-              } else {
-                event1 && input.remove(eventKey1);
-                event2 && input.remove(eventKey2);
-              }
-              findConfig({ data, focusArea }).useDynamicDisabled = value;
-            }
-          }
-        },
-        {
-          title: '动态显示/隐藏',
-          type: 'Switch',
-          value: {
-            get({ data, focusArea }: EditorResult<Data>) {
-              return !!findConfig({ data, focusArea }, 'useDynamicHidden')
-            },
-            set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
-              if (!focusArea) return;
-              const id = findConfig({ data, focusArea }, 'id');
-              const title =  findConfig({ data, focusArea }, 'title');
-              const eventKey1 = `${InputIds.SetShow}_${id}`;
-              const eventKey2 = `${InputIds.SetHidden}_${id}`;
-      
-              const event1 = input.get(eventKey1);
-              const event2 = input.get(eventKey2);
-              if (value) {
-                !event1 && input.add(eventKey1, `显示-"${title}"`, {type: 'any'});
-                !event2 && input.add(eventKey2, `隐藏-"${title}"`, {type: 'any'});
-              } else {
-                event1 && input.remove(eventKey1);
-                event2 && input.remove(eventKey2);
-              }
-              findConfig({ data, focusArea }).useDynamicHidden = value;
+            set({ data }: EditorResult<Data>, val: any[]) {
+              data.footerBtns = val;
             }
           }
         }
       ]
+  },
+  '[data-handler-button]': {
+    title: '按钮',
+    items: ({ }: EditorResult<Data>, cate1, cate2) => {
+      cate1.title = '按钮',
+        cate1.items = [
+          {
+            title: '显示',
+            type: 'Switch',
+            value: {
+              get({ data, focusArea }: EditorResult<Data>) {
+                return !!findConfig({ data, focusArea }, 'visible');
+              },
+              set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+                findConfig({ data, focusArea }).visible = !!value;
+              }
+            }
+          },
+          {
+            title: '名称',
+            type: 'Text',
+            options: {
+              locale: true,
+            },
+            value: {
+              get({ data, focusArea }) {
+                return findConfig({ data, focusArea }, 'title')
+              },
+              set({ data, focusArea }, value: string) {
+                findConfig({ data, focusArea }).title = value;
+              }
+            }
+          },
+          {
+            title: '基础样式',
+            items: [
+              {
+                title: '风格',
+                type: 'Select',
+                options() {
+                  return [
+                    { value: 'default', label: '默认' },
+                    { value: 'primary', label: '主按钮' },
+                    { value: 'dashed', label: '虚线按钮' },
+                    { value: 'danger', label: '危险按钮' },
+                    { value: 'link', label: '链接按钮' },
+                    { value: 'text', label: '文字按钮' }
+                  ];
+                },
+                value: {
+                  get({ data, focusArea }: EditorResult<Data>) {
+                    return findConfig({ data, focusArea }, 'type');
+                  },
+                  set({ data, focusArea }: EditorResult<Data>, value: string) {
+                    findConfig({ data, focusArea }).type = value;
+                  }
+                }
+              }
+            ]
+          },
+          icon('handlerButton'),
+          {
+            title: '事件',
+            items: [
+              {
+                title: '点击自动关闭抽屉',
+                description: '开启时, 单击按钮会自动关闭抽屉。特殊处理：当需要向外输出数据时, 抽屉在数据输出后关闭。',
+                type: 'switch',
+                ifVisible({ data, focusArea }: EditorResult<Data>) {
+                  return findConfig({ data, focusArea }, 'id') === 'cancel';
+                },
+                value: {
+                  get({ data, focusArea }: EditorResult<Data>) {
+                    return findConfig({ data, focusArea }, 'autoClose');
+                  },
+                  set({ data, focusArea }: EditorResult<Data>, value: boolean) {
+                    findConfig({ data, focusArea }).autoClose = value;
+                  }
+                }
+              },
+              {
+                title: '点击',
+                type: '_event',
+                options({ data, focusArea }) {
+                  return {
+                    outputId: findConfig({ data, focusArea }, 'id')
+                  }
+                }
+              }
+            ]
+          },
+          {
+            title: '删除',
+            type: 'Button',
+            ifVisible({ data, focusArea }) {
+              return !DefaultEvent.includes(findConfig({ data, focusArea }, 'id'));
+            },
+            value: {
+              set({ data, output, focusArea }: EditorResult<Data>) {
+                const footerBtns = data.footerBtns;
+                const itemId = findConfig({ data, focusArea }, 'id');
+                const index = footerBtns.findIndex((item) => item.id === itemId);
+                const item = data.footerBtns[index];
+
+                output.remove(item.id);
+                footerBtns.splice(index, 1);
+              }
+            }
+          }
+        ],
+        cate2.title = '高级',
+        cate2.items = [
+          {
+            title: '动态启用/禁用',
+            type: 'Switch',
+            value: {
+              get({ data, focusArea }: EditorResult<Data>) {
+                return !!findConfig({ data, focusArea }, 'useDynamicDisabled');
+              },
+              set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+                if (!focusArea) return;
+                const id = findConfig({ data, focusArea }, 'id');
+                const title = findConfig({ data, focusArea }, 'title');
+                const eventKey1 = `${InputIds.SetEnable}_${id}`;
+                const eventKey2 = `${InputIds.SetDisable}_${id}`;
+
+                const event1 = input.get(eventKey1);
+                const event2 = input.get(eventKey2);
+                if (value) {
+                  !event1 && input.add(eventKey1, `启用-"${title}"`, { type: 'any' });
+                  !event2 && input.add(eventKey2, `禁用-"${title}"`, { type: 'any' });
+                } else {
+                  event1 && input.remove(eventKey1);
+                  event2 && input.remove(eventKey2);
+                }
+                findConfig({ data, focusArea }).useDynamicDisabled = value;
+              }
+            }
+          },
+          {
+            title: '动态显示/隐藏',
+            type: 'Switch',
+            value: {
+              get({ data, focusArea }: EditorResult<Data>) {
+                return !!findConfig({ data, focusArea }, 'useDynamicHidden')
+              },
+              set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+                if (!focusArea) return;
+                const id = findConfig({ data, focusArea }, 'id');
+                const title = findConfig({ data, focusArea }, 'title');
+                const eventKey1 = `${InputIds.SetShow}_${id}`;
+                const eventKey2 = `${InputIds.SetHidden}_${id}`;
+
+                const event1 = input.get(eventKey1);
+                const event2 = input.get(eventKey2);
+                if (value) {
+                  !event1 && input.add(eventKey1, `显示-"${title}"`, { type: 'any' });
+                  !event2 && input.add(eventKey2, `隐藏-"${title}"`, { type: 'any' });
+                } else {
+                  event1 && input.remove(eventKey1);
+                  event2 && input.remove(eventKey2);
+                }
+                findConfig({ data, focusArea }).useDynamicHidden = value;
+              }
+            }
+          }
+        ]
     }
   }
 }
