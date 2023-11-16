@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useRef, useEffect } from 'react';
 import { AlignEnum, Location, InputIds } from './constants';
+import ConfigProvider from '../utils/ConfigProvider'
 import { Button, Modal } from 'antd';
 import * as Icons from '@ant-design/icons';
 
@@ -121,9 +122,10 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
 
   //调试态
   const debugPopup = (
+    <ConfigProvider locale={env.vars?.locale}>
       <Modal
         visible={true}
-        title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() :env.i18n(data.title))}
+        title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
         width={isMobile ? '100%' : data.width}
         footer={data.useFooter ? renderFooter() : null}
         onCancel={handleClose}
@@ -136,46 +138,51 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
         closable={data.closable}
         getContainer={false}
       >
-    {slots['body'].render()}
-    </Modal>
+        {slots['body'].render()}
+      </Modal>
+    </ConfigProvider>
   )
   //预览态（发布态）
   const publishPopup = (
-    <Modal
-      visible={true}
-      title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() :env.i18n(data.title))}
-      width={isMobile ? '100%' : data.width}
-      footer={data.useFooter ? renderFooter() : null}
-      onCancel={handleClose}
-      centered={data.centered}
-      bodyStyle={data.bodyStyle}
+    <ConfigProvider locale={env.vars?.locale}>
+      <Modal
+        visible={true}
+        title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
+        width={isMobile ? '100%' : data.width}
+        footer={data.useFooter ? renderFooter() : null}
+        onCancel={handleClose}
+        centered={data.centered}
+        bodyStyle={data.bodyStyle}
 
-      maskClosable={data.maskClosable}
-      keyboard={data.keyboard}
-      wrapClassName={`${css.container} ${id}`}
-      closable={data.closable}
-    >
-      {slots['body'].render()}
-    </Modal>
+        maskClosable={data.maskClosable}
+        keyboard={data.keyboard}
+        wrapClassName={`${css.container} ${id}`}
+        closable={data.closable}
+      >
+        {slots['body'].render()}
+      </Modal>
+    </ConfigProvider>
   )
   //编辑态
   const editPopup = (
-    <Modal
-      visible={true}
-      title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() :env.i18n(data.title))}
-      width={isMobile ? '100%' : data.width}
-      footer={data.useFooter ? renderFooter() : null}
-      onCancel={handleClose}
-      mask={false}
-      transitionName=""
-      bodyStyle={data.bodyStyle}
+    <ConfigProvider locale={env.vars?.locale}>
+      <Modal
+        visible={true}
+        title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
+        width={isMobile ? '100%' : data.width}
+        footer={data.useFooter ? renderFooter() : null}
+        onCancel={handleClose}
+        mask={false}
+        transitionName=""
+        bodyStyle={data.bodyStyle}
 
-      wrapClassName={css.container}
-      closable={data.closable}
-      getContainer={false}
-    >
-      {slots['body'].render()}
-    </Modal>
+        wrapClassName={css.container}
+        closable={data.closable}
+        getContainer={false}
+      >
+        {slots['body'].render()}
+      </Modal>
+    </ConfigProvider>
   )
 
   const getContent = () => {
