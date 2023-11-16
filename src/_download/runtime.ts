@@ -55,7 +55,7 @@ export default function ({
       if (val) {
         try {
           if (downloadType === DownloadType.Local) {
-            const _filename = val.filename ?? filename ?? defaultFilename;
+            const _filename = val.filename ?? env.i18n(filename) ?? defaultFilename;
             const blob = getBlob(val.url ?? val, saveType);
             download(blob, _filename);
             return;
@@ -65,7 +65,7 @@ export default function ({
           const _filename =
             val.filename ??
             matchFilename(url.href) ??
-            filename ??
+            env.i18n(filename) ??
             defaultFilename;
           download(blob, _filename);
         } catch (error) {

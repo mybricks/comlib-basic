@@ -69,6 +69,9 @@ export default {
     {
       title: "文件名称",
       type: "text",
+      options: {
+        locale: true
+      },
       ifVisible({ data }: EditorResult<Data>) {
         return data.nameConfig === 0;
       },
