@@ -64,8 +64,8 @@ export default function ({
           const blob = await fetchBlob(url.href);
           const _filename =
             val.filename ??
-            matchFilename(url.href) ??
             filename ??
+            matchFilename(url.href) ??
             defaultFilename;
           download(blob, _filename);
         } catch (error) {
