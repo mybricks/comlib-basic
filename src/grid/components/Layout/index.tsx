@@ -11,7 +11,6 @@ interface LayoutProps {
 const Layout = ({ className, children, ...rest }: LayoutProps) => {
   const { env } = useContext(RuntimeContext);
   const layoutRef = useRef<HTMLDivElement>(null);
-  const mountStatusRef = useRef<boolean>(false);
   const classnames = useMemo(() => {
     const classnames = [styles.layout];
     if (className) {
@@ -22,10 +21,6 @@ const Layout = ({ className, children, ...rest }: LayoutProps) => {
 
   useMutationObserver(layoutRef, (mutationList: MutationRecord[]) => {
     if (env && (env.edit || env.runtime?.debug)) {
-      // if (!mountStatusRef.current) {
-      //   mountStatusRef.current = true;
-      //   return;
-      // }
       mutationList.forEach((mutation) => {
         if (
           mutation.type === "attributes" &&
