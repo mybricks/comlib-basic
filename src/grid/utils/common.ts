@@ -253,3 +253,10 @@ export const reviseStandardColWidth = (
     row.cols[index].width = col.width;
   });
 };
+
+export const isLastRow = (props: EditorResult<Data>) => {
+  const { data, focusArea } = props;
+  const row = data.rows.slice().pop();
+  if (!row || !focusArea) return false;
+  return row.key === focusArea.dataset.layoutRowKey;
+};

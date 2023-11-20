@@ -11,8 +11,13 @@ const EditLayout = (props: RuntimeParams<Data>) => {
   return (
     <RuntimeContext.Provider value={{ ...props }}>
       <Layout className={"mybricks-layout"}>
-        {data.rows.map((row) => (
-          <ResizableRow key={row.key} row={row} {...props}>
+        {data.rows.map((row, index) => (
+          <ResizableRow
+            key={row.key}
+            row={row}
+            resizable={index !== data.rows.length - 1}
+            {...props}
+          >
             {row.cols.map((col, index) => (
               <ResizableCol
                 key={col.key}
@@ -34,9 +39,11 @@ const ResizableRow = ({
   row,
   children,
   env,
+  resizable = true,
 }: {
   row: DataRowType;
   children?: React.ReactNode;
+  resizable?: boolean;
 } & RuntimeParams<Data>) => {
   const editFinishRef = useRef<Function>();
   const dragText = useMemo(() => {
@@ -52,7 +59,24 @@ const ResizableRow = ({
   }, [row.height, row.heightMode]);
 
   const isDragging = data.rows.find((row) => !!row.isDragging);
-  return (
+
+  const rowDom = (
+    <Row row={row} className={"mybricks-row"} data-layout-row-key={row.key}>
+      {children}
+      {isDragging && (
+        <div
+          className={
+            row.isDragging
+              ? editStyles.draggingTipH
+              : `${editStyles.draggingTipH} ${editStyles.dashed}`
+          }
+        >
+          {dragText}
+        </div>
+      )}
+    </Row>
+  );
+  return resizable ? (
     <Resizable
       axis="y"
       key={row.key}
@@ -70,21 +94,10 @@ const ResizableRow = ({
       }}
       zoom={env.canvas?.zoom}
     >
-      <Row row={row} className={"mybricks-row"} data-layout-row-key={row.key}>
-        {children}
-        {isDragging && (
-          <div
-            className={
-              row.isDragging
-                ? editStyles.draggingTipH
-                : `${editStyles.draggingTipH} ${editStyles.dashed}`
-            }
-          >
-            {dragText}
-          </div>
-        )}
-      </Row>
+      {rowDom}
     </Resizable>
+  ) : (
+    rowDom
   );
 };
 
