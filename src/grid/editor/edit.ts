@@ -10,7 +10,7 @@ import RowEditor from "./row.editor";
 import ColEditor from "./col.editor";
 export default {
   '@resize': {
-    options: ['height']
+    options: ['width', 'height']
   },
   ":root": {
     items({ data }: EditorResult<Data>, ...cate) {
