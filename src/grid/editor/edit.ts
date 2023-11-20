@@ -12,6 +12,10 @@ export default {
   '@resize': {
     options: ['width', 'height']
   },
+  '@init': ({ style, data }) => {
+    style.width = '100%';
+    style.height = 'auto';
+  },
   ":root": {
     items({ data }: EditorResult<Data>, ...cate) {
       cate[0].title = "常规";

@@ -22,10 +22,10 @@ const Layout = ({ className, children, ...rest }: LayoutProps) => {
 
   useMutationObserver(layoutRef, (mutationList: MutationRecord[]) => {
     if (env && (env.edit || env.runtime?.debug)) {
-      if (!mountStatusRef.current) {
-        mountStatusRef.current = true;
-        return;
-      }
+      // if (!mountStatusRef.current) {
+      //   mountStatusRef.current = true;
+      //   return;
+      // }
       mutationList.forEach((mutation) => {
         if (
           mutation.type === "attributes" &&
@@ -33,7 +33,7 @@ const Layout = ({ className, children, ...rest }: LayoutProps) => {
         ) {
           const style = window.getComputedStyle(mutation.target as Element);
           if (!layoutRef.current) return;
-          layoutRef.current.style.height = style.height;
+          layoutRef.current.style.height = mutation.target.style.height === 'auto' ? mutation.target.style.height : style.height;
           layoutRef.current.style.overflowY = "auto";
         }
       });
