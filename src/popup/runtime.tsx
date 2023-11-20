@@ -158,6 +158,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
         keyboard={data.keyboard}
         wrapClassName={`${css.container} ${id}`}
         closable={data.closable}
+        getContainer={() => env?.canvasElement || document.body}
       >
         {slots['body'].render()}
       </Modal>
