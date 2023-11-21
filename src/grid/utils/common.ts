@@ -260,3 +260,29 @@ export const isLastRow = (props: EditorResult<Data>) => {
   if (!row || !focusArea) return false;
   return row.key === focusArea.dataset.layoutRowKey;
 };
+
+export const getChildTotalHeight = (id: string) => {
+  const shadowRoot = document.querySelector(
+    "#_mybricks-geo-webview_"
+  )?.shadowRoot;
+  const root = shadowRoot?.querySelector(`#${id} > div`);
+  let height = 0;
+  if (root) {
+    const childHeightList = Array.from(root.childNodes).map((node) => {
+      const style = window.getComputedStyle(node as Element);
+      return parseInt(style.height);
+    });
+    const total = childHeightList
+      .slice(0, childHeightList.length - 1)
+      .reduce((pre, next) => pre + next);
+    const lastRow = Array.from(root.childNodes).pop();
+    Array.from(lastRow?.childNodes ?? []).map((colDom) => {
+      Array.from(colDom.childNodes[0].childNodes).map(slotChild => {
+        if(slotChild.id){
+          
+        }
+      })
+    });
+  }
+  return height;
+};

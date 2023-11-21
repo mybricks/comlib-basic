@@ -5,12 +5,18 @@ import {
   createStyleForGrid,
   createStyleForCol,
   getFilterSelector,
+  getChildTotalHeight
 } from "../utils";
 import RowEditor from "./row.editor";
 import ColEditor from "./col.editor";
 export default {
   '@resize': {
-    options: ['width', 'height']
+    options: ['width', 'height'],
+    value: {
+      set({ data, style, focusArea, id }, { width, height }) {
+        const minHeight = getChildTotalHeight(id)
+      }
+    }
   },
   '@init': ({ style, data }) => {
     style.width = '100%';
