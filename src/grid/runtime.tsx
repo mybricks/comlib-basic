@@ -36,15 +36,26 @@ export default (props: RuntimeParams<Data>) => {
         {data.rows.map((row) => (
           <Row row={row} key={row.key} className={"mybricks-row"}>
             {row.cols.map((col, index) => {
+              const isLastCol = index === row.cols.length - 1;
               const colProps = {
-                col,
+                col: {
+                  ...col,
+                  widthMode: isLastCol ? WidthUnitEnum.Auto : col.widthMode,
+                }, //last col auto
                 key: col.key,
                 className: "mybricks-col",
                 "data-layout-col-key": `${row.key},${col.key}`,
                 onClick: onColClick,
               };
+              const colDom = (
+                <Col {...colProps}>
+                  {slots[col.key]?.render({
+                    key: col.key,
+                    style: col.slotStyle,
+                  })}
+                </Col>
+              );
               if (data.resizable) {
-                const isLastCol = index === row.cols.length - 1;
                 if (!isLastCol) {
                   return (
                     <Resizable
@@ -61,34 +72,14 @@ export default (props: RuntimeParams<Data>) => {
                         });
                       }}
                     >
-                      <Col {...colProps}>
-                        {slots[col.key]?.render({
-                          key: col.key,
-                          style: col.slotStyle,
-                        })}
-                      </Col>
+                      {colDom}
                     </Resizable>
                   );
                 } else {
-                  colProps.col = { ...col, widthMode: WidthUnitEnum.Auto }; //last col auto
-                  return (
-                    <Col {...colProps}>
-                      {slots[col.key]?.render({
-                        key: col.key,
-                        style: col.slotStyle,
-                      })}
-                    </Col>
-                  );
+                  return colDom;
                 }
               } else {
-                return (
-                  <Col {...colProps}>
-                    {slots[col.key]?.render({
-                      key: col.key,
-                      style: col.slotStyle,
-                    })}
-                  </Col>
-                );
+                return colDom;
               }
             })}
           </Row>

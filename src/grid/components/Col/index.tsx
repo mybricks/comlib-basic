@@ -33,7 +33,7 @@ const Col = (
   ref: LegacyRef<HTMLDivElement>
 ) => {
   const colStyle = useMemo(() => {
-    const style = { ...(col.style ?? {}) };
+    const style: CSSProperties = {};
     if (col.widthMode === WidthUnitEnum.Auto) {
       style.flex = 1;
       style.minWidth = 1;
@@ -45,7 +45,7 @@ const Col = (
       style.flex = `0 0 ${col.width}%`;
       style.maxWidth = `${col.width}%`;
     }
-    return style;
+    return { ...style, ...(col.style ?? {}) };
   }, [JSON.stringify(col.style), col.width, col.widthMode]);
 
   const classnames = useMemo(() => {

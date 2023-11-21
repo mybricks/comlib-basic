@@ -12,17 +12,17 @@ import ColEditor from "./col.editor";
 export default {
   '@resize': {
     options: ['width', 'height'],
-    value: {
-      set({ data, style, focusArea, id }, { width, height }) {
-        const { width: minWidth, height: minHeight } = getMinRect(id)
-        if (height) {
-          style.height = Math.max(minHeight, height)
-        }
-        // if (width) {
-        //   style.width = Math.max(minWidth, width)
-        // }
-      }
-    }
+    // value: {
+    //   set({ data, style, focusArea, id }, { width, height }) {
+    //     const { width: minWidth, height: minHeight } = getMinRect(id)
+    //     if (height) {
+    //       style.height = Math.max(minHeight, height)
+    //     }
+    //     // if (width) {
+    //     //   style.width = Math.max(minWidth, width)
+    //     // }
+    //   }
+    // }
   },
   '@init': ({ style, data }) => {
     style.width = '100%';

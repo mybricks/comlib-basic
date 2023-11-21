@@ -6,6 +6,17 @@ import { RuntimeContext } from "../context";
 
 import editStyles from "./edit.less";
 
+const toggleSlotTitle = (
+  slots: RuntimeParams<Data>["slots"],
+  title: string
+) => {
+  for (const key in slots) {
+    if (Object.prototype.hasOwnProperty.call(slots, key)) {
+      slots[key].title = title;
+    }
+  }
+};
+
 const EditLayout = (props: RuntimeParams<Data>) => {
   const { data } = props;
   return (
@@ -41,6 +52,7 @@ const ResizableRow = ({
   children,
   env,
   resizable = true,
+  slots,
 }: {
   row: DataRowType;
   children?: React.ReactNode;
@@ -62,7 +74,12 @@ const ResizableRow = ({
   const isDragging = data.rows.find((row) => !!row.isDragging);
 
   const rowDom = (
-    <Row row={row} className={"mybricks-row"} data-layout-row-key={row.key} data-row-custom={row.useCustom}>
+    <Row
+      row={row}
+      className={"mybricks-row"}
+      data-layout-row-key={row.key}
+      data-row-custom={row.useCustom}
+    >
       {children}
       {isDragging && (
         <div
@@ -84,6 +101,7 @@ const ResizableRow = ({
       onResizeStart={() => {
         row.isDragging = true;
         editFinishRef.current = env.edit.focusPaasive();
+        toggleSlotTitle(slots, "");
       }}
       onResize={(size) => {
         row.height = size.height;
@@ -92,6 +110,7 @@ const ResizableRow = ({
       onResizeStop={() => {
         row.isDragging = false;
         editFinishRef.current && editFinishRef.current();
+        toggleSlotTitle(slots, "拖拽组件到这里");
       }}
       zoom={env.canvas?.zoom}
     >
@@ -109,7 +128,7 @@ const ResizableCol = ({
   index,
   slots,
   env,
-  resizable = true
+  resizable = true,
 }: {
   row: DataRowType;
   col: DataColType;
@@ -118,6 +137,7 @@ const ResizableCol = ({
 } & RuntimeParams<Data>) => {
   const colRef = useRef<HTMLDivElement>(null);
   const editFinishRef = useRef<Function>();
+  const isLastCol = useMemo(() => index === row.cols.length - 1, [row, index])
 
   useEffect(() => {
     const eventHandle = (e) => {
@@ -152,6 +172,9 @@ const ResizableCol = ({
   }, [JSON.stringify(row), index, colRef]);
 
   const dragText = useMemo(() => {
+    if(isLastCol) {
+      return WidthUnitEnum.Auto
+    }
     if (col.widthMode === WidthUnitEnum.Auto) {
       return col.widthMode;
     }
@@ -161,7 +184,7 @@ const ResizableCol = ({
     if (col.widthMode === WidthUnitEnum.Percent) {
       return col.width;
     }
-  }, [col.widthMode, col.width]);
+  }, [col.widthMode, col.width, isLastCol]);
 
   const isDragging = data.rows.find(({ cols }) =>
     cols.some((col) => !!col.isDragging)
@@ -182,7 +205,7 @@ const ResizableCol = ({
   const colDom = (
     <Col
       ref={colRef}
-      col={col}
+      col={{ ...col, style: isLastCol ? { flex: 1 } : {} }}
       className={classnames}
       data-layout-col-key={`${row.key},${col.key}`}
     >
@@ -216,6 +239,7 @@ const ResizableCol = ({
               row.cols[index].isDragging = true;
             });
         }
+        toggleSlotTitle(slots, "");
       }}
       onResize={(size) => {
         if (row.useCustom) {
@@ -241,13 +265,16 @@ const ResizableCol = ({
               row.cols[index].isDragging = false;
             });
         }
+        toggleSlotTitle(slots, "拖拽组件到这里");
       }}
       zoom={env.canvas?.zoom}
       className={hoverClassName}
     >
       {colDom}
     </Resizable>
-  ) : colDom;
+  ) : (
+    colDom
+  );
 };
 
 export default EditLayout;
