@@ -261,28 +261,59 @@ export const isLastRow = (props: EditorResult<Data>) => {
   return row.key === focusArea.dataset.layoutRowKey;
 };
 
-export const getChildTotalHeight = (id: string) => {
+export const isLastCol = (props: EditorResult<Data>) => {
+  const { data, focusArea } = props;
+  const { row, col, index } = getCol(props)
+  if (!row || !col || !focusArea) return false;
+  return row.cols.length - 1 === index;
+};
+
+export const getMinRect = (id: string) => {
   const shadowRoot = document.querySelector(
     "#_mybricks-geo-webview_"
   )?.shadowRoot;
   const root = shadowRoot?.querySelector(`#${id} > div`);
-  let height = 0;
-  if (root) {
-    const childHeightList = Array.from(root.childNodes).map((node) => {
-      const style = window.getComputedStyle(node as Element);
-      return parseInt(style.height);
-    });
-    const total = childHeightList
-      .slice(0, childHeightList.length - 1)
-      .reduce((pre, next) => pre + next);
-    const lastRow = Array.from(root.childNodes).pop();
-    Array.from(lastRow?.childNodes ?? []).map((colDom) => {
-      Array.from(colDom.childNodes[0].childNodes).map(slotChild => {
-        if(slotChild.id){
-          
-        }
-      })
-    });
-  }
-  return height;
+  const height = calMinHeight(root);
+  const width = 0;
+  return { width, height };
 };
+
+const calMinHeight = (root: Element | undefined | null) => {
+  let height = 0;
+  if (!root || !root.childNodes.length) return height;
+  const childHeightList = Array.from(root.childNodes).map((node) => {
+    const style = window.getComputedStyle(node as Element);
+    return parseInt(style.height);
+  });
+  const lastRow = Array.from(root.childNodes).slice().pop();
+  const lastRowColHeightList = Array.from(lastRow?.childNodes ?? []).map(
+    (colDom) => {
+      const slotChildHeightList = Array.from(
+        colDom.childNodes[0].childNodes
+      ).map((slotChild) => {
+        if (slotChild.id) {
+          const style = window.getComputedStyle(slotChild as Element);
+          return parseInt(style.height);
+        }
+        return 0;
+      });
+      return slotChildHeightList.reduce((pre, cur) => pre + cur);
+    }
+  );
+  const lastRowHeight = Math.max(...lastRowColHeightList) || 30;
+  childHeightList.splice(childHeightList.length - 1, 1, lastRowHeight)
+  height = childHeightList.reduce((pre, next) => pre + next);;
+  return height;
+}
+
+const calMinWidth = (root: Element | undefined | null) => {
+  let width = 0;
+  if (!root || !root.childNodes.length) return width;
+  const normalRows = Array.from(root.childNodes).filter(node => !node.dataset.hasOwnProperty('rowCustom'));
+  if (!normalRows.length) return width;
+  const childWidthList = Array.from(normalRows[0].childNodes).map((node) => {
+    const style = window.getComputedStyle(node as Element);
+    return parseInt(style.width);
+  });
+  return width;
+}

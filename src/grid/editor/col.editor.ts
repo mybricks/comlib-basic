@@ -8,6 +8,7 @@ import {
   appendCol,
   deleteCol,
   updateColWidthMode,
+  isLastCol
 } from "../utils";
 export default {
   "[data-layout-col-key]": {
@@ -25,6 +26,9 @@ export default {
             { value: WidthUnitEnum.Percent, label: "百分比" },
             { value: WidthUnitEnum.Px, label: "固定宽度" },
           ],
+          ifVisible(props: EditorResult<Data>) {
+            return !isLastCol(props);
+          },
           value: {
             get(props: EditorResult<Data>) {
               return col.widthMode ?? WidthUnitEnum.Auto;
@@ -40,8 +44,8 @@ export default {
           options: {
             type: "Number",
           },
-          ifVisible({ data, focusArea }: EditorResult<Data>) {
-            return col?.widthMode === WidthUnitEnum.Px;
+          ifVisible(props: EditorResult<Data>) {
+            return col?.widthMode === WidthUnitEnum.Px && !isLastCol(props);
           },
           value: {
             get({ data, focusArea }: EditorResult<Data>) {
@@ -60,8 +64,8 @@ export default {
             min: 0,
             max: 100,
           },
-          ifVisible({ data, focusArea }: EditorResult<Data>) {
-            return col?.widthMode === WidthUnitEnum.Percent;
+          ifVisible(props: EditorResult<Data>) {
+            return col?.widthMode === WidthUnitEnum.Percent && !isLastCol(props);
           },
           value: {
             get({ data, focusArea }: EditorResult<Data>) {

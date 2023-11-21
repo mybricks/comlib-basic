@@ -38,7 +38,6 @@ export default (props: RuntimeParams<Data>) => {
             {row.cols.map((col, index) => {
               const colProps = {
                 col,
-                basis: 100 / row.cols.length,
                 key: col.key,
                 className: "mybricks-col",
                 "data-layout-col-key": `${row.key},${col.key}`,

@@ -24,6 +24,7 @@ const EditLayout = (props: RuntimeParams<Data>) => {
                 col={col}
                 row={row}
                 index={index}
+                resizable={index !== row.cols.length - 1}
                 {...props}
               />
             ))}
@@ -61,7 +62,7 @@ const ResizableRow = ({
   const isDragging = data.rows.find((row) => !!row.isDragging);
 
   const rowDom = (
-    <Row row={row} className={"mybricks-row"} data-layout-row-key={row.key}>
+    <Row row={row} className={"mybricks-row"} data-layout-row-key={row.key} data-row-custom={row.useCustom}>
       {children}
       {isDragging && (
         <div
@@ -108,10 +109,12 @@ const ResizableCol = ({
   index,
   slots,
   env,
+  resizable = true
 }: {
   row: DataRowType;
   col: DataColType;
   index: number;
+  resizable?: boolean;
 } & RuntimeParams<Data>) => {
   const colRef = useRef<HTMLDivElement>(null);
   const editFinishRef = useRef<Function>();
@@ -176,9 +179,29 @@ const ResizableCol = ({
     return col.isHover ? editStyles.hover : undefined;
   }, [col.isHover]);
 
-  const basis = 100 / row.cols.length;
+  const colDom = (
+    <Col
+      ref={colRef}
+      col={col}
+      className={classnames}
+      data-layout-col-key={`${row.key},${col.key}`}
+    >
+      {slots[col.key]?.render({ key: col.key, style: col.slotStyle })}
+      {isDragging && (
+        <div
+          className={
+            col.isDragging
+              ? editStyles.draggingTipW
+              : `${editStyles.draggingTipW} ${editStyles.dashed}`
+          }
+        >
+          {dragText}
+        </div>
+      )}
+    </Col>
+  );
 
-  return (
+  return resizable ? (
     <Resizable
       axis="x"
       key={col.key}
@@ -222,28 +245,9 @@ const ResizableCol = ({
       zoom={env.canvas?.zoom}
       className={hoverClassName}
     >
-      <Col
-        ref={colRef}
-        col={col}
-        className={classnames}
-        data-layout-col-key={`${row.key},${col.key}`}
-        basis={basis}
-      >
-        {slots[col.key]?.render({ key: col.key, style: col.slotStyle })}
-        {isDragging && (
-          <div
-            className={
-              col.isDragging
-                ? editStyles.draggingTipW
-                : `${editStyles.draggingTipW} ${editStyles.dashed}`
-            }
-          >
-            {dragText}
-          </div>
-        )}
-      </Col>
+      {colDom}
     </Resizable>
-  );
+  ) : colDom;
 };
 
 export default EditLayout;
