@@ -12,11 +12,11 @@ import ColEditor from "./col.editor";
 export default {
   '@resize': {
     options: ['width', 'height'],
-    value: {
-      set({ data, style, focusArea, id }, { width, height }) {
-        const minHeight = getChildTotalHeight(id)
-      }
-    }
+    // value: {
+    //   set({ data, style, focusArea, id }, { width, height }) {
+    //     const childHeight = getChildTotalHeight(id)
+    //   }
+    // }
   },
   '@init': ({ style, data }) => {
     style.width = '100%';
