@@ -27,7 +27,7 @@ const defaultRow = {
 export const createRow = (props: EditorResult<Data>): DataRowType => {
   const { data } = props;
   const rowKey = uuid();
-  const row = data.rows[0] ?? defaultRow;
+  const row = data.rows.find(row => !row.useCustom) ?? defaultRow;
   const cols = row.cols.map((col) => {
     return copyCol(props, col);
   });

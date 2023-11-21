@@ -137,7 +137,6 @@ const ResizableCol = ({
 } & RuntimeParams<Data>) => {
   const colRef = useRef<HTMLDivElement>(null);
   const editFinishRef = useRef<Function>();
-  const isLastCol = useMemo(() => index === row.cols.length - 1, [row, index])
 
   useEffect(() => {
     const eventHandle = (e) => {
@@ -172,7 +171,7 @@ const ResizableCol = ({
   }, [JSON.stringify(row), index, colRef]);
 
   const dragText = useMemo(() => {
-    if(isLastCol) {
+    if(!resizable) {
       return WidthUnitEnum.Auto
     }
     if (col.widthMode === WidthUnitEnum.Auto) {
@@ -184,7 +183,7 @@ const ResizableCol = ({
     if (col.widthMode === WidthUnitEnum.Percent) {
       return col.width;
     }
-  }, [col.widthMode, col.width, isLastCol]);
+  }, [col.widthMode, col.width, resizable]);
 
   const isDragging = data.rows.find(({ cols }) =>
     cols.some((col) => !!col.isDragging)
@@ -205,7 +204,7 @@ const ResizableCol = ({
   const colDom = (
     <Col
       ref={colRef}
-      col={{ ...col, style: isLastCol ? { flex: 1 } : {} }}
+      col={{ ...col, style: !resizable ? { flex: 1 } : {} }}
       className={classnames}
       data-layout-col-key={`${row.key},${col.key}`}
     >
