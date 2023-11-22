@@ -21,7 +21,7 @@ const EditLayout = (props: RuntimeParams<Data>) => {
   const { data } = props;
   return (
     <RuntimeContext.Provider value={{ ...props }}>
-      <Layout className={"mybricks-layout"}>
+      <Layout className={`mybricks-layout ${editStyles.dashed}`}>
         {data.rows.map((row, index) => (
           <ResizableRow
             key={row.key}
@@ -53,12 +53,14 @@ const ResizableRow = ({
   env,
   resizable = true,
   slots,
+  undo
 }: {
   row: DataRowType;
   children?: React.ReactNode;
   resizable?: boolean;
 } & RuntimeParams<Data>) => {
   const editFinishRef = useRef<Function>();
+  const task = useRef<UndoTask>()
   const dragText = useMemo(() => {
     if (row.heightMode === HeightUnitEnum.Auto) {
       return row.heightMode;
@@ -99,6 +101,7 @@ const ResizableRow = ({
       axis="y"
       key={row.key}
       onResizeStart={() => {
+        task.current = undo?.start('开始行拖拽')
         row.isDragging = true;
         editFinishRef.current = env.edit.focusPaasive();
         toggleSlotTitle(slots, "");
@@ -111,6 +114,7 @@ const ResizableRow = ({
         row.isDragging = false;
         editFinishRef.current && editFinishRef.current();
         toggleSlotTitle(slots, "拖拽组件到这里");
+        task.current?.commit()
       }}
       zoom={env.canvas?.zoom}
     >
@@ -128,6 +132,7 @@ const ResizableCol = ({
   index,
   slots,
   env,
+  undo,
   resizable = true,
 }: {
   row: DataRowType;
@@ -137,6 +142,7 @@ const ResizableCol = ({
 } & RuntimeParams<Data>) => {
   const colRef = useRef<HTMLDivElement>(null);
   const editFinishRef = useRef<Function>();
+  const task = useRef<UndoTask>()
 
   useEffect(() => {
     const eventHandle = (e) => {
@@ -228,6 +234,7 @@ const ResizableCol = ({
       axis="x"
       key={col.key}
       onResizeStart={() => {
+        task.current = undo?.start('开始列拖拽')
         editFinishRef.current = env.edit.focusPaasive();
         if (row.useCustom) {
           col.isDragging = true;
@@ -265,6 +272,7 @@ const ResizableCol = ({
             });
         }
         toggleSlotTitle(slots, "拖拽组件到这里");
+        task.current?.commit()
       }}
       zoom={env.canvas?.zoom}
       className={hoverClassName}

@@ -46,8 +46,13 @@ interface RuntimeParams<T> {
   /** 父容器插槽 **/
   parentSlot: any
   title?: string
-  onError: (params: Error | string) => null
+  onError: (params: Error | string) => null,
+  undo: {
+    start: (params: any) => UndoTask
+  }
 }
+
+type UndoTask = {commit: Function}
 
 interface EditorResult<T> {
   id: string
