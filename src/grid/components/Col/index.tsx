@@ -36,7 +36,7 @@ const Col = (
     const style: CSSProperties = {};
     if (col.widthMode === WidthUnitEnum.Auto) {
       style.flex = 1;
-      style.minWidth = 1;
+      style.minWidth = 30;
     }
     if (col.widthMode === WidthUnitEnum.Px) {
       style.width = col.width;
