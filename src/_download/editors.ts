@@ -5,29 +5,42 @@ import {
   SaveTypeOptions,
 } from "./constants";
 
-const setSchema = (input, status) => {
-  if (status === 0) {
-    input?.get("url").setSchema({
-      title: "输入数据",
-      type: "string",
-    });
-  }
-  if (status === 1) {
+export const setSchema = (input, downloadType: DownloadType) => {
+  if (downloadType === DownloadType.Local) {
     input.get("url").setSchema({
       title: "输入数据",
       type: "object",
       properties: {
         url: {
-          title: "资源链接",
-          type: "string",
+          title: "资源链接/数据",
+          type: "any",
         },
         filename: {
           title: "资源文件名",
           type: "string",
         },
+        saveType: {
+          title: "保存类型（mimeType规范）",
+          type: "string",
+        },
       },
     });
+    return;
   }
+  input?.get("url").setSchema({
+    title: "输入数据",
+    type: "object",
+    properties: {
+      url: {
+        title: "资源链接/数据",
+        type: "any",
+      },
+      filename: {
+        title: "资源文件名",
+        type: "string",
+      },
+    },
+  });
 };
 
 const getExtname = (filename: string) => {
@@ -42,38 +55,10 @@ const getExtname = (filename: string) => {
 export default {
   ":root": [
     {
-      title: "文件名配置",
-      type: "select",
-      options: [
-        {
-          key: 0,
-          label: "手动配置",
-          value: 0,
-        },
-        {
-          key: 1,
-          label: "动态配置",
-          value: 1,
-        },
-      ],
-      value: {
-        get({ data }: EditorResult<Data>) {
-          return data.nameConfig;
-        },
-        set({ data, input }: EditorResult<Data>, val: 0 | 1) {
-          setSchema(input, val);
-          data.nameConfig = val;
-        },
-      },
-    },
-    {
       title: "文件名称",
       type: "text",
       options: {
-        locale: true
-      },
-      ifVisible({ data }: EditorResult<Data>) {
-        return data.nameConfig === 0;
+        locale: true,
       },
       value: {
         get({ data }: EditorResult<Data>) {
@@ -98,7 +83,8 @@ export default {
         get({ data }: EditorResult<Data>) {
           return data.downloadType ?? DownloadType.Network;
         },
-        set({ data }: EditorResult<Data>, value: DownloadType) {
+        set({ data, input }: EditorResult<Data>, value: DownloadType) {
+          setSchema(input, value)
           data.downloadType = value;
         },
       },

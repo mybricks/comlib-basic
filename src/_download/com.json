@@ -1,7 +1,7 @@
 {
   "title": "资源下载",
   "namespace": "mybricks.normal-pc.download",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "rtType": "js",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,12 +9,23 @@
   "runtime": "./runtime.ts",
   "editors": "./editors.ts",
   "icon": "./icon.svg",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "url",
       "title": "资源地址",
       "schema": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "url": {
+            "title": "资源链接/数据",
+            "type": "any"
+          },
+          "filename": {
+            "title": "资源文件名",
+            "type": "string"
+          }
+        }
       }
     }
   ],

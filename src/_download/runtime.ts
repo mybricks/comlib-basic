@@ -12,7 +12,7 @@ const matchFilename = (url) => {
   }
 };
 
-const getBlob = (source: any, mimeType: string | undefined) => {
+const generateBlob = (source: any, mimeType: string | undefined) => {
   if (source instanceof Blob) {
     return source;
   }
@@ -48,7 +48,7 @@ export default function ({
   onError,
   logger,
 }: RuntimeParams<Data>) {
-  const { filename, downloadType, saveType } = data;
+  const { filename, downloadType } = data;
   const { runtime } = env;
   if (runtime) {
     inputs.url(async (val) => {
@@ -56,7 +56,8 @@ export default function ({
         try {
           if (downloadType === DownloadType.Local) {
             const _filename = val.filename ?? env.i18n(filename) ?? defaultFilename;
-            const blob = getBlob(val.url ?? val, saveType);
+            data.saveType = val.saveType ?? data.saveType
+            const blob = generateBlob(val.url ?? val, data.saveType);
             download(blob, _filename);
             return;
           }
