@@ -28,7 +28,10 @@ const generateBlob = (source: any, mimeType: string | undefined) => {
 
 const fetchBlob = async (url: string) => {
   const res = await fetch(url);
-  return res.blob();
+  if (res.ok) {
+    return res.blob();
+  }
+  throw Error(res.statusText)
 };
 
 const download = (blob: Blob, filename: string) => {
@@ -61,7 +64,8 @@ export default function ({
             download(blob, _filename);
             return;
           }
-          const url = new URL(val.url ?? val);
+          const url = new URL(val.url ?? val, location.origin);
+          console.info(`%c [开始下载]: ${url.href}`, 'color: #1890ff; font-weight: bold;')
           const blob = await fetchBlob(url.href);
           const _filename =
             val.filename ??
@@ -70,8 +74,7 @@ export default function ({
             defaultFilename;
           download(blob, _filename);
         } catch (error) {
-          logger.error("[资源下载]：数据类型错误");
-          onError("[资源下载]：数据类型错误");
+          console.error(error)
         }
       }
     });
