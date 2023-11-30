@@ -64,7 +64,7 @@ export default function ({
             download(blob, _filename);
             return;
           }
-          const url = new URL(val.url ?? val, location.origin);
+          const url = new URL(val.url ?? val, location.href);
           console.info(`%c [开始下载]: ${url.href}`, 'color: #1890ff; font-weight: bold;')
           const blob = await fetchBlob(url.href);
           const _filename =
