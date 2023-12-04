@@ -1,5 +1,5 @@
 import { CODE_TEMPLATE, COMMENTS, Data, IMMEDIATE_CODE_TEMPLATE } from './constants';
-import { jsonToSchema, convertObject2Array } from './util';
+import { jsonToSchema, convertObject2Array, getSuggestionFromSchema } from './util';
 import Sandbox from './com-utils/sandbox'
 
 export default {
@@ -12,10 +12,14 @@ export default {
     }
     data.fns = data.fns || (data.runImmediate ? IMMEDIATE_CODE_TEMPLATE : CODE_TEMPLATE);
   },
-  '@inputConnected'({ data, output }, fromPin) {
+  '@inputConnected'({ data, output }, fromPin, toPin) {
     if (data.fns === CODE_TEMPLATE) {
       output.get('output0').setSchema({ type: 'unknown' });
     }
+    data.suggestions = getSuggestionFromSchema(toPin.id, fromPin.schema)
+  },
+  '@inputUpdated'({ data }: EditorResult<Data>, updatePin) {
+    data.suggestions = getSuggestionFromSchema(updatePin.id, updatePin.schema);
   },
   ':root': [
     {
@@ -71,6 +75,7 @@ export default {
             }
           },
           autoSave: false,
+          suggestions: data.suggestions,
           onBlur: () => {
             updateOutputSchema(output, data.fns);
           }
@@ -106,14 +111,14 @@ function updateOutputSchema(output, code) {
 
   setTimeout(() => {
     try {
-      const sandbox = new Sandbox({module: true})
+      const sandbox = new Sandbox({ module: true })
       const fn = sandbox.compile(`${decodeURIComponent(code.code || code)}`)
       const params = {
         inputValue: void 0,
         outputs: convertObject2Array(outputs),
         inputs: convertObject2Array(inputs)
       }
-      fn.run([params], () => {});
+      fn.run([params], () => { });
     } catch (error) {
       console.error(error)
     }

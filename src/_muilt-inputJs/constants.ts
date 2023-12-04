@@ -36,4 +36,13 @@ export interface Data {
   fnBody: string;
   fns: any;
   runImmediate: boolean;
+  suggestions?: SuggestionType[]
+}
+
+
+export type SuggestionType = {
+  label: string;
+  insertText: string;
+  detail?: string;
+  kind?: number
 }

@@ -1,3 +1,4 @@
+import { Data, SuggestionType } from './constants'
 export function jsonToSchema(json): any {
   const schema = { type: void 0 };
   proItem({ schema, val: json });
@@ -83,3 +84,29 @@ export function convertObject2Array(input) {
   });
   return result;
 }
+
+export const getSuggestionFromSchema = (pinId: string, schema: Record<string, any>): Data['suggestions'] => {
+  const rootKey = pinId.split('.').pop() ?? 'inputValue0'
+  const suggestion = transform(rootKey, schema.properties)
+  return suggestion
+}
+
+const transform = (pKey: string, properties: Record<string, any>) => {
+  const suggestions: SuggestionType[] = [];
+  Object.keys(properties || {}).forEach((key) => {
+    const currentKey = `${pKey}.${key}`;
+    suggestions.push({
+      label: currentKey,
+      insertText: key,
+      kind: 3
+    });
+    const property = properties[key]
+    if ((property.type.toLowerCase() === 'object' && !!property.properties)) {
+      suggestions.push(...transform(currentKey, property.properties))
+    }
+    if (property.type.toLowerCase() === 'array' && property.items.type === 'object') {
+      suggestions.push(...transform(`${currentKey}[]`, property.items.properties))
+    }
+  });
+  return suggestions;
+};
