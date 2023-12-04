@@ -28,5 +28,6 @@
     "./src/_encryption/com.json",
     "./src/grid/com.json"
   ],
-  "componentType": "PC"
+  "componentType": "PC",
+  "tags": "react"
 }
