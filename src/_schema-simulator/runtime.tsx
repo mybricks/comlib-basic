@@ -17,12 +17,16 @@ function GetRandomNum(Min, Max) {
 }
 
 //生成随机布尔值
-function GetRandomBoolean() {
+function GetRandomBoolean(type) {
   const bool = GetRandomNum(0, 1);
-  if (bool === 0) {
-    return false;
-  } else {
-    return true;
+  if(type === 'random'){
+    if (bool === 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }else if(type === true || type === false){
+    return type
   }
 }
 
@@ -38,7 +42,7 @@ function GetRandomAny(e) {
       return GetRandomNum(e.numberRange[0], e.numberRange[1]);
     //随机布尔值
     case 2:
-      return GetRandomBoolean();
+      return GetRandomBoolean('random');
     //空对象
     case 3:
       return {};
@@ -48,7 +52,7 @@ function GetRandomAny(e) {
 }
 
 //递归计算最小单元schema
-const minCulation = (schema, data: Data) => {
+const minCulation = (schema, data: Data, index) => {
   //如果不是数组和对象，是最小单元了，就可以生成最小模块了
   //考虑了schema.type写错或者不存在的情况，返回空对象
   if (schema === undefined) {
@@ -62,11 +66,12 @@ const minCulation = (schema, data: Data) => {
   ) {
     switch (schema.type) {
       case 'string':
-        return randomString(data.strLength);
+        return randomString(data.properties[index]?.strLen || data.strLength);
       case 'number':
-        return GetRandomNum(data.numberRange[0], data.numberRange[1]);
+        return GetRandomNum(Number(data.properties[index]?.minNum) || data.numberRange[0],
+          Number(data.properties[index]?.maxNum) || data.numberRange[1]);
       case 'boolean':
-        return GetRandomBoolean();
+        return GetRandomBoolean( data.properties[index]?.booleanType || 'random' );
       case 'any':
         return GetRandomAny(data);
       case undefined:
@@ -79,8 +84,8 @@ const minCulation = (schema, data: Data) => {
         return {};
       } else {
         const keys = Object.keys(schema.properties);
-        const vals = keys.map((e) => {
-          return minCulation(schema.properties[e], data);
+        const vals = keys.map((e, index) => {
+          return minCulation(schema.properties[e], data, index);
         });
         const newObj = {};
         for (let i = 0; i < keys.length; i++) {
@@ -95,9 +100,9 @@ const minCulation = (schema, data: Data) => {
       } else {
         const newArr: any[] = [];
         const items = schema.items;
-        //for (let i = 0; i < 10; i++) {
-        for (let i = 0; i < data.arrLength; i++) {
-          newArr.push(minCulation(items, data));
+        let num = data.properties[index]?.arrLen;
+        for (let i = 0; i < (num ? num : data.arrLength); i++) {
+          newArr.push(minCulation(items, data, i));
         }
         return newArr;
       }
