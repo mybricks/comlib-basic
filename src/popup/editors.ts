@@ -481,7 +481,8 @@ export default {
                 isConnected: false,
                 disabled: false,
                 useDynamicDisabled: false,
-                useDynamicHidden: false
+                useDynamicHidden: false,
+                useDynamicLoadding: false
               };
               addBtn(defaultBtn);
               return defaultBtn;
@@ -694,6 +695,33 @@ export default {
                   event2 && input.remove(eventKey2);
                 }
                 findConfig({ data, focusArea }).useDynamicHidden = value;
+              }
+            }
+          },
+          {
+            title: '动态设置loading',
+            type: 'Switch',
+            value: {
+              get({ data, focusArea }: EditorResult<Data>) {
+                return !!findConfig({ data, focusArea }, 'useDynamicLoadding')
+              },
+              set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+                if (!focusArea) return;
+                const id = findConfig({ data, focusArea }, 'id');
+                const title = findConfig({ data, focusArea }, 'title');
+                const eventKey1 = `${InputIds.SetBtnOpenLoading}_${id}`;
+                const eventKey2 = `${InputIds.SetBtnCloseLoading}_${id}`;
+
+                const event1 = input.get(eventKey1);
+                const event2 = input.get(eventKey2);
+                if (value) {
+                  !event1 && input.add(eventKey1, `开启"${title}"loading`, { type: 'any' });
+                  !event2 && input.add(eventKey2, `关闭"${title}"loading`, { type: 'any' });
+                } else {
+                  event1 && input.remove(eventKey1);
+                  event2 && input.remove(eventKey2);
+                }
+                findConfig({ data, focusArea }).useDynamicLoadding = value;
               }
             }
           }

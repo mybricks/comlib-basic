@@ -158,5 +158,15 @@ export default function ({
   if(typeof data.keyboard === "undefined"){
     data.keyboard = true
   }
+
+  /**
+   * @description 1.0.23->1.0.24  新增 操作项，动态设置loading
+  */
+  data.footerBtns?.forEach(act => {
+    if(act && act.useDynamicLoadding === undefined){
+      act.useDynamicLoadding = false;
+    }
+  })
+
   return true;
 }

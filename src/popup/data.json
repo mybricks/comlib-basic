@@ -20,7 +20,8 @@
       "isConnected": false,
       "useDynamicDisabled": false,
       "useDynamicHidden": false,
-      "disabled": false
+      "disabled": false,
+      "useDynamicLoadding": false
     },
     {
       "id": "ok",
@@ -36,7 +37,8 @@
       "isConnected": false,
       "useDynamicDisabled": false,
       "useDynamicHidden": false,
-      "disabled": false
+      "disabled": false,
+      "useDynamicLoadding": false
     }
   ],
   "closable": true,

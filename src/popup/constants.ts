@@ -69,4 +69,7 @@ export const InputIds = {
 
   SetHidden: 'setHidden',
   SetShow: 'setShow',
+
+  SetBtnOpenLoading: 'setBtnOpenLoading',
+  SetBtnCloseLoading: 'setBtnCloseLoading',
 };
