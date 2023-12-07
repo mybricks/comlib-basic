@@ -11,15 +11,15 @@ export default {
     }
     data.fns = data.fns || (data.runImmediate ? IMMEDIATE_CODE_TEMPLATE : CODE_TEMPLATE);
   },
-  async '@inputConnected'({ data, output }: EditorResult<Data>, fromPin, toPin) {
+  async '@inputConnected'({ data, output, input }: EditorResult<Data>, fromPin, toPin) {
     if (data.fns === CODE_TEMPLATE) {
       output.get('output0').setSchema({ type: 'unknown' });
     }
-    const schemaList = setInputSchema(toPin.id, fromPin.schema, data)
+    const schemaList = setInputSchema(toPin.id, fromPin.schema, data, input)
     data.extraLib = await genLibTypes(schemaList)
   },
-  async '@inputUpdated'({ data }: EditorResult<Data>, updatePin) {
-    const schemaList = setInputSchema(updatePin.id, updatePin.schema, data)
+  async '@inputUpdated'({ data, input }: EditorResult<Data>, updatePin) {
+    const schemaList = setInputSchema(updatePin.id, updatePin.schema, data, input)
     data.extraLib = await genLibTypes(schemaList)
   },
   '@inputDisConnected'({ output }: EditorResult<Data>, fromPin, toPin) {
@@ -78,8 +78,8 @@ export default {
             }
           },
           autoSave: false,
-          suggestions: data.suggestions,
           extraLib: data.extraLib,
+          language: 'typescript',
           onBlur: () => {
             updateOutputSchema(output, data.fns);
           }

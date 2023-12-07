@@ -36,6 +36,6 @@ export interface Data {
   fnBody: string;
   fns: any;
   runImmediate: boolean;
-  inputSchema?: Map<string, Record<string, any>>
+  inputSchema?: Object
   extraLib?: string
 }

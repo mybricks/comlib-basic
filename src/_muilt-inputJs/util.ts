@@ -122,15 +122,23 @@ export function updateOutputSchema(output, code) {
 export const setInputSchema = (
   pinId: string,
   schema: Record<string, any>,
-  data: Data
+  data: Data,
+  input
 ) => {
   const formattedSchema = formatSchema(pinId, schema);
   if (!data.inputSchema) {
-    data.inputSchema = new Map();
+    data.inputSchema = {};
   }
-  data.inputSchema.set(formattedSchema.title, formattedSchema);
+  data.inputSchema[formattedSchema.title] = formattedSchema;
   const schemaList: Array<Record<string, any>> = []
-  data.inputSchema.forEach((value) => schemaList.push(value));
+  const inputIds = input.get().map(({ id }) => id.split(".").pop())
+  for (const id of inputIds) {
+    if (data.inputSchema[id]) {
+      schemaList.push(data.inputSchema[id])
+    } else {
+      schemaList.push({ title: id, type: 'null' })
+    }
+  }
   return schemaList
 };
 
