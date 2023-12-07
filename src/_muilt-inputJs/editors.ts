@@ -1,6 +1,5 @@
 import { CODE_TEMPLATE, COMMENTS, Data, IMMEDIATE_CODE_TEMPLATE } from './constants';
-import { jsonToSchema, convertObject2Array, getSuggestionFromSchema } from './util';
-import Sandbox from './com-utils/sandbox'
+import { setInputSchema, genLibTypes, updateOutputSchema, getIoOrder } from './util';
 
 export default {
   '@init': ({ data, setAutoRun, isAutoRun, output }: EditorResult<Data>) => {
@@ -12,14 +11,18 @@ export default {
     }
     data.fns = data.fns || (data.runImmediate ? IMMEDIATE_CODE_TEMPLATE : CODE_TEMPLATE);
   },
-  '@inputConnected'({ data, output }, fromPin, toPin) {
+  async '@inputConnected'({ data, output }: EditorResult<Data>, fromPin, toPin) {
     if (data.fns === CODE_TEMPLATE) {
       output.get('output0').setSchema({ type: 'unknown' });
     }
-    data.suggestions = getSuggestionFromSchema(toPin.id, fromPin.schema)
+    const schemaList = setInputSchema(toPin.id, fromPin.schema, data)
+    data.extraLib = await genLibTypes(schemaList)
   },
-  '@inputUpdated'({ data }: EditorResult<Data>, updatePin) {
-    data.suggestions = getSuggestionFromSchema(updatePin.id, updatePin.schema);
+  async '@inputUpdated'({ data }: EditorResult<Data>, updatePin) {
+    const schemaList = setInputSchema(updatePin.id, updatePin.schema, data)
+    data.extraLib = await genLibTypes(schemaList)
+  },
+  '@inputDisConnected'({ output }: EditorResult<Data>, fromPin, toPin) {
   },
   ':root': [
     {
@@ -76,6 +79,7 @@ export default {
           },
           autoSave: false,
           suggestions: data.suggestions,
+          extraLib: data.extraLib,
           onBlur: () => {
             updateOutputSchema(output, data.fns);
           }
@@ -94,39 +98,3 @@ export default {
     }
   ]
 };
-
-function updateOutputSchema(output, code) {
-  const outputs = {};
-  const inputs = {};
-  output.get().forEach(({ id }) => {
-    outputs[id] = (v: any) => {
-      try {
-        const schema = jsonToSchema(v);
-        output.get(id).setSchema(schema);
-      } catch (error) {
-        output.get(id).setSchema({ type: 'unknown' });
-      }
-    };
-  });
-
-  setTimeout(() => {
-    try {
-      const sandbox = new Sandbox({ module: true })
-      const fn = sandbox.compile(`${decodeURIComponent(code.code || code)}`)
-      const params = {
-        inputValue: void 0,
-        outputs: convertObject2Array(outputs),
-        inputs: convertObject2Array(inputs)
-      }
-      fn.run([params], () => { });
-    } catch (error) {
-      console.error(error)
-    }
-  })
-}
-
-function getIoOrder(io) {
-  const ports = io.get();
-  const { id } = ports.pop();
-  return Number(id.replace(/\D+/, '')) + 1;
-}

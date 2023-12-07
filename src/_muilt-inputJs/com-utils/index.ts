@@ -1,5 +1,6 @@
 import Sandbox from './sandbox';
 import utils from './utils';
+import * as Babel from '@babel/standalone'
 
 interface Props {
   env?: any;
@@ -11,7 +12,9 @@ export function runJs(scriptText: string | any, model?: any[], props?: Props) {
   if (typeof scriptText === 'object') {
     scriptText = isRuntime ? scriptText?.transformCode || scriptText?.code : scriptText?.code;
   }
-
+  if (!scriptText?.includes('var%20_RTFN_')) {
+    scriptText = transformTs(decodeURIComponent(scriptText))
+  }
   let fn = null;
   if (model && model.length) {
     const sandBox = new Sandbox({ module: true });
@@ -31,6 +34,17 @@ export function runJs(scriptText: string | any, model?: any[], props?: Props) {
   }
 
   return fn.run(model, callback);
+}
+
+export const transformTs = (scriptText: string): string => {
+  try {
+    return Babel.transform(scriptText, {
+      presets: ['typescript'],
+      filename: 'types.d.ts'
+    }).code
+  } catch (error) {
+    return scriptText
+  }
 }
 
 export { utils };
