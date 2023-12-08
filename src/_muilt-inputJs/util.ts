@@ -154,7 +154,7 @@ export const genLibTypes = async (schemaList: Array<Record<string, any>>) => {
     schemaList.map((schema: Record<string, any>) => {
       tuple.push(schema.title.replace(/^\S/, (s: string) => s.toUpperCase()));
       return SchemaToTypes.compile(schema, "", {
-        bannerComment: void 0,
+        bannerComment: '',
         unknownAny: false,
         format: false
       }).then((ts) => {
