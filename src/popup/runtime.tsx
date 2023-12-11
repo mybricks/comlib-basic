@@ -33,6 +33,12 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
         inputs[`${InputIds.SetShow}_${id}`]?.(() => {
           item.visible = true;
         })
+        inputs[`${InputIds.SetBtnOpenLoading}_${id}`]?.(() => {
+          item.loading = true;
+        });
+        inputs[`${InputIds.SetBtnCloseLoading}_${id}`]?.(() => {
+          item.loading = false;
+        })
       });
     }
   }, [])
@@ -97,7 +103,8 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
             location,
             icon,
             showText,
-            disabled
+            disabled,
+            loading
           } = item;
           const Icon = useIcon && Icons && Icons[icon as string]?.render();
           return (
@@ -108,6 +115,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
               type={type}
               hidden={!visible}
               disabled={disabled}
+              loading={loading}
             >
               {useIcon && location !== Location.BACK && Icon}
               {showText && env.i18n(title)}
