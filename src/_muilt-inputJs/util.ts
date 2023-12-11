@@ -119,27 +119,26 @@ export function updateOutputSchema(output, code) {
   })
 }
 
-export const setInputSchema = (
-  pinId: string,
-  schema: Record<string, any>,
-  data: Data,
-  input
-) => {
-  const formattedSchema = formatSchema(pinId, schema);
+export const setInputSchema = (pinId: string, schema, data: Data, input) => {
   if (!data.inputSchema) {
     data.inputSchema = {};
   }
-  data.inputSchema[formattedSchema.title] = formattedSchema;
-  const schemaList: Array<Record<string, any>> = []
-  const inputIds = input.get().map(({ id }) => id.split(".").pop())
+  if (schema) {
+    const formattedSchema = formatSchema(pinId, schema);
+    data.inputSchema[formattedSchema.title] = formattedSchema;
+  } else {
+    Reflect.deleteProperty(data.inputSchema, pinId.split(".").pop() ?? "");
+  }
+  const schemaList: Array<Record<string, any>> = [];
+  const inputIds = input.get().map(({ id }) => id.split(".").pop());
   for (const id of inputIds) {
     if (data.inputSchema[id]) {
-      schemaList.push(data.inputSchema[id])
+      schemaList.push(data.inputSchema[id]);
     } else {
-      schemaList.push({ title: id, type: 'null' })
+      schemaList.push({ title: id, type: "null" });
     }
   }
-  return schemaList
+  return schemaList;
 };
 
 const formatSchema = (pinId: string, schema: Record<string, any>) => {
@@ -154,9 +153,9 @@ export const genLibTypes = async (schemaList: Array<Record<string, any>>) => {
     schemaList.map((schema: Record<string, any>) => {
       tuple.push(schema.title.replace(/^\S/, (s: string) => s.toUpperCase()));
       return SchemaToTypes.compile(schema, "", {
-        bannerComment: '',
+        bannerComment: "",
         unknownAny: false,
-        format: false
+        format: false,
       }).then((ts) => {
         return ts.replace("export ", "");
       });
@@ -174,5 +173,5 @@ export const genLibTypes = async (schemaList: Array<Record<string, any>>) => {
 export function getIoOrder(io) {
   const ports = io.get();
   const { id } = ports.pop();
-  return Number(id.replace(/\D+/, '')) + 1;
+  return Number(id.replace(/\D+/, "")) + 1;
 }

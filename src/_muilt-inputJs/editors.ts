@@ -23,7 +23,7 @@ export default {
     data.extraLib = await genLibTypes(schemaList)
   },
   async '@inputRemoved'({ data, input }: EditorResult<Data>, removedPin) {
-    const schemaList = setInputSchema(removedPin.id, {type: 'null'}, data, input)
+    const schemaList = setInputSchema(removedPin.id, null, data, input)
     data.extraLib = await genLibTypes(schemaList)
   },
   async '@inputDisConnected'({ data, input }: EditorResult<Data>, fromPin, toPin) {
