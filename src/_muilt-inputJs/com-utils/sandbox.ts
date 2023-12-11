@@ -66,7 +66,14 @@ const unscopables = {
   Float32Array: true,
 }
 
+function removeSemicolon(text: string):string {
+  while(text.trim().endsWith(';')) {
+    text = text.slice(0, text.length - 1)
+  }
+  return text
+}
 function getModuleScript(scriptText: string) {
+  scriptText = removeSemicolon(scriptText)
   return `(
                 function(window, params, cb) {
                     with(window) {
@@ -78,6 +85,7 @@ function getModuleScript(scriptText: string) {
 
 
 function getScript(scriptText: string) {
+  scriptText = removeSemicolon(scriptText)
   return `(
                 function(window) {
                     with(window){

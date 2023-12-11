@@ -94,6 +94,7 @@ export default {
       type: "select",
       options: {
         options: SaveTypeOptions,
+        allowClear: true
       },
       ifVisible({ data }: EditorResult<Data>) {
         return data.downloadType === DownloadType.Local;
