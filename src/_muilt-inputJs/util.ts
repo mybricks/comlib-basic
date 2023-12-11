@@ -106,7 +106,7 @@ export function updateOutputSchema(output, code) {
   setTimeout(() => {
     try {
       const sandbox = new Sandbox({ module: true })
-      const fn = sandbox.compile(`${sourceCode}`)
+      const fn = sandbox.compile(`${decodeURIComponent(sourceCode)}`)
       const params = {
         inputValue: void 0,
         outputs: convertObject2Array(outputs),

@@ -38,12 +38,12 @@ export function runJs(scriptText: string | any, model?: any[], props?: Props) {
 
 export const transformTs = (scriptText: string): string => {
   try {
-    return Babel.transform(scriptText, {
+    return encodeURIComponent(Babel.transform(scriptText, {
       presets: ['typescript'],
       filename: 'types.d.ts'
-    }).code
+    }).code)
   } catch (error) {
-    return scriptText
+    return encodeURIComponent(scriptText)
   }
 }
 
