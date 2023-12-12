@@ -8,6 +8,7 @@ export default {
       setAutoRun(true);
       data.runImmediate = true;
       output.get('output0').setSchema({ type: 'number' });
+      data.extraLib = `declare interface IO {outputs: Array<Function>}`
     }
     data.fns = data.fns || (data.runImmediate ? IMMEDIATE_CODE_TEMPLATE : CODE_TEMPLATE);
   },
