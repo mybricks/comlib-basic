@@ -10,4 +10,5 @@
   numberRange: [number, number];
   outSchema: any;
   properties: any;
+  runImmediate: boolean;
 }

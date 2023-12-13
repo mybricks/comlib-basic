@@ -118,7 +118,7 @@ export default function ({ data, env, inputs, outputs }: RuntimeParams<Data>) {
       outputRels['outputData'](minCulation(data.outSchema, data));
     });
     //连接组件直接输出
-    if (outputs['outputData']) {
+    if (outputs['outputData'] && data.runImmediate) {
       outputs['outputData'](minCulation(data.outSchema, data));
     }
   }
