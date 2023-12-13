@@ -10,5 +10,15 @@ export default function ({
     data.properties = [];
   }
 
+  /**
+   * @description 1.0.1->1.0.2  新增 runImmediate
+  */
+  if(typeof data.runImmediate === 'undefined'){
+    if(input.get('mockTouch') === undefined){
+      data.runImmediate = true;
+    }else{
+      data.runImmediate = false;
+    }
+  }
   return true;
 }

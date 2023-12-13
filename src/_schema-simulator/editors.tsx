@@ -19,6 +19,13 @@ export default {
   // },
 
   //"follow类型"
+  '@init': ({ data, setAutoRun, isAutoRun, output }: EditorResult<Data>) => {
+    const autoRun = isAutoRun ? isAutoRun() : false;
+    if (autoRun || data.runImmediate) {
+      setAutoRun(true);
+      data.runImmediate = true;
+    }
+  },
   '@outputUpdated'({ data, input, output, slots }, pin) {
     //编辑区更新了，重重存储
     data.outSchema = pin.schema;
