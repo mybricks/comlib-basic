@@ -44,5 +44,12 @@
   "closable": true,
   "maskClosable": true,
   "isTitleCustom": false,
-  "keyboard": true
+  "keyboard": true,
+  "isCustomPosition": false,
+  "horizontal": "left",
+  "vertical": "top",
+  "top": 0,
+  "right": 0,
+  "bottom": 0,
+  "left": 0
 }
