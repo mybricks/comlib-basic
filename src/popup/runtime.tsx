@@ -145,6 +145,15 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
         wrapClassName={css.container}
         closable={data.closable}
         getContainer={false}
+        style={data.isCustomPosition ? {
+          //调整浮层位置
+          top: data.vertical === 'top' ?  data.top : 'unset',
+          right: data.horizontal === 'right' ?  data.right : void 0,
+          bottom: data.vertical === 'bottom' ?  data.bottom : void 0, 
+          left: data.horizontal === 'left' ?  data.left : void 0,
+          padding: 0,
+          position: 'absolute',
+        } : void 0}
       >
         {slots['body'].render()}
       </Modal>
@@ -167,6 +176,15 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
         wrapClassName={`${css.container} ${id}`}
         closable={data.closable}
         getContainer={() => env?.canvasElement || document.body}
+        style={data.isCustomPosition ? {
+          //调整浮层位置
+          top: data.vertical === 'top' ?  data.top : 'unset',
+          right: data.horizontal === 'right' ?  data.right : void 0,
+          bottom: data.vertical === 'bottom' ?  data.bottom : void 0, 
+          left: data.horizontal === 'left' ?  data.left : void 0,
+          padding: 0,
+          position: 'absolute',
+        } : void 0}
       >
         {slots['body'].render()}
       </Modal>

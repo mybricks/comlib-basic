@@ -168,5 +168,30 @@ export default function ({
     }
   })
 
+  /**
+   * @description 1.0.24->1.0.25  新增支持自定义弹出位置
+  */
+  if(typeof data.isCustomPosition === "undefined"){
+    data.isCustomPosition = false
+  }
+  if(typeof data.horizontal === "undefined"){
+    data.horizontal = "left"
+  }
+  if(typeof data.vertical === "undefined"){
+    data.vertical = "top"
+  }
+  if(typeof data.top === "undefined"){
+    data.top = 0
+  }
+  if(typeof data.right === "undefined"){
+    data.right = 0
+  }
+  if(typeof data.bottom === "undefined"){
+    data.bottom = 0
+  }
+  if(typeof data.left === "undefined"){
+    data.left = 0
+  }
+
   return true;
 }

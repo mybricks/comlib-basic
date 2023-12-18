@@ -52,6 +52,15 @@ export interface Data {
   maskClosable?: boolean;
   isTitleCustom?: boolean;
   keyboard?: boolean;
+
+  //自定义弹出位置
+  isCustomPosition?: boolean;
+  horizontal?: 'left' | 'right'; 
+  vertical?: 'top' | 'bottom';
+  top: number,
+  right: number,
+  bottom: number,
+  left: number
 }
 
 export const DefaultEvent = ['ok', 'cancel'];
