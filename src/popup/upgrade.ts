@@ -193,5 +193,12 @@ export default function ({
     data.left = 0
   }
 
+  /**
+   * @description 1.0.25->1.0.26  新增支持关闭蒙层
+  */
+  if(typeof data.isMask === "undefined"){
+    data.isMask = true
+  }
+
   return true;
 }

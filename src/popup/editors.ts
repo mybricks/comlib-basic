@@ -226,6 +226,19 @@ export default {
         }
       },
       {
+        title: '展示蒙层',
+        description: '默认开关打开，展示蒙层',
+        type: 'switch',
+        value: {
+          get({ data }){
+            return data.isMask || true
+          },
+          set({ data }, value: boolean){
+            data.isMask = value;
+          }
+        }
+      },
+      {
         title: '弹窗宽度',
         description: '设置0将使用默认宽度：520',
         type: 'Slider',
