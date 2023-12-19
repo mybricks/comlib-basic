@@ -196,8 +196,8 @@ export default function ({
   /**
    * @description 1.0.25->1.0.26  新增支持关闭蒙层
   */
-  if(typeof data.isHideMask === "undefined"){
-    data.isHideMask = false
+  if(typeof data.isMask === "undefined"){
+    data.isMask = true
   }
 
   return true;

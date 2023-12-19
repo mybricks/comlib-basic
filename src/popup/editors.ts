@@ -226,15 +226,15 @@ export default {
         }
       },
       {
-        title: '隐藏蒙层',
-        description: '默认开关关闭，显示蒙层',
+        title: '展示蒙层',
+        description: '默认开关打开，展示蒙层',
         type: 'switch',
         value: {
           get({ data }){
-            return data.isHideMask || false
+            return data.isMask || true
           },
           set({ data }, value: boolean){
-            data.isHideMask = value;
+            data.isMask = value;
           }
         }
       },

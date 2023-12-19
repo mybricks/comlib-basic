@@ -61,7 +61,7 @@ export interface Data {
   right: number,
   bottom: number,
   left: number,
-  isHideMask: boolean
+  isMask: boolean
 }
 
 export const DefaultEvent = ['ok', 'cancel'];
