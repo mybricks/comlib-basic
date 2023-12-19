@@ -185,6 +185,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
           padding: 0,
           position: 'absolute',
         } : void 0}
+        maskStyle={data.isHideMask ? {backgroundColor: 'unset'} : void 0}
       >
         {slots['body'].render()}
       </Modal>
@@ -219,7 +220,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
         <div
           className={css.debugMask}
         >
-          <div className={css.mask}>
+          <div className={`${css.mask} ${data.isHideMask ? css.hideMask : ''}`}>
             {debugPopup}
           </div>
         </div>
