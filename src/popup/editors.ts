@@ -231,7 +231,7 @@ export default {
         type: 'switch',
         value: {
           get({ data }){
-            return data.isMask || true
+            return data.isMask
           },
           set({ data }, value: boolean){
             data.isMask = value;
