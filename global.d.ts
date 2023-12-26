@@ -99,3 +99,7 @@ type StyleModeType<T> = Partial<{
 }>;
 
 // type T_Props = {env, data, slots, inputs}
+
+declare interface Window {
+  Babel: any
+}
