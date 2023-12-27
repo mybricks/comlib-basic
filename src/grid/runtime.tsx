@@ -40,8 +40,8 @@ export default (props: RuntimeParams<Data>) => {
               const colProps = {
                 col: {
                   ...col,
-                  widthMode: isLastCol ? WidthUnitEnum.Auto : col.widthMode,
-                }, //last col auto
+                  widthMode: data.resizable && isLastCol ? WidthUnitEnum.Auto : col.widthMode,
+                },
                 key: col.key,
                 className: "mybricks-col",
                 "data-layout-col-key": `${row.key},${col.key}`,
@@ -56,28 +56,24 @@ export default (props: RuntimeParams<Data>) => {
                 </Col>
               );
               if (data.resizable) {
-                if (!isLastCol) {
-                  return (
-                    <Resizable
-                      axis="x"
-                      className={styles.resizer}
-                      key={col.key}
-                      onResize={({ width }) => {
-                        data.rows.forEach((row) => {
-                          row.cols[index] = {
-                            ...col,
-                            width,
-                            widthMode: WidthUnitEnum.Px,
-                          };
-                        });
-                      }}
-                    >
-                      {colDom}
-                    </Resizable>
-                  );
-                } else {
-                  return colDom;
-                }
+                return (
+                  <Resizable
+                    axis="x"
+                    className={styles.resizer}
+                    key={col.key}
+                    onResize={({ width }) => {
+                      data.rows.forEach((row) => {
+                        row.cols[index] = {
+                          ...col,
+                          width,
+                          widthMode: WidthUnitEnum.Px,
+                        };
+                      });
+                    }}
+                  >
+                    {colDom}
+                  </Resizable>
+                );
               } else {
                 return colDom;
               }

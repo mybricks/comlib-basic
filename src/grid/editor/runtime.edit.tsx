@@ -35,7 +35,6 @@ const EditLayout = (props: RuntimeParams<Data>) => {
                 col={col}
                 row={row}
                 index={index}
-                resizable={index !== row.cols.length - 1}
                 {...props}
               />
             ))}
@@ -133,12 +132,10 @@ const ResizableCol = ({
   slots,
   env,
   undo,
-  resizable = true,
 }: {
   row: DataRowType;
   col: DataColType;
   index: number;
-  resizable?: boolean;
 } & RuntimeParams<Data>) => {
   const colRef = useRef<HTMLDivElement>(null);
   const editFinishRef = useRef<Function>();
@@ -177,9 +174,6 @@ const ResizableCol = ({
   }, [JSON.stringify(row), index, colRef]);
 
   const dragText = useMemo(() => {
-    if(!resizable) {
-      return WidthUnitEnum.Auto
-    }
     if (col.widthMode === WidthUnitEnum.Auto) {
       return col.widthMode;
     }
@@ -189,7 +183,7 @@ const ResizableCol = ({
     if (col.widthMode === WidthUnitEnum.Percent) {
       return col.width;
     }
-  }, [col.widthMode, col.width, resizable]);
+  }, [col.widthMode, col.width]);
 
   const isDragging = data.rows.find(({ cols }) =>
     cols.some((col) => !!col.isDragging)
@@ -210,7 +204,7 @@ const ResizableCol = ({
   const colDom = (
     <Col
       ref={colRef}
-      col={{ ...col, style: !resizable ? { flex: 1 } : {} }}
+      col={col}
       className={classnames}
       data-layout-col-key={`${row.key},${col.key}`}
     >
@@ -229,7 +223,7 @@ const ResizableCol = ({
     </Col>
   );
 
-  return resizable ? (
+  return (
     <Resizable
       axis="x"
       key={col.key}
@@ -279,9 +273,7 @@ const ResizableCol = ({
     >
       {colDom}
     </Resizable>
-  ) : (
-    colDom
-  );
+  )
 };
 
 export default EditLayout;
