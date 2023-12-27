@@ -1,7 +1,7 @@
 import { Data } from "./constants";
 import Sandbox from './com-utils/sandbox'
 import * as SchemaToTypes from "./json-schema-to-typescript";
-import { transformTs } from './com-utils'
+import { transform } from './com-utils'
 export function jsonToSchema(json): any {
   const schema = { type: void 0 };
   proItem({ schema, val: json });
@@ -89,7 +89,10 @@ export function convertObject2Array(input) {
 }
 
 export function updateOutputSchema(output, code) {
-  let sourceCode = transformTs(decodeURIComponent(code.code || code))
+  let sourceCode =
+    typeof code === "object" && code !== null
+      ? code.transformCode
+      : transform(code.code || code);
   const outputs = {};
   const inputs = {};
   output.get().forEach(({ id }) => {

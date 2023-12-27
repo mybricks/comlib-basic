@@ -1,6 +1,5 @@
 import Sandbox from './sandbox';
 import utils from './utils';
-import * as Babel from '@babel/standalone'
 
 interface Props {
   env?: any;
@@ -13,7 +12,7 @@ export function runJs(scriptText: string | any, model?: any[], props?: Props) {
     scriptText = isRuntime ? scriptText?.transformCode || scriptText?.code : scriptText?.code;
   }
   if (!scriptText?.includes('var%20_RTFN_')) {
-    scriptText = transformTs(decodeURIComponent(scriptText))
+    scriptText = transform(scriptText)
   }
   let fn = null;
   if (model && model.length) {
@@ -36,13 +35,22 @@ export function runJs(scriptText: string | any, model?: any[], props?: Props) {
   return fn.run(model, callback);
 }
 
-export const transformTs = (scriptText: string): string => {
+export const transform = (scriptText: string): string => {
+  scriptText = decodeURIComponent(scriptText)
   try {
-    return encodeURIComponent(Babel.transform(scriptText, {
-      presets: ['typescript'],
-      filename: 'types.d.ts'
-    }).code)
+    if(!window.Babel) {
+      throw Error('Babel was not found in window');
+    }
+    let { code } = window.Babel.transform(`_RTFN_ = ${scriptText} `, {
+      presets: ['env', 'typescript'],
+      parserOpts: { strictMode: false },
+      comments: false,
+      filename: 'types.d.ts',
+    })
+    code = `(function() { var _RTFN_; \n${code}\n return _RTFN_; })()`
+    return encodeURIComponent(code);
   } catch (error) {
+    console.error(error)
     return encodeURIComponent(scriptText)
   }
 }
