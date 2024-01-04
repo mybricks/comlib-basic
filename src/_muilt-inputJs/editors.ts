@@ -43,7 +43,13 @@ export default {
           const idx = getIoOrder(input);
           const hostId = `input.inputValue${idx}`;
           const title = `参数${idx}`;
-          input.add(hostId, title, { type: 'follow' }, true);
+          input.add({
+            id: hostId,
+            title,
+            schema: { type: 'follow' },
+            deletable: true,
+            editable: true
+          });
         }
       }
     },

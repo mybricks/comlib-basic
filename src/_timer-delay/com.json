@@ -1,7 +1,7 @@
 {
   "title": "延迟执行",
   "namespace": "mybricks.normal-pc.timer-delay",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "rtType": "js",
   "description": "延迟执行",
   "author": "MyBricks",

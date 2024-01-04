@@ -8,15 +8,18 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
   const runJSParams = {
     outputs: convertObject2Array(outputs)
   };
+
+  let sandbox;
+  
   try {
     if (runImmediate) {
       if (env.runtime) {
-        runJs(fns, [runJSParams]);
+        sandbox = runJs(fns, [runJSParams]);
       }
     }
     inputs['input']((val) => {
       try {
-        runJs(fns, [
+        sandbox = runJs(fns, [
           {
             ...runJSParams,
             inputs: convertObject2Array(val)
@@ -28,6 +31,9 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
         logger.error(`${ex}`);
       }
     });
+    env.runtime?.debug?.onComplete(()=>{
+      sandbox.dispose()
+    })
   } catch (ex: any) {
     onError?.(ex);
     console.error('js计算组件运行错误.', ex);

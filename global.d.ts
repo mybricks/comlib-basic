@@ -102,4 +102,5 @@ type StyleModeType<T> = Partial<{
 
 declare interface Window {
   Babel: any
+  BricksJsSandbox: any
 }

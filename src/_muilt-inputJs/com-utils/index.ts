@@ -14,25 +14,25 @@ export function runJs(scriptText: string | any, model?: any[], props?: Props) {
   if (!scriptText?.includes('var%20_RTFN_')) {
     scriptText = transform(scriptText)
   }
-  let fn = null;
+  let fn: {run: Function}, sandbox: Sandbox;
   if (model && model.length) {
-    const sandBox = new Sandbox({ module: true });
+    sandbox = new Sandbox({ module: true });
     let sourceStr = decodeURIComponent(scriptText);
     if (/export\s+default.*async.*function.*\(/g.test(sourceStr)) {
-      fn = sandBox.compile(
+      fn = sandbox.compile(
         `${sourceStr.replace(/export\s+default.*function.*\(/g, 'async function _RT_(')}`
       );
     } else {
-      fn = sandBox.compile(
+      fn = sandbox.compile(
         `${sourceStr.replace(/export\s+default.*function.*\(/g, 'function _RT_(')}`
       );
     }
   } else {
-    const sandBox = new Sandbox();
-    fn = sandBox.compile(`${decodeURIComponent(scriptText)}`);
+    sandbox = new Sandbox();
+    fn = sandbox.compile(`${decodeURIComponent(scriptText)}`);
   }
-
-  return fn.run(model, callback);
+  fn.run(model, callback)
+  return sandbox;
 }
 
 export const transform = (scriptText: string): string => {

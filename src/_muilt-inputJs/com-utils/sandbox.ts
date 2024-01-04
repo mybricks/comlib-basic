@@ -309,8 +309,19 @@ class Sandbox {
     // @ts-ignore
     delete originWindow.proxy;
     this.hasDisposed = true;
-    console.log('Sandbox was successfully destroyed')
+    // console.info('Sandbox was successfully destroyed')
   }
+}
+
+const singleton = (className) => {
+  return new Proxy(className, {
+    construct(target, ...args) {
+      if(!window.BricksJsSandbox) {
+        window.BricksJsSandbox = new className(...args)
+      }
+      return window.BricksJsSandbox
+    }
+  })
 }
 
 export default Sandbox;
