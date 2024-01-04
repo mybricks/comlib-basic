@@ -101,7 +101,7 @@ export function updateOutputSchema(output, code) {
         const schema = jsonToSchema(v);
         output.get(id).setSchema(schema);
       } catch (error) {
-        output.get(id).setSchema({ type: 'unknown' });
+        // output.get(id).setSchema({ type: 'unknown' });
       }
     };
   });

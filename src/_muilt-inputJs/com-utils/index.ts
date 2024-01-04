@@ -6,10 +6,9 @@ interface Props {
   callback?: () => any;
 }
 export function runJs(scriptText: string | any, model?: any[], props?: Props) {
-  const { env, callback = () => {} } = props || {};
-  const isRuntime = env?.runtime && !env?.runtime?.debug;
-  if (typeof scriptText === 'object') {
-    scriptText = isRuntime ? scriptText?.transformCode || scriptText?.code : scriptText?.code;
+  const { callback = () => {} } = props || {};
+  if (typeof scriptText === 'object' && scriptText !== null) {
+    scriptText = scriptText?.transformCode ?? scriptText?.code;
   }
   if (!scriptText?.includes('var%20_RTFN_')) {
     scriptText = transform(scriptText)

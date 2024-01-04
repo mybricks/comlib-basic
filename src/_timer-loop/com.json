@@ -1,7 +1,7 @@
 {
   "title": "循环执行",
   "namespace": "mybricks.normal-pc.timer-loop",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "rtType": "js",
   "description": "循环执行",
   "author": "MyBricks",

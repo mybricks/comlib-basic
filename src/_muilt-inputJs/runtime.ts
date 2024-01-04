@@ -31,9 +31,11 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
         logger.error(`${ex}`);
       }
     });
-    env.runtime?.debug?.onComplete(()=>{
-      sandbox.dispose()
-    })
+    if(typeof env?.runtime?.onComplete === 'function') {
+      env.runtime.onComplete(()=>{
+        sandbox.dispose()
+      })
+    }
   } catch (ex: any) {
     onError?.(ex);
     console.error('js计算组件运行错误.', ex);

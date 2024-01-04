@@ -15,8 +15,10 @@ export default function (props: RuntimeParams<Data>) {
     inputs[InputIds.Cancel]?.(() => {
       clearTimeout(timer);
     });
-    env.runtime?.debug?.onComplete(()=>{
-      clearTimeout(timer);
-    })
+    if(typeof env?.runtime?.onComplete === 'function'){
+      env.runtime.onComplete(()=>{
+        clearTimeout(timer);
+      })
+    }
   }
 }

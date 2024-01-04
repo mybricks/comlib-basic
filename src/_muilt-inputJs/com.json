@@ -1,7 +1,7 @@
 {
   "title": "JS计算",
   "namespace": "mybricks.basic-comlib._muilt-inputJs",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "JS计算",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -29,7 +29,7 @@
       "id": "output0",
       "title": "输出项0",
       "schema": {
-        "type": "number"
+        "type": "unknown"
       },
       "editable": true
     }
