@@ -33,7 +33,7 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
     });
     if(typeof env?.runtime?.onComplete === 'function') {
       env.runtime.onComplete(()=>{
-        sandbox.dispose()
+        sandbox?.dispose()
       })
     }
   } catch (ex: any) {
