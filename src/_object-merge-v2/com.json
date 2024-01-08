@@ -1,0 +1,41 @@
+{
+  "title": "对象合并",
+  "namespace": "mybricks.normal-pc.object-merge-v2",
+  "version": "1.0.0",
+  "visibility": false,
+  "rtType": "js",
+  "description": "对象合并",
+  "author": "Mybricks",
+  "author_name": "Mybricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "inputs": [
+    {
+      "id": "input",
+      "title": "输入项",
+      "schema": [
+        {
+          "name": "inputValue0",
+          "title": "参数0",
+          "type": "follow"
+        },
+        {
+          "name": "inputValue1",
+          "title": "参数1",
+          "type": "follow"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "output",
+      "title": "输出项",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

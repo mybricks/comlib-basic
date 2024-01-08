@@ -1,0 +1,44 @@
+{
+  "title": "数据合并",
+  "namespace": "mybricks.normal-pc.data.merge-v2",
+  "version": "1.0.0",
+  "rtType": "js",
+  "visibility": false,
+  "description": "异步数据组合",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "icon": "./icon.svg",
+  "inputs": [
+    {
+      "id": "input",
+      "title": "输入项",
+      "schema": [
+        {
+          "name": "inputValue0",
+          "title": "参数0",
+          "type": "follow"
+        },
+        {
+          "name": "inputValue1",
+          "title": "参数1",
+          "type": "follow"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "output",
+      "title": "输出项",
+      "schema": {
+        "type": "array",
+        "items": {
+          "type": "any"
+        }
+      }
+    }
+  ]
+}
