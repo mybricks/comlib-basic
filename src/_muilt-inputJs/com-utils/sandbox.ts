@@ -66,7 +66,14 @@ const unscopables = {
   Float32Array: true,
 }
 
+function removeSemicolon(text: string):string {
+  while(text.trim().endsWith(';')) {
+    text = text.slice(0, text.length - 1)
+  }
+  return text
+}
 function getModuleScript(scriptText: string) {
+  scriptText = removeSemicolon(scriptText)
   return `(
                 function(window, params, cb) {
                     with(window) {
@@ -78,6 +85,7 @@ function getModuleScript(scriptText: string) {
 
 
 function getScript(scriptText: string) {
+  scriptText = removeSemicolon(scriptText)
   return `(
                 function(window) {
                     with(window){
@@ -301,8 +309,19 @@ class Sandbox {
     // @ts-ignore
     delete originWindow.proxy;
     this.hasDisposed = true;
-    console.log('Sandbox was successfully destroyed')
+    // console.info('Sandbox was successfully destroyed')
   }
+}
+
+const singleton = (className) => {
+  return new Proxy(className, {
+    construct(target, ...args) {
+      if(!window.BricksJsSandbox) {
+        window.BricksJsSandbox = new className(...args)
+      }
+      return window.BricksJsSandbox
+    }
+  })
 }
 
 export default Sandbox;

@@ -158,5 +158,47 @@ export default function ({
   if(typeof data.keyboard === "undefined"){
     data.keyboard = true
   }
+
+  /**
+   * @description 1.0.23->1.0.24  新增 操作项，动态设置loading
+  */
+  data.footerBtns?.forEach(act => {
+    if(act && act.useDynamicLoadding === undefined){
+      act.useDynamicLoadding = false;
+    }
+  })
+
+  /**
+   * @description 1.0.24->1.0.25  新增支持自定义弹出位置
+  */
+  if(typeof data.isCustomPosition === "undefined"){
+    data.isCustomPosition = false
+  }
+  if(typeof data.horizontal === "undefined"){
+    data.horizontal = "left"
+  }
+  if(typeof data.vertical === "undefined"){
+    data.vertical = "top"
+  }
+  if(typeof data.top === "undefined"){
+    data.top = 0
+  }
+  if(typeof data.right === "undefined"){
+    data.right = 0
+  }
+  if(typeof data.bottom === "undefined"){
+    data.bottom = 0
+  }
+  if(typeof data.left === "undefined"){
+    data.left = 0
+  }
+
+  /**
+   * @description 1.0.25->1.0.26  新增支持关闭蒙层
+  */
+  if(typeof data.isMask === "undefined"){
+    data.isMask = true
+  }
+
   return true;
 }

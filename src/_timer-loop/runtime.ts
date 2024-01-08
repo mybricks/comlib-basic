@@ -18,5 +18,10 @@ export default function (props: RuntimeParams<Data>) {
     inputs[InputIds.Cancel]?.(() => {
       clearInterval(timer);
     });
+    if(typeof env?.runtime?.onComplete === 'function'){
+      env.runtime.onComplete(()=>{
+        clearInterval(timer);
+      })
+    }
   }
 }

@@ -67,5 +67,14 @@ export default function ({
     data.keyboard = true
   }
 
+  /**
+   * @description 1.0.11->1.0.12  新增 操作项，动态设置loading
+  */
+  data.footerBtns?.forEach(act => {
+    if(act && act.useDynamicLoadding === undefined){
+      act.useDynamicLoadding = false;
+    }
+  })
+
   return true;
 }

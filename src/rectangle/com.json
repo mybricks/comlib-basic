@@ -1,5 +1,6 @@
 {
   "title": "矩形",
+  "visibility": false,
   "namespace": "mybricks.basic-comlib.rectangle",
   "author": "CheMingjun",
   "author_name": "CheMingjun",

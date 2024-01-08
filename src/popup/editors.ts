@@ -108,6 +108,137 @@ export default {
   ':root': {
     style: [
       {
+        title: '自定义浮层位置',
+        type: 'switch',
+        value: {
+          get({ data }) {
+            return data.isCustomPosition || false;
+          },
+          set({ data }, value: boolean) {
+            data.isCustomPosition = value;
+          }
+        }
+      },
+      {
+        title: '水平方向',
+        type: 'select',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.isCustomPosition;
+        },
+        options: [
+          { value: 'left', label: '左' },
+          { value: 'right', label: '右' }
+        ],
+        value: {
+          get({ data }) {
+            return data.horizontal || 'left';
+          },
+          set({ data }, value: boolean) {
+            data.horizontal = value;
+          }
+        }
+      },
+      {
+        title: '垂直方向',
+        type: 'select',
+        ifVisible({ data }: EditorResult<Data>) {
+          return !!data.isCustomPosition;
+        },
+        options: [
+          { value: 'top', label: '上' },
+          { value: 'bottom', label: '下' },
+        ],
+        value: {
+          get({ data }) {
+            return data.vertical || 'top';
+          },
+          set({ data }, value: boolean) {
+            data.vertical = value;
+          }
+        }
+      },
+      {
+        title: '左',
+        description: '自定义浮层位置打开后, 可以自定位置',
+        type: 'Inputnumber',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.horizontal === 'left' && !!data.isCustomPosition;
+        },
+        options: [{min:0, width: 100 }],
+        value: {
+          get({ data }) {
+            return [data.left];
+          },
+          set({ data }, value: number[]) {
+            data.left = value[0];
+          }
+        }
+      },
+      {
+        title: '右',
+        description: '自定义浮层位置打开后, 可以自定位置',
+        type: 'Inputnumber',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.horizontal === 'right' && !!data.isCustomPosition;
+        },
+        options: [{min:0, width: 100 }],
+        value: {
+          get({ data }) {
+            return [data.right];
+          },
+          set({ data }, value: number[]) {
+            data.right = value[0];
+          }
+        }
+      },
+      {
+        title: '上',
+        description: '自定义浮层位置打开后, 可以自定位置',
+        type: 'Inputnumber',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.vertical === 'top' && !!data.isCustomPosition;
+        },
+        options: [{min:0, width: 100 }],
+        value: {
+          get({ data }) {
+            return [data.top];
+          },
+          set({ data }, value: number[]) {
+            data.top = value[0];
+          }
+        }
+      },
+      {
+        title: '下',
+        description: '自定义浮层位置打开后, 可以自定位置',
+        type: 'Inputnumber',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.vertical === 'bottom' && !!data.isCustomPosition;
+        },
+        options: [{min:0, width: 100 }],
+        value: {
+          get({ data }) {
+            return [data.bottom];
+          },
+          set({ data }, value: number[]) {
+            data.bottom = value[0];
+          }
+        }
+      },
+      {
+        title: '展示蒙层',
+        description: '默认开关打开，展示蒙层',
+        type: 'switch',
+        value: {
+          get({ data }){
+            return data.isMask
+          },
+          set({ data }, value: boolean){
+            data.isMask = value;
+          }
+        }
+      },
+      {
         title: '弹窗宽度',
         description: '设置0将使用默认宽度：520',
         type: 'Slider',
@@ -481,7 +612,8 @@ export default {
                 isConnected: false,
                 disabled: false,
                 useDynamicDisabled: false,
-                useDynamicHidden: false
+                useDynamicHidden: false,
+                useDynamicLoadding: false
               };
               addBtn(defaultBtn);
               return defaultBtn;
@@ -694,6 +826,33 @@ export default {
                   event2 && input.remove(eventKey2);
                 }
                 findConfig({ data, focusArea }).useDynamicHidden = value;
+              }
+            }
+          },
+          {
+            title: '动态设置loading',
+            type: 'Switch',
+            value: {
+              get({ data, focusArea }: EditorResult<Data>) {
+                return !!findConfig({ data, focusArea }, 'useDynamicLoadding')
+              },
+              set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+                if (!focusArea) return;
+                const id = findConfig({ data, focusArea }, 'id');
+                const title = findConfig({ data, focusArea }, 'title');
+                const eventKey1 = `${InputIds.SetBtnOpenLoading}_${id}`;
+                const eventKey2 = `${InputIds.SetBtnCloseLoading}_${id}`;
+
+                const event1 = input.get(eventKey1);
+                const event2 = input.get(eventKey2);
+                if (value) {
+                  !event1 && input.add(eventKey1, `开启"${title}"loading`, { type: 'any' });
+                  !event2 && input.add(eventKey2, `关闭"${title}"loading`, { type: 'any' });
+                } else {
+                  event1 && input.remove(eventKey1);
+                  event2 && input.remove(eventKey2);
+                }
+                findConfig({ data, focusArea }).useDynamicLoadding = value;
               }
             }
           }

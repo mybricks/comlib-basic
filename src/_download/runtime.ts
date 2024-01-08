@@ -12,7 +12,7 @@ const matchFilename = (url) => {
   }
 };
 
-const getBlob = (source: any, mimeType: string | undefined) => {
+const generateBlob = (source: any, mimeType: string | undefined) => {
   if (source instanceof Blob) {
     return source;
   }
@@ -28,7 +28,10 @@ const getBlob = (source: any, mimeType: string | undefined) => {
 
 const fetchBlob = async (url: string) => {
   const res = await fetch(url);
-  return res.blob();
+  if (res.ok) {
+    return res.blob();
+  }
+  throw Error(res.statusText)
 };
 
 const download = (blob: Blob, filename: string) => {
@@ -48,7 +51,7 @@ export default function ({
   onError,
   logger,
 }: RuntimeParams<Data>) {
-  const { filename, downloadType, saveType } = data;
+  const { filename, downloadType } = data;
   const { runtime } = env;
   if (runtime) {
     inputs.url(async (val) => {
@@ -56,11 +59,13 @@ export default function ({
         try {
           if (downloadType === DownloadType.Local) {
             const _filename = val.filename ?? env.i18n(filename) ?? defaultFilename;
-            const blob = getBlob(val.url ?? val, saveType);
+            data.saveType = val.saveType ?? data.saveType
+            const blob = generateBlob(val.url ?? val, data.saveType);
             download(blob, _filename);
             return;
           }
-          const url = new URL(val.url ?? val);
+          const url = new URL(val.url ?? val, location.href);
+          console.info(`%c [开始下载]: ${url.href}`, 'color: #1890ff; font-weight: bold;')
           const blob = await fetchBlob(url.href);
           const _filename =
             val.filename ??
@@ -69,8 +74,7 @@ export default function ({
             defaultFilename;
           download(blob, _filename);
         } catch (error) {
-          logger.error("[资源下载]：数据类型错误");
-          onError("[资源下载]：数据类型错误");
+          console.error(error)
         }
       }
     });

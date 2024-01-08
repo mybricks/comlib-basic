@@ -52,6 +52,16 @@ export interface Data {
   maskClosable?: boolean;
   isTitleCustom?: boolean;
   keyboard?: boolean;
+
+  //自定义弹出位置
+  isCustomPosition?: boolean;
+  horizontal?: 'left' | 'right'; 
+  vertical?: 'top' | 'bottom';
+  top: number,
+  right: number,
+  bottom: number,
+  left: number,
+  isMask: boolean
 }
 
 export const DefaultEvent = ['ok', 'cancel'];
@@ -69,4 +79,7 @@ export const InputIds = {
 
   SetHidden: 'setHidden',
   SetShow: 'setShow',
+
+  SetBtnOpenLoading: 'setBtnOpenLoading',
+  SetBtnCloseLoading: 'setBtnCloseLoading',
 };

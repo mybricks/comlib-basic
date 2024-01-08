@@ -1,6 +1,5 @@
 import { CODE_TEMPLATE, COMMENTS, Data, IMMEDIATE_CODE_TEMPLATE } from './constants';
-import { jsonToSchema, convertObject2Array } from './util';
-import Sandbox from './com-utils/sandbox'
+import { setInputSchema, genLibTypes, updateOutputSchema, getIoOrder } from './util';
 
 export default {
   '@init': ({ data, setAutoRun, isAutoRun, output }: EditorResult<Data>) => {
@@ -9,13 +8,28 @@ export default {
       setAutoRun(true);
       data.runImmediate = true;
       output.get('output0').setSchema({ type: 'number' });
+      data.extraLib = `declare interface IO {outputs: Array<Function>}`
     }
     data.fns = data.fns || (data.runImmediate ? IMMEDIATE_CODE_TEMPLATE : CODE_TEMPLATE);
   },
-  '@inputConnected'({ data, output }, fromPin) {
+  async '@inputConnected'({ data, output, input }: EditorResult<Data>, fromPin, toPin) {
     if (data.fns === CODE_TEMPLATE) {
       output.get('output0').setSchema({ type: 'unknown' });
     }
+    const schemaList = setInputSchema(toPin.id, fromPin.schema, data, input)
+    data.extraLib = await genLibTypes(schemaList)
+  },
+  async '@inputUpdated'({ data, input }: EditorResult<Data>, updatePin) {
+    const schemaList = setInputSchema(updatePin.id, updatePin.schema, data, input)
+    data.extraLib = await genLibTypes(schemaList)
+  },
+  async '@inputRemoved'({ data, input }: EditorResult<Data>, removedPin) {
+    const schemaList = setInputSchema(removedPin.id, null, data, input)
+    data.extraLib = await genLibTypes(schemaList)
+  },
+  async '@inputDisConnected'({ data, input }: EditorResult<Data>, fromPin, toPin) {
+    const schemaList = setInputSchema(toPin.id, {type: 'null'}, data, input)
+    data.extraLib = await genLibTypes(schemaList)
   },
   ':root': [
     {
@@ -29,7 +43,13 @@ export default {
           const idx = getIoOrder(input);
           const hostId = `input.inputValue${idx}`;
           const title = `参数${idx}`;
-          input.add(hostId, title, { type: 'follow' }, true);
+          input.add({
+            id: hostId,
+            title,
+            schema: { type: 'follow' },
+            deletable: true,
+            editable: true
+          });
         }
       }
     },
@@ -71,6 +91,8 @@ export default {
             }
           },
           autoSave: false,
+          extraLib: data.extraLib,
+          language: 'typescript',
           onBlur: () => {
             updateOutputSchema(output, data.fns);
           }
@@ -89,39 +111,3 @@ export default {
     }
   ]
 };
-
-function updateOutputSchema(output, code) {
-  const outputs = {};
-  const inputs = {};
-  output.get().forEach(({ id }) => {
-    outputs[id] = (v: any) => {
-      try {
-        const schema = jsonToSchema(v);
-        output.get(id).setSchema(schema);
-      } catch (error) {
-        output.get(id).setSchema({ type: 'unknown' });
-      }
-    };
-  });
-
-  setTimeout(() => {
-    try {
-      const sandbox = new Sandbox({module: true})
-      const fn = sandbox.compile(`${decodeURIComponent(code.code || code)}`)
-      const params = {
-        inputValue: void 0,
-        outputs: convertObject2Array(outputs),
-        inputs: convertObject2Array(inputs)
-      }
-      fn.run([params], () => {});
-    } catch (error) {
-      console.error(error)
-    }
-  })
-}
-
-function getIoOrder(io) {
-  const ports = io.get();
-  const { id } = ports.pop();
-  return Number(id.replace(/\D+/, '')) + 1;
-}

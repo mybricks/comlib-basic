@@ -5,6 +5,7 @@ import {
   deleteRow,
   canToggleToStandard,
   reviseStandardColWidth,
+  isLastRow
 } from "../utils";
 import { HeightUnitEnum, WidthUnitEnum } from "../components";
 import { message } from "antd";
@@ -41,8 +42,9 @@ export default {
           },
         },
         {
-          title: "自定义",
+          title: "列自定义",
           type: "switch",
+          description: `开启“列自定义”的行，列数和列宽将完全自定义`,
           value: {
             get({ data }: EditorResult<Data>) {
               return !!row.useCustom;
@@ -156,6 +158,9 @@ export default {
       {
         title: "高度填充",
         type: "Select",
+        ifVisible(props: EditorResult<Data>) {
+          return !isLastRow(props);
+        },
         options: [
           { value: HeightUnitEnum.Auto, label: "自动填充" },
           { value: HeightUnitEnum.Px, label: "固定高度" },
@@ -182,7 +187,7 @@ export default {
           const { row } = getRow(props);
           return [HeightUnitEnum.Px, HeightUnitEnum.Percent].includes(
             row?.heightMode
-          );
+          ) && !isLastRow(props);
         },
         value: {
           get(props: EditorResult<Data>) {

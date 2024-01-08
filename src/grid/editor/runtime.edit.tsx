@@ -6,13 +6,29 @@ import { RuntimeContext } from "../context";
 
 import editStyles from "./edit.less";
 
+const toggleSlotTitle = (
+  slots: RuntimeParams<Data>["slots"],
+  title: string
+) => {
+  for (const key in slots) {
+    if (Object.prototype.hasOwnProperty.call(slots, key)) {
+      slots[key].title = title;
+    }
+  }
+};
+
 const EditLayout = (props: RuntimeParams<Data>) => {
   const { data } = props;
   return (
     <RuntimeContext.Provider value={{ ...props }}>
-      <Layout className={"mybricks-layout"}>
-        {data.rows.map((row) => (
-          <ResizableRow key={row.key} row={row} {...props}>
+      <Layout className={`mybricks-layout ${editStyles.dashed}`}>
+        {data.rows.map((row, index) => (
+          <ResizableRow
+            key={row.key}
+            row={row}
+            resizable={index !== data.rows.length - 1}
+            {...props}
+          >
             {row.cols.map((col, index) => (
               <ResizableCol
                 key={col.key}
@@ -34,11 +50,16 @@ const ResizableRow = ({
   row,
   children,
   env,
+  resizable = true,
+  slots,
+  undo
 }: {
   row: DataRowType;
   children?: React.ReactNode;
+  resizable?: boolean;
 } & RuntimeParams<Data>) => {
   const editFinishRef = useRef<Function>();
+  const task = useRef<UndoTask>()
   const dragText = useMemo(() => {
     if (row.heightMode === HeightUnitEnum.Auto) {
       return row.heightMode;
@@ -52,13 +73,37 @@ const ResizableRow = ({
   }, [row.height, row.heightMode]);
 
   const isDragging = data.rows.find((row) => !!row.isDragging);
-  return (
+
+  const rowDom = (
+    <Row
+      row={row}
+      className={"mybricks-row"}
+      data-layout-row-key={row.key}
+      data-row-custom={row.useCustom}
+    >
+      {children}
+      {isDragging && (
+        <div
+          className={
+            row.isDragging
+              ? editStyles.draggingTipH
+              : `${editStyles.draggingTipH} ${editStyles.dashed}`
+          }
+        >
+          {dragText}
+        </div>
+      )}
+    </Row>
+  );
+  return resizable ? (
     <Resizable
       axis="y"
       key={row.key}
       onResizeStart={() => {
+        task.current = undo?.start('开始行拖拽')
         row.isDragging = true;
         editFinishRef.current = env.edit.focusPaasive();
+        toggleSlotTitle(slots, "");
       }}
       onResize={(size) => {
         row.height = size.height;
@@ -67,24 +112,15 @@ const ResizableRow = ({
       onResizeStop={() => {
         row.isDragging = false;
         editFinishRef.current && editFinishRef.current();
+        toggleSlotTitle(slots, "拖拽组件到这里");
+        task.current?.commit()
       }}
       zoom={env.canvas?.zoom}
     >
-      <Row row={row} className={"mybricks-row"} data-layout-row-key={row.key}>
-        {children}
-        {isDragging && (
-          <div
-            className={
-              row.isDragging
-                ? editStyles.draggingTipH
-                : `${editStyles.draggingTipH} ${editStyles.dashed}`
-            }
-          >
-            {dragText}
-          </div>
-        )}
-      </Row>
+      {rowDom}
     </Resizable>
+  ) : (
+    rowDom
   );
 };
 
@@ -95,6 +131,7 @@ const ResizableCol = ({
   index,
   slots,
   env,
+  undo,
 }: {
   row: DataRowType;
   col: DataColType;
@@ -102,6 +139,7 @@ const ResizableCol = ({
 } & RuntimeParams<Data>) => {
   const colRef = useRef<HTMLDivElement>(null);
   const editFinishRef = useRef<Function>();
+  const task = useRef<UndoTask>()
 
   useEffect(() => {
     const eventHandle = (e) => {
@@ -163,13 +201,34 @@ const ResizableCol = ({
     return col.isHover ? editStyles.hover : undefined;
   }, [col.isHover]);
 
-  const basis = 100 / row.cols.length;
+  const colDom = (
+    <Col
+      ref={colRef}
+      col={col}
+      className={classnames}
+      data-layout-col-key={`${row.key},${col.key}`}
+    >
+      {slots[col.key]?.render({ key: col.key, style: col.slotStyle })}
+      {isDragging && (
+        <div
+          className={
+            col.isDragging
+              ? editStyles.draggingTipW
+              : `${editStyles.draggingTipW} ${editStyles.dashed}`
+          }
+        >
+          {dragText}
+        </div>
+      )}
+    </Col>
+  );
 
   return (
     <Resizable
       axis="x"
       key={col.key}
       onResizeStart={() => {
+        task.current = undo?.start('开始列拖拽')
         editFinishRef.current = env.edit.focusPaasive();
         if (row.useCustom) {
           col.isDragging = true;
@@ -180,6 +239,7 @@ const ResizableCol = ({
               row.cols[index].isDragging = true;
             });
         }
+        toggleSlotTitle(slots, "");
       }}
       onResize={(size) => {
         if (row.useCustom) {
@@ -205,32 +265,15 @@ const ResizableCol = ({
               row.cols[index].isDragging = false;
             });
         }
+        toggleSlotTitle(slots, "拖拽组件到这里");
+        task.current?.commit()
       }}
       zoom={env.canvas?.zoom}
       className={hoverClassName}
     >
-      <Col
-        ref={colRef}
-        col={col}
-        className={classnames}
-        data-layout-col-key={`${row.key},${col.key}`}
-        basis={basis}
-      >
-        {slots[col.key]?.render({ key: col.key, style: col.slotStyle })}
-        {isDragging && (
-          <div
-            className={
-              col.isDragging
-                ? editStyles.draggingTipW
-                : `${editStyles.draggingTipW} ${editStyles.dashed}`
-            }
-          >
-            {dragText}
-          </div>
-        )}
-      </Col>
+      {colDom}
     </Resizable>
-  );
+  )
 };
 
 export default EditLayout;

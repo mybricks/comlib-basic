@@ -7,7 +7,7 @@ export default function (props: RuntimeParams<Data>) {
 
   if (env?.runtime && inputs) {
     inputs[InputIds.Trigger]((val) => {
-      clearInterval(timer);
+      clearTimeout(timer);
       timer = setTimeout(() => {
         outputs[InputIds.Trigger](val);
       }, data.delay);
@@ -15,5 +15,10 @@ export default function (props: RuntimeParams<Data>) {
     inputs[InputIds.Cancel]?.(() => {
       clearTimeout(timer);
     });
+    if(typeof env?.runtime?.onComplete === 'function'){
+      env.runtime.onComplete(()=>{
+        clearTimeout(timer);
+      })
+    }
   }
 }

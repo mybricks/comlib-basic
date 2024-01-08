@@ -1,20 +1,20 @@
-export const CODE_TEMPLATE = `({ outputs, inputs }) => {
+export const CODE_TEMPLATE = encodeURIComponent(`({ outputs, inputs }: IO) => {
   const [ inputValue0 ] = inputs;
   const [ output0 ] = outputs;
   output0(inputValue0);
-}`;
+}`);
 
-export const IMMEDIATE_CODE_TEMPLATE = `({ outputs }) => {
+export const IMMEDIATE_CODE_TEMPLATE = encodeURIComponent(`({ outputs }: IO) => {
   const [ output0 ] = outputs;
   output0(0);
-}`;
+}`);
 
 export const COMMENTS = `/**
 * @parma inputs: any[] 输入项
 * @parma outputs: any[] 输出项
 *
 * 例子
-* ({ inputs, outputs }) => {
+* ({ inputs, outputs }: IO) => {
 *   const [ inputValue0, inputValue1 ] = inputs;
 *   const [ output0, output1, output2 ] = outputs;
 *   const res = '该值输出给下一个组件使用' + inputValue0
@@ -36,4 +36,6 @@ export interface Data {
   fnBody: string;
   fns: any;
   runImmediate: boolean;
+  inputSchema?: Object
+  extraLib?: string
 }

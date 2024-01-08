@@ -33,6 +33,12 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
         inputs[`${InputIds.SetShow}_${id}`]?.(() => {
           item.visible = true;
         })
+        inputs[`${InputIds.SetBtnOpenLoading}_${id}`]?.(() => {
+          item.loading = true;
+        });
+        inputs[`${InputIds.SetBtnCloseLoading}_${id}`]?.(() => {
+          item.loading = false;
+        })
       });
     }
   }, [])
@@ -97,7 +103,8 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
             location,
             icon,
             showText,
-            disabled
+            disabled,
+            loading
           } = item;
           const Icon = useIcon && Icons && Icons[icon as string]?.render();
           return (
@@ -108,6 +115,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
               type={type}
               hidden={!visible}
               disabled={disabled}
+              loading={loading}
             >
               {useIcon && location !== Location.BACK && Icon}
               {showText && env.i18n(title)}
@@ -137,6 +145,15 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
         wrapClassName={css.container}
         closable={data.closable}
         getContainer={false}
+        style={data.isCustomPosition ? {
+          //调整浮层位置
+          top: data.vertical === 'top' ?  data.top : 'unset',
+          right: data.horizontal === 'right' ?  data.right : void 0,
+          bottom: data.vertical === 'bottom' ?  data.bottom : void 0, 
+          left: data.horizontal === 'left' ?  data.left : void 0,
+          padding: 0,
+          position: 'absolute',
+        } : void 0}
       >
         {slots['body'].render()}
       </Modal>
@@ -159,6 +176,16 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
         wrapClassName={`${css.container} ${id}`}
         closable={data.closable}
         getContainer={() => env?.canvasElement || document.body}
+        style={data.isCustomPosition ? {
+          //调整浮层位置
+          top: data.vertical === 'top' ?  data.top : 'unset',
+          right: data.horizontal === 'right' ?  data.right : void 0,
+          bottom: data.vertical === 'bottom' ?  data.bottom : void 0, 
+          left: data.horizontal === 'left' ?  data.left : void 0,
+          padding: 0,
+          position: 'absolute',
+        } : void 0}
+        mask={data.isMask}
       >
         {slots['body'].render()}
       </Modal>
@@ -193,7 +220,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
         <div
           className={css.debugMask}
         >
-          <div className={css.mask}>
+          <div className={`${css.mask} ${data.isMask ? '' : css.hideMask}`}>
             {debugPopup}
           </div>
         </div>

@@ -8,6 +8,7 @@ import {
   appendCol,
   deleteCol,
   updateColWidthMode,
+  isLastCol
 } from "../utils";
 export default {
   "[data-layout-col-key]": {
@@ -40,7 +41,7 @@ export default {
           options: {
             type: "Number",
           },
-          ifVisible({ data, focusArea }: EditorResult<Data>) {
+          ifVisible(props: EditorResult<Data>) {
             return col?.widthMode === WidthUnitEnum.Px;
           },
           value: {
@@ -60,7 +61,7 @@ export default {
             min: 0,
             max: 100,
           },
-          ifVisible({ data, focusArea }: EditorResult<Data>) {
+          ifVisible(props: EditorResult<Data>) {
             return col?.widthMode === WidthUnitEnum.Percent;
           },
           value: {

@@ -1,4 +1,10 @@
-import React, { ReactNode, CSSProperties, useMemo, forwardRef, LegacyRef } from "react";
+import React, {
+  ReactNode,
+  CSSProperties,
+  useMemo,
+  forwardRef,
+  LegacyRef,
+} from "react";
 import styles from "./index.less";
 
 export enum WidthUnitEnum {
@@ -19,23 +25,18 @@ export interface ColProps {
   col: ColType;
   className?: string;
   children?: ReactNode;
-  basis?: number
   onClick?: (col: ColType) => void;
 }
 
-const Col = ({
-  col,
-  basis,
-  className,
-  children,
-  onClick,
-  ...rest
-}: ColProps, ref: LegacyRef<HTMLDivElement>) => {
+const Col = (
+  { col, className, children, onClick, ...rest }: ColProps,
+  ref: LegacyRef<HTMLDivElement>
+) => {
   const colStyle = useMemo(() => {
-    const style = { ...(col.style ?? {}) };
+    const style: CSSProperties = {};
     if (col.widthMode === WidthUnitEnum.Auto) {
-      style.flex = `1 1 ${basis}%`;
-      style.minWidth = 1;
+      style.flex = 1;
+      style.minWidth = 30;
     }
     if (col.widthMode === WidthUnitEnum.Px) {
       style.width = col.width;
@@ -44,8 +45,8 @@ const Col = ({
       style.flex = `0 0 ${col.width}%`;
       style.maxWidth = `${col.width}%`;
     }
-    return style;
-  }, [JSON.stringify(col.style), col.width, col.widthMode, basis]);
+    return { ...style, ...(col.style ?? {}) };
+  }, [JSON.stringify(col.style), col.width, col.widthMode]);
 
   const classnames = useMemo(() => {
     const classnames = [styles.col];
@@ -56,8 +57,8 @@ const Col = ({
   }, [className]);
 
   const handleClick = (e, col: ColType) => {
-    typeof onClick === 'function' && onClick(col)
-  }
+    typeof onClick === "function" && onClick(col);
+  };
 
   return (
     <div

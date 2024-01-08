@@ -1,3 +1,7 @@
+import { Data } from "./constants";
+import Sandbox from './com-utils/sandbox'
+import * as SchemaToTypes from "./json-schema-to-typescript";
+import { transform } from './com-utils'
 export function jsonToSchema(json): any {
   const schema = { type: void 0 };
   proItem({ schema, val: json });
@@ -82,4 +86,95 @@ export function convertObject2Array(input) {
     result.push(input[key]);
   });
   return result;
+}
+
+export function updateOutputSchema(output, code) {
+  let sourceCode =
+    typeof code === "object" && code !== null
+      ? code.transformCode
+      : transform(code.code || code);
+  const outputs = {};
+  const inputs = {};
+  output.get().forEach(({ id }) => {
+    outputs[id] = (v: any) => {
+      try {
+        const schema = jsonToSchema(v);
+        output.get(id).setSchema(schema);
+      } catch (error) {
+        // output.get(id).setSchema({ type: 'unknown' });
+      }
+    };
+  });
+
+  setTimeout(() => {
+    try {
+      const sandbox = new Sandbox({ module: true })
+      const fn = sandbox.compile(`${decodeURIComponent(sourceCode)}`)
+      const params = {
+        inputValue: void 0,
+        outputs: convertObject2Array(outputs),
+        inputs: convertObject2Array(inputs)
+      }
+      fn.run([params], () => { });
+    } catch (error) {
+      console.error(error)
+    }
+  })
+}
+
+export const setInputSchema = (pinId: string, schema, data: Data, input) => {
+  if (!data.inputSchema) {
+    data.inputSchema = {};
+  }
+  if (schema) {
+    const formattedSchema = formatSchema(pinId, schema);
+    data.inputSchema[formattedSchema.title] = formattedSchema;
+  } else {
+    Reflect.deleteProperty(data.inputSchema, pinId.split(".").pop() ?? "");
+  }
+  const schemaList: Array<Record<string, any>> = [];
+  const inputIds = input.get().map(({ id }) => id.split(".").pop());
+  for (const id of inputIds) {
+    if (data.inputSchema[id]) {
+      schemaList.push(data.inputSchema[id]);
+    } else {
+      schemaList.push({ title: id, type: "null" });
+    }
+  }
+  return schemaList;
+};
+
+const formatSchema = (pinId: string, schema: Record<string, any>) => {
+  const rootKey = pinId.split(".").pop() ?? "inputValue0";
+  schema.title = rootKey;
+  return schema;
+};
+
+export const genLibTypes = async (schemaList: Array<Record<string, any>>) => {
+  const tuple: Array<string> = [];
+  const ret = await Promise.all(
+    schemaList.map((schema: Record<string, any>) => {
+      tuple.push(schema.title.replace(/^\S/, (s: string) => s.toUpperCase()));
+      return SchemaToTypes.compile(schema, "", {
+        bannerComment: "",
+        unknownAny: false,
+        format: false,
+      }).then((ts) => {
+        return ts.replace("export ", "");
+      });
+    })
+  );
+  return `
+    ${ret.join("\n")}
+    declare interface IO {
+      inputs: [${tuple.toString()}],
+      outputs: Array<Function>
+    }
+  `;
+};
+
+export function getIoOrder(io) {
+  const ports = io.get();
+  const { id } = ports.pop();
+  return Number(id.replace(/\D+/, "")) + 1;
 }
