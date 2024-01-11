@@ -28,7 +28,7 @@ export default {
           ],
           value: {
             get(props: EditorResult<Data>) {
-              return col.widthMode ?? WidthUnitEnum.Auto;
+              return col?.widthMode ?? WidthUnitEnum.Auto;
             },
             set(props: EditorResult<Data>, value: WidthUnitEnum) {
               updateColWidthMode(props, { widthMode: value });
@@ -79,6 +79,9 @@ export default {
           value: {
             get(props: EditorResult<Data>) {
               const { col } = getCol(props);
+              if(!col) {
+                return {}
+              }
               const { slotStyle = {} } = col;
               setSlotLayout({ slotStyle, ...props });
               return slotStyle;
