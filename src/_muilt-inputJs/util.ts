@@ -1,6 +1,5 @@
 import { Data } from "./constants";
 import Sandbox from './com-utils/sandbox'
-import * as SchemaToTypes from "./json-schema-to-typescript";
 import { transform } from './com-utils'
 export function jsonToSchema(json): any {
   const schema = { type: void 0 };
@@ -152,6 +151,8 @@ const formatSchema = (pinId: string, schema: Record<string, any>) => {
 
 export const genLibTypes = async (schemaList: Array<Record<string, any>>) => {
   const tuple: Array<string> = [];
+  const SchemaToTypes = window.jstt;
+  if(!SchemaToTypes) return;
   const ret = await Promise.all(
     schemaList.map((schema: Record<string, any>) => {
       tuple.push(schema.title.replace(/^\S/, (s: string) => s.toUpperCase()));
