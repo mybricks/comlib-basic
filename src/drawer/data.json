@@ -43,5 +43,7 @@
   "closable": true,
   "maskClosable": true,
   "isTitleCustom": false,
-  "keyboard": true
+  "keyboard": true,
+  "isZIndex": false,
+  "zIndex": 1000
 }

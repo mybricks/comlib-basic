@@ -76,5 +76,15 @@ export default function ({
     }
   })
 
+  /**
+   * @description 1.0.12->1.0.13  新增 层级配置
+  */
+  if(typeof data.isZIndex === "undefined"){
+    data.isZIndex = false
+  }
+  if(typeof data.zIndex === "undefined"){
+    data.zIndex = 1000
+  }
+
   return true;
 }
