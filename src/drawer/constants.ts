@@ -52,6 +52,8 @@ export interface Data {
   maskClosable?: boolean;
   isTitleCustom?: boolean
   keyboard?: boolean;
+  isZIndex?: boolean;
+  zIndex?: number;
 }
 
 export const DefaultEvent = ['ok', 'cancel'];

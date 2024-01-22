@@ -152,6 +152,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         maskClosable={data.maskClosable}
         keyboard={data.keyboard}
         getContainer={false}
+        zIndex={data.isZIndex ? data.zIndex: void 0}
       >
         <div className={css.slotContainer}>
           {slots['body'].render()}
@@ -176,6 +177,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         maskClosable={data.maskClosable}
         keyboard={data.keyboard}
         getContainer={() => env?.canvasElement || document.body}
+        zIndex={data.isZIndex ? data.zIndex: void 0}
       >
         <div className={css.slotContainer}>
           {slots['body'].render()}
