@@ -149,10 +149,15 @@ const formatSchema = (pinId: string, schema: Record<string, any>) => {
   return schema;
 };
 
+const DefaultLib = `declare interface IO {
+  inputs: any,
+  outputs: Array<Function>
+}`;
+
 export const genLibTypes = async (schemaList: Array<Record<string, any>>) => {
   const tuple: Array<string> = [];
   const SchemaToTypes = window.jstt;
-  if(!SchemaToTypes) return;
+  if(!SchemaToTypes) return DefaultLib;
   const ret = await Promise.all(
     schemaList.map((schema: Record<string, any>) => {
       tuple.push(schema.title.replace(/^\S/, (s: string) => s.toUpperCase()));
