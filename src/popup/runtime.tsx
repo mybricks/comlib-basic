@@ -202,7 +202,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
         onCancel={handleClose}
         mask={false}
         transitionName=""
-        bodyStyle={data.bodyStyle}
+        //bodyStyle={data.bodyStyle}
 
         wrapClassName={css.container}
         closable={data.closable}
