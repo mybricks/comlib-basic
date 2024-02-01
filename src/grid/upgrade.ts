@@ -3,6 +3,8 @@ import { getFilterSelector } from "./utils";
 export default ({
   id,
   data,
+  input,
+  output,
   getDeclaredStyle,
   setDeclaredStyle,
   removeDeclaredStyle,
@@ -63,5 +65,12 @@ export default ({
       setDeclaredStyle("> .mybricks-layout", css);
     }
   });
+
+  const setWidthComplete = output.get('setWidthComplete')
+  if(!setWidthComplete) {
+    output.add('setWidthComplete', "完成", {type: 'any'})
+    input.get('setWidth').setRels(['setWidthComplete'])
+  }
+
   return true;
 };

@@ -4,7 +4,7 @@
     "namespace": "mybricks.basic-comlib.grid",
     "author": "tangxiaoxin",
     "author_name": "tangxiaoxin",
-    "version": "1.0.10",
+    "version": "1.0.11",
     "description": "布局",
     "icon": "./icon.svg",
     "runtime": "./runtime.tsx",
@@ -37,7 +37,8 @@
             }
           }
         },
-        "desc": "设置布局列宽度，如[1,2]表示第一行第二列"
+        "desc": "设置布局列宽度，如[1,2]表示第一行第二列",
+        "rels": ["setWidthComplete"]
       }
     ],
     "slots": [
@@ -58,6 +59,10 @@
       {
         "id": "col1",
         "title": "列点击"
+      },
+      {
+        "id": "setWidthComplete",
+        "title": "完成"
       }
     ]
   }

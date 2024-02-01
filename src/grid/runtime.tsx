@@ -7,7 +7,7 @@ import styles from "./runtime.less";
 export default (props: RuntimeParams<Data>) => {
   const { data, slots, inputs, outputs, logger, onError } = props;
   inputs.setWidth(
-    (val: { coordinate: [number, number]; width: CSSProperties["width"] }) => {
+    (val: { coordinate: [number, number]; width: CSSProperties["width"] }, relsOutput) => {
       const { coordinate, width } = val;
       const errorMsg = "找不到布局列，检查参数设置";
       try {
@@ -19,6 +19,7 @@ export default (props: RuntimeParams<Data>) => {
           col.widthMode = WidthUnitEnum.Px;
         }
         col.width = width;
+        relsOutput['setWidthComplete']()
       } catch (error) {
         logger.error(errorMsg);
         onError?.(errorMsg);
