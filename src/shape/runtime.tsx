@@ -9,8 +9,9 @@ export default function ({ data, inputs }: RuntimeParams<ShapeProps>) {
   const [dynamicStyle, setDynamicStyle] = useState<React.CSSProperties>({});
 
   useEffect(() => {
-    inputs[INPUTS.SetStyle]((style: React.CSSProperties) => {
+    inputs[INPUTS.SetStyle]((style: React.CSSProperties, relsOutput) => {
         setDynamicStyle(style)
+        relsOutput['setStyleComplete']()
     });
   }, []);
 
