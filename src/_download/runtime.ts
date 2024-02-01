@@ -54,7 +54,7 @@ export default function ({
   const { filename, downloadType } = data;
   const { runtime } = env;
   if (runtime) {
-    inputs.url(async (val) => {
+    inputs.url(async (val, relsOutput) => {
       if (val) {
         try {
           if (downloadType === DownloadType.Local) {
@@ -62,6 +62,7 @@ export default function ({
             data.saveType = val.saveType ?? data.saveType
             const blob = generateBlob(val.url ?? val, data.saveType);
             download(blob, _filename);
+            relsOutput['complete']()
             return;
           }
           const url = new URL(val.url ?? val, location.href);
@@ -73,6 +74,7 @@ export default function ({
             matchFilename(url.href) ??
             defaultFilename;
           download(blob, _filename);
+          relsOutput['complete']()
         } catch (error) {
           console.error(error)
         }
