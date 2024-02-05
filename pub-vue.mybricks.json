@@ -1,0 +1,23 @@
+{
+  "name": "基础组件库（Vue）",
+  "version": "1.0.0",
+  "namespace": "mybricks.basic-comlib-vue",
+  "content": "",
+  "commitInfo": "init",
+  "comAry": [
+    "./src/_type-change/com.json",
+    "./src/_muilt-inputJs/com.json",
+    "./src/_timer-delay/com.json",
+    "./src/_timer-loop/com.json",
+    "./src/_timer-debounce/com.json",
+    "./src/_timer-throttle/com.json",
+    "./src/_merge/com.json",
+    "./src/_object-merge/com.json",
+    "./src/_download/com.json",
+    "./src/_schema-simulator/com.json",
+    "./src/_rsa-encryption/com.json",
+    "./src/_encryption/com.json"
+  ],
+  "componentType": "PC",
+  "tags": "vue"
+}
