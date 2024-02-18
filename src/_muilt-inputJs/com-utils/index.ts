@@ -1,6 +1,22 @@
 import Sandbox from './sandbox';
 import utils from './utils';
 
+const safeDecoder = (str: string) => {
+  try {
+    return decodeURIComponent(str)
+  } catch (error) {
+    return str
+  }
+}
+
+const safeEncoder = (str: string) => {
+  try {
+    return encodeURIComponent(str)
+  } catch (error) {
+    return str
+  }
+}
+
 interface Props {
   env?: any;
   callback?: () => any;
@@ -16,7 +32,7 @@ export function runJs(scriptText: string | any, model?: any[], props?: Props) {
   let fn: {run: Function}, sandbox: Sandbox;
   if (model && model.length) {
     sandbox = new Sandbox({ module: true });
-    let sourceStr = decodeURIComponent(scriptText);
+    let sourceStr = safeDecoder(scriptText);
     if (/export\s+default.*async.*function.*\(/g.test(sourceStr)) {
       fn = sandbox.compile(
         `${sourceStr.replace(/export\s+default.*function.*\(/g, 'async function _RT_(')}`
@@ -28,14 +44,14 @@ export function runJs(scriptText: string | any, model?: any[], props?: Props) {
     }
   } else {
     sandbox = new Sandbox();
-    fn = sandbox.compile(`${decodeURIComponent(scriptText)}`);
+    fn = sandbox.compile(`${safeDecoder(scriptText)}`);
   }
   fn.run(model, callback)
   return sandbox;
 }
 
 export const transform = (scriptText: string): string => {
-  scriptText = decodeURIComponent(scriptText)
+  scriptText = safeDecoder(scriptText)
   try {
     if(!window.Babel) {
       throw Error('Babel was not found in window');
@@ -47,10 +63,10 @@ export const transform = (scriptText: string): string => {
       filename: 'types.d.ts',
     })
     code = `(function() { var _RTFN_; \n${code}\n return _RTFN_; })()`
-    return encodeURIComponent(code);
+    return safeEncoder(code);
   } catch (error) {
     console.error(error)
-    return encodeURIComponent(scriptText)
+    return safeEncoder(scriptText)
   }
 }
 
