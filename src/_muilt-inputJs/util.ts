@@ -1,6 +1,7 @@
 import { Data } from "./constants";
 import Sandbox from './com-utils/sandbox'
 import { transform } from './com-utils'
+import { uuid } from "../utils/basic";
 export function jsonToSchema(json): any {
   const schema = { type: void 0 };
   proItem({ schema, val: json });
@@ -154,19 +155,34 @@ const DefaultLib = `declare interface IO {
   outputs: Array<Function>
 }`;
 
+const resolverTitle = (schema) => {
+  try {
+    const title = schema.title.replace(/^\S/, (s: string) => s.toUpperCase());
+    schema = JSON.parse(JSON.stringify(schema).replaceAll(/("title":\s*")([^"]+)/g, `$1${uuid()}`))
+    schema.title = title
+    return schema
+  } catch (error) {
+    return schema
+  }
+}
+
 export const genLibTypes = async (schemaList: Array<Record<string, any>>) => {
   const tuple: Array<string> = [];
   const SchemaToTypes = window.jstt;
   if(!SchemaToTypes) return DefaultLib;
   const ret = await Promise.all(
     schemaList.map((schema: Record<string, any>) => {
-      tuple.push(schema.title.replace(/^\S/, (s: string) => s.toUpperCase()));
+      schema = resolverTitle(schema)
+      tuple.push(schema.title);
       return SchemaToTypes.compile(schema, "", {
         bannerComment: "",
         unknownAny: false,
         format: false,
       }).then((ts) => {
-        return ts.replace("export ", "");
+        return ts.replaceAll("export", "declare");
+      }).catch((error) => {
+        console.warn(error)
+        return `declare type ${schema.title} = any;`;
       });
     })
   );
