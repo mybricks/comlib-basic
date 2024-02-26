@@ -1,7 +1,7 @@
 {
   "title": "构造数据",
   "namespace": "mybricks.basic-comlib._get-data",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "生成数据",
   "author": "MyBricks",
   "author_name": "MyBricks",

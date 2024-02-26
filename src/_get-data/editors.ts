@@ -1,9 +1,16 @@
 export default {
+  '@init': ({ data, setAutoRun, isAutoRun }) => {
+    const autoRun = isAutoRun ? isAutoRun() : false;
+    if (autoRun || data.runImmediate) {
+      setAutoRun(true);
+      data.runImmediate = true;
+    }
+  },
   ':root': [
     {
       title: '数据类型',
       type: 'select',
-      options({data}) {
+      options({ data }) {
         return [
           {
             label: '对象',
@@ -24,10 +31,10 @@ export default {
         ]
       },
       value: {
-        get({data, inputs}, val) {
+        get({ data, inputs }, val) {
           return data.type
         },
-        set({data, inputs, outputs}, val) {
+        set({ data, inputs, outputs }, val) {
           if (data.type === val) {
             return
           }
@@ -37,19 +44,19 @@ export default {
 
           if (val === 'object') {
             outputs.setSchema('result', {
-                type: 'object',
-                properties: {type: 'string'}
-              }
+              type: 'object',
+              properties: { type: 'string' }
+            }
             )
           } else if (val === 'array') {
             outputs.setSchema('result', {
               type: 'array',
-              items: {type: 'string'}
+              items: { type: 'string' }
             })
           } else if (val === 'randomNumber') {
-            outputs.setSchema('result', {type: 'number'})
+            outputs.setSchema('result', { type: 'number' })
           } else if (val === 'randomString') {
-            outputs.setSchema('result', {type: 'string'})
+            outputs.setSchema('result', { type: 'string' })
           }
         }
       }
@@ -57,14 +64,14 @@ export default {
     {
       title: '对象数据',
       type: 'map',
-      ifVisible({data}) {
+      ifVisible({ data }) {
         return data.type === 'object'
       },
       value: {
-        get({data, inputs}, val) {
+        get({ data, inputs }, val) {
           return Object.prototype.toString.call(data.value) === '[object Object]' ? data.value : {};
         },
-        set({data, inputs}, val) {
+        set({ data, inputs }, val) {
           data.value = val
         }
       }
@@ -72,14 +79,14 @@ export default {
     {
       title: '列表数据',
       type: 'list',
-      ifVisible({data}) {
+      ifVisible({ data }) {
         return data.type === 'array'
       },
       value: {
-        get({data, inputs}, val) {
+        get({ data, inputs }, val) {
           return Array.isArray(data.value) ? data.value : [];
         },
-        set({data, inputs}, val) {
+        set({ data, inputs }, val) {
           data.value = val
         }
       }
