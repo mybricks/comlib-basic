@@ -8,6 +8,7 @@ import {
 import rowEdit from "./rowEdit";
 import colEdit from "./colEdit";
 export default {
+  ':slot': {},
   ":root": {
     items({ data }: EditorResult<Data>, ...cate) {
       cate[0].title = "配置";
