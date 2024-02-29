@@ -10,6 +10,7 @@ import {
 import RowEditor from "./row.editor";
 import ColEditor from "./col.editor";
 export default {
+  ':slot': {},
   '@resize': {
     options: ['width', 'height'],
     // value: {
