@@ -202,7 +202,7 @@ export default {
     style: createStyleForCol({
       target(props: EditorResult<Data>) {
         const { row, col } = getCol(props);
-        const key = `${row.key},${col.key}`;
+        const key = `${row.key}@${col.key}`;
         return `> .mybricks-layout > .mybricks-row > div[data-layout-col-key="${key}"]`;
       },
     }),

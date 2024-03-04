@@ -116,7 +116,7 @@ export const getCol = ({
   index: number;
 } => {
   const { layoutColKey: key } = focusArea.dataset;
-  const [rowKey, colKey] = key.split(",");
+  const [rowKey, colKey] = key.split("@");
   const row = data.rows.find((row) => row.key === rowKey) as DataRowType;
   const col = row?.cols.find((col) => col.key === colKey) as DataColType;
   const index = row?.cols.findIndex((col) => col.key === colKey) as number;
