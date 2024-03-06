@@ -103,6 +103,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
             title,
             id,
             type,
+            size,
             visible,
             useIcon,
             location,
@@ -118,6 +119,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
               data-handler-button={id}
               key={id}
               type={type}
+              size={size}
               hidden={!visible}
               disabled={disabled}
               loading={loading}

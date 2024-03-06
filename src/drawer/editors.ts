@@ -543,6 +543,25 @@ export default {
                     findConfig({ data, focusArea }).type = value;
                   }
                 }
+              },
+              {
+                title: '尺寸',
+                type: 'Select',
+                options() {
+                  return [
+                    { value: 'large', label: '大' },
+                    { value: 'middle', label: '中等' },
+                    { value: 'small', label: '小' }
+                  ];
+                },
+                value: {
+                  get({ data, focusArea }: EditorResult<Data>) {
+                    return findConfig({ data, focusArea }, 'size') || 'middle';
+                  },
+                  set({ data, focusArea }: EditorResult<Data>, value: string) {
+                    findConfig({ data, focusArea }).size = value;
+                  }
+                }
               }
             ]
           },
