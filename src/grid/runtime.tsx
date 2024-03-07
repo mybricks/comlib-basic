@@ -45,7 +45,7 @@ export default (props: RuntimeParams<Data>) => {
                 },
                 key: col.key,
                 className: "mybricks-col",
-                "data-layout-col-key": `${row.key},${col.key}`,
+                "data-layout-col-key": `${row.key}@${col.key}`,
                 onClick: onColClick,
               };
               const colDom = (

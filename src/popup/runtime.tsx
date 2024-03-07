@@ -220,7 +220,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
     if (env.runtime && env.runtime.debug) {
       return (
         <div
-          className={css.debugMask}
+          className={`${css.debugMask} ${!data.centered ? css.debugMargin : ''}`}
         >
           <div className={`${css.mask} ${data.isMask ? '' : css.hideMask}`}>
             {debugPopup}

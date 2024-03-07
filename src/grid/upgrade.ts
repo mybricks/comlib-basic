@@ -49,11 +49,19 @@ export default ({
         index + 1
       })`;
       const unifiedColStyle = getDeclaredStyle(unifiedColSelector);
+      const key = `${row.key},${col.key}`;
+      const fixedSelector = `> .mybricks-layout > .mybricks-row > div[data-layout-col-key="${key}"]`;
+      const fixedColStyle = getDeclaredStyle(fixedSelector);
+      const nextColFlag = `${row.key}@${col.key}`;
+      const singleColSelector = `> .mybricks-layout > .mybricks-row > div[data-layout-col-key="${nextColFlag}"]`;
       if (unifiedColStyle) {
         const css = { ...unifiedColStyle.css };
-        const key = `${row.key},${col.key}`;
-        const singleColSelector = `> .mybricks-layout > .mybricks-row > div[data-layout-col-key="${key}"]`;
         removeDeclaredStyle(unifiedColSelector);
+        setDeclaredStyle(singleColSelector, css);
+      }
+      if (fixedColStyle) {
+        const css = { ...fixedColStyle.css };
+        removeDeclaredStyle(fixedSelector);
         setDeclaredStyle(singleColSelector, css);
       }
     });
