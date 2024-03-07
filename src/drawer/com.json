@@ -4,7 +4,7 @@
   "namespace": "mybricks.basic-comlib.drawer",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "抽屉",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
