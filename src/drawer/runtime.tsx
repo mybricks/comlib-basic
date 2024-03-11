@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { AlignEnum, Location, InputIds } from './constants';
+import { AlignEnum, Location, InputIds, DialogButtonProps } from './constants';
 import { Button, Drawer } from 'antd';
 import * as Icons from '@ant-design/icons';
 
@@ -14,6 +14,27 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
     left: { paddingRight: '50px' },
     right: { paddingLeft: '50px' }
   }
+
+  /**
+   * 获取没有权限时组件要做的操作
+   * 返回值如下：
+   *  1. hide: 隐藏
+   *  2. hintLink: 展示跳转链接
+   *  3. none: 什么都不用做
+   * @param id 权限ID
+   * @returns 没有权限时需要做的事情吗，如果有权限返回 none
+   */
+  const getWhatToDoWithoutPermission = (
+    permission: DialogButtonProps['permission']
+  ): 'none' | 'hide' | 'hintLink' => {
+    const hasPermission = !(env.runtime && permission?.id && !env?.hasPermission(permission?.id));
+    if (hasPermission) return 'none';
+
+    if (permission.registerData?.noPrivilege) {
+      return permission.registerData.noPrivilege;
+    }
+    return 'hide';
+  };
 
   useEffect(() => {
     inputs['title']((val: string) => {
@@ -99,6 +120,20 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         className={isMobile ? css.mobileFooter : "toolbar"}
         style={{ justifyContent: data.footerLayout || AlignEnum.FlexEnd, display: 'flex' }}>
         {(data.footerBtns || []).map((item) => {
+          const todo = getWhatToDoWithoutPermission(item.permission);
+          if(todo === 'hide') return null;
+          else if(todo === 'hintLink') {
+            return (
+              <a
+                href={item.permission?.hintLink}
+                target="_blank"
+                style={{ textDecoration: 'underline' }}
+              >
+                {item.permission?.registerData?.title || '无权限'}
+              </a>
+            );
+          }
+
           const {
             title,
             id,

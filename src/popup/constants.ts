@@ -36,6 +36,18 @@ export interface DialogButtonProps {
   useDynamicDisabled: boolean;
   useDynamicHidden: boolean;
   disabled: boolean;
+  // 权限信息
+  permission?: {
+    id: string;
+    type: string;
+    noPrivilegeType: 'hide' | 'hintLink';
+    hintLink?: string;
+    registerData?: {
+      noPrivilege: 'hide' | 'hintLink';
+      code: string;
+      title: string;
+    };
+  };
 }
 
 export interface Data {
