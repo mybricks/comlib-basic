@@ -54,5 +54,7 @@
   "right": 0,
   "bottom": 0,
   "left": 0,
-  "isMask": true
+  "isMask": true,
+  "isZIndex": false,
+  "zIndex": 1000
 }

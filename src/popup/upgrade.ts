@@ -200,5 +200,14 @@ export default function ({
     data.isMask = true
   }
 
+  /**
+   * @description 1.0.29->1.0.30  新增 层级配置
+  */
+  if(typeof data.isZIndex === "undefined"){
+    data.isZIndex = false
+  }
+  if(typeof data.zIndex === "undefined"){
+    data.zIndex = 1000
+  }
   return true;
 }

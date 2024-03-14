@@ -283,6 +283,36 @@ export default {
         }
       },
       {
+        title: '自定义层级',
+        description: '是否自定义抽屉的z-index',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.isZIndex;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.isZIndex = value
+          }
+        }
+      },
+      {
+        title: '层级',
+        description: '设置z-index,最小值1000',
+        type: 'InputNumber',
+        ifVisible({ data }: EditorResult<Data>) {
+          return data.isZIndex;
+        },
+        options: [{ width: 100, min: 1000 }],
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return [data.zIndex || 1000];
+          },
+          set({ data }: EditorResult<Data>, value: number) {
+            data.zIndex = value[0];
+          }
+        }
+      },
+      {
         title: '顶部区域',
         options: ['background', 'border', 'padding', 'opacity'],
         global: true,

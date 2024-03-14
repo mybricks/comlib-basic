@@ -177,7 +177,7 @@ export default {
           get({ data }) {
             return data.isZIndex;
           },
-          set({ data }, value: number) {
+          set({ data }, value: boolean) {
             data.isZIndex = value
           }
         }

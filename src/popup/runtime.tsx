@@ -191,6 +191,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
           padding: 0,
           position: 'absolute',
         } : void 0}
+        zIndex={data.isZIndex ? data.zIndex: void 0}
       >
         {slots['body'].render()}
       </Modal>
@@ -223,6 +224,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
           position: 'absolute',
         } : void 0}
         mask={data.isMask}
+        zIndex={data.isZIndex ? data.zIndex: void 0}
       >
         {slots['body'].render()}
       </Modal>
