@@ -11,5 +11,11 @@
   "editors": "./editors.tsx",
   "upgrade": "./upgrade.ts",
   "inputs": [],
-  "outputs": []
+  "outputs": [],
+  "slots": [
+    {
+      "id": "title",
+      "title": "标题"
+    }
+  ]
 }

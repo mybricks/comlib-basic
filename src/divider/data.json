@@ -3,8 +3,9 @@
   "children": "分割线",
   "type": "horizontal",
   "orientation": "center",
+  "customizableTitle": false,
   "orientationMargin": 0,
   "style": {
-    "border-top-color": "rgba(0, 0, 0, .06)"
+    "borderTopColor": "rgba(0, 0, 0, .06)"
   }
 }
