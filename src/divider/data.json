@@ -1,0 +1,10 @@
+{
+  "dashed": false,
+  "children": "分割线",
+  "type": "horizontal",
+  "orientation": "center",
+  "orientationMargin": 0,
+  "style": {
+    "border-top-color": "rgba(0, 0, 0, .06)"
+  }
+}
