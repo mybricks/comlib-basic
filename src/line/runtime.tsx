@@ -1,36 +1,25 @@
 import React, { useMemo } from "react";
 import { LineProps } from "./constants";
 
-interface LineStyle {
-  borderBottom?: string;
-  borderLeft?: string;
-}
-
 const getLineStyle = (
   type: string,
   color: string,
-  linewidth: number,
-  direction: LineProps["direction"]
+  angle: number | string,
+  linewidth: number
 ) => {
-  const border = `${type} ${color} ${linewidth}px`;
-  const style: LineStyle = {};
-  switch (direction) {
-    case "horizontal":
-      style.borderBottom = border;
-      break;
-    case "vertical":
-      style.borderLeft = border;
-      break;
-  }
+  const style: React.CSSProperties = {
+    transform: `rotate(${angle}deg)`,
+    borderBottom: `${type} ${color} ${linewidth}px`,
+  };
 
   return style;
 };
 
 export default function ({ data }: RuntimeParams<LineProps>) {
-  const { type, width, color, angle, direction, linewidth } = data;
+  const { type, color, angle, direction, linewidth } = data;
   const lineStyle = useMemo(
-    () => getLineStyle(type, color, linewidth, direction),
-    [type, color, linewidth, direction]
+    () => getLineStyle(type, color, angle, linewidth),
+    [type, color, angle, linewidth, direction]
   );
 
   return <div style={lineStyle} />;

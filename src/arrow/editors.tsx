@@ -1,4 +1,5 @@
-import { LineProps } from "./constants";
+import { unitConversion } from "src/utils";
+import { ArrowProps } from "./constants";
 
 export default {
   "@init"({ style }) {
@@ -14,28 +15,29 @@ export default {
         title: "类型",
         type: "Select",
         options: [
-          { value: "solid", label: "实线" },
-          { value: "dashed", label: "虚线" },
+          { value: "left", label: "左" },
+          { value: "right", label: "右" },
+          { value: "both", label: "双向" },
         ],
         value: {
-          get({ data }: EditorResult<LineProps>) {
+          get({ data }: EditorResult<ArrowProps>) {
             return data.type;
           },
-          set({ data }: EditorResult<LineProps>, value: LineProps["type"]) {
+          set({ data }: EditorResult<ArrowProps>, value: ArrowProps["type"]) {
             data.type = value;
           },
         },
       },
       {
-        title: "线宽",
+        title: "宽度",
         type: "inputNumber",
         description: "单位 px",
         options: [{ width: 100 }],
         value: {
-          get({ data }: EditorResult<LineProps>) {
+          get({ data }: EditorResult<ArrowProps>) {
             return [data.linewidth];
           },
-          set({ data }: EditorResult<LineProps>, value: number[]) {
+          set({ data }: EditorResult<ArrowProps>, value: number[]) {
             data.linewidth = value[0];
           },
         },
@@ -44,10 +46,10 @@ export default {
         title: "颜色",
         type: "COLORPICKER",
         value: {
-          get({ data }: EditorResult<LineProps>) {
+          get({ data }: EditorResult<ArrowProps>) {
             return data.color;
           },
-          set({ data }: EditorResult<LineProps>, value: string) {
+          set({ data }: EditorResult<ArrowProps>, value: string) {
             data.color = value;
           },
         },
@@ -55,12 +57,12 @@ export default {
       {
         title: "角度",
         type: "inputNumber",
-        options: [{ min: 0, max: 180, width: 100 }],
+        options: [{ min: -360, max: 360, width: 60 }],
         value: {
-          get({ data }: EditorResult<LineProps>) {
+          get({ data }: EditorResult<ArrowProps>) {
             return [data.angle];
           },
-          set({ data }: EditorResult<LineProps>, value: number[]) {
+          set({ data }: EditorResult<ArrowProps>, value: number[]) {
             data.angle = value[0];
           },
         },
