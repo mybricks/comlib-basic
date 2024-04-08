@@ -1,14 +1,22 @@
 import { LineProps } from "./constants";
+import Style from "./runtime.less";
 
 export default {
   "@init"({ style }) {
-    style.width = "100%";
-    style.height = "fit-content";
+    style.width = 400;
+    style.height = 8;
   },
   "@resize": {
-    options: ["width"],
+    options: ["width", "height"],
   },
   ":root": {
+    style: [
+      {
+        type: "style",
+        options: ["border"],
+        target: `.${Style.warrper}`,
+      },
+    ],
     items: [
       {
         title: "类型",
@@ -27,20 +35,6 @@ export default {
         },
       },
       {
-        title: "线宽",
-        type: "inputNumber",
-        description: "单位 px",
-        options: [{ width: 100 }],
-        value: {
-          get({ data }: EditorResult<LineProps>) {
-            return [data.linewidth];
-          },
-          set({ data }: EditorResult<LineProps>, value: number[]) {
-            data.linewidth = value[0];
-          },
-        },
-      },
-      {
         title: "颜色",
         type: "COLORPICKER",
         value: {
@@ -55,7 +49,7 @@ export default {
       {
         title: "角度",
         type: "inputNumber",
-        options: [{ min: 0, max: 180, width: 100 }],
+        options: [{ min: -360, max: 360, width: 100 }],
         value: {
           get({ data }: EditorResult<LineProps>) {
             return [data.angle];
@@ -64,6 +58,42 @@ export default {
             data.angle = value[0];
           },
         },
+      },
+      {
+        title: "虚线",
+        ifVisible({ data }: EditorResult<LineProps>) {
+          return data.type === "dashed";
+        },
+        items: [
+          {
+            title: "空白段长度",
+            type: "inputNumber",
+            description: "单位 px",
+            options: [{ width: 100 }],
+            value: {
+              get({ data }: EditorResult<LineProps>) {
+                return [data.dashedBlankLength];
+              },
+              set({ data }: EditorResult<LineProps>, value: number[]) {
+                data.dashedBlankLength = value[0];
+              },
+            },
+          },
+          {
+            title: "有色段长度",
+            type: "inputNumber",
+            description: "单位 px",
+            options: [{ width: 100 }],
+            value: {
+              get({ data }: EditorResult<LineProps>) {
+                return [data.dashedColorLength];
+              },
+              set({ data }: EditorResult<LineProps>, value: number[]) {
+                data.dashedColorLength = value[0];
+              },
+            },
+          },
+        ],
       },
     ],
   },

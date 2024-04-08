@@ -1,7 +1,7 @@
 {
   "type": "solid",
-  "direction": "horizontal",
-  "linewidth": 8,
   "angle": 0,
-  "color": "#EEEEEE"
+  "color": "#000000",
+  "dashedColorLength": 5,
+  "dashedBlankLength": 5
 }

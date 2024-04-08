@@ -5,7 +5,7 @@ import Style from "./runtime.less";
 const getstyle = (
   type: string,
   color: string,
-  arrowWidth: number,
+  length: number,
   arrowLength: number
 ) => {
   const style: React.CSSProperties = {
@@ -14,8 +14,8 @@ const getstyle = (
   };
 
   const colorSide = `${arrowLength}px solid ${color}`;
-  const transparentSide = `${arrowWidth}px solid transparent`;
-  
+  const transparentSide = `${length / 2}px solid transparent`;
+
   // 根据箭头方向设置边框样式
   switch (type) {
     case "left":
@@ -32,19 +32,20 @@ const getstyle = (
   return style;
 };
 
-const Arrow: React.FC<RuntimeParams<ArrowProps>> = ({ data }) => {
-  const { type, color, angle, arrowWidth, arrowLength, arrowBodyWidth } = data;
+const Arrow: React.FC<RuntimeParams<ArrowProps>> = ({ data, style }) => {
+  const { type, color, angle, arrowLength, arrowBodyWidth } = data;
+  const { height } = style;
 
   const arrowHeadRender = useCallback(
     (type: ArrowProps["type"]) => {
       return (
         <div
           className={Style.arrowHead}
-          style={getstyle(type, color, arrowWidth, arrowLength)}
+          style={getstyle(type, color, height, arrowLength)}
         />
       );
     },
-    [color, arrowWidth, arrowLength]
+    [type, color, height, arrowLength]
   );
 
   return (
