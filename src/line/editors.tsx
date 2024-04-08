@@ -6,7 +6,7 @@ export default {
     style.height = "fit-content";
   },
   "@resize": {
-    options: [],
+    options: ["width"],
   },
   ":root": {
     items: [

@@ -2,15 +2,20 @@ import React, { useCallback, useMemo } from "react";
 import { ArrowProps } from "./constants";
 import Style from "./runtime.less";
 
-const getstyle = (type: string, color: string, linewidth: number) => {
+const getstyle = (
+  type: string,
+  color: string,
+  arrowWidth: number,
+  arrowLength: number
+) => {
   const style: React.CSSProperties = {
     width: 0,
     height: 0,
   };
 
-  const colorSide = `${linewidth}px solid ${color}`;
-  const transparentSide = `${linewidth / 2}px solid transparent`;
-
+  const colorSide = `${arrowLength}px solid ${color}`;
+  const transparentSide = `${arrowWidth}px solid transparent`;
+  
   // 根据箭头方向设置边框样式
   switch (type) {
     case "left":
@@ -28,18 +33,18 @@ const getstyle = (type: string, color: string, linewidth: number) => {
 };
 
 const Arrow: React.FC<RuntimeParams<ArrowProps>> = ({ data }) => {
-  const { type, color, angle, linewidth } = data;
+  const { type, color, angle, arrowWidth, arrowLength, arrowBodyWidth } = data;
 
   const arrowHeadRender = useCallback(
     (type: ArrowProps["type"]) => {
       return (
         <div
           className={Style.arrowHead}
-          style={getstyle(type, color, linewidth)}
+          style={getstyle(type, color, arrowWidth, arrowLength)}
         />
       );
     },
-    [color, linewidth]
+    [color, arrowWidth, arrowLength]
   );
 
   return (
@@ -52,7 +57,7 @@ const Arrow: React.FC<RuntimeParams<ArrowProps>> = ({ data }) => {
         <div
           style={{
             backgroundColor: color,
-            height: `${linewidth / 2}px`,
+            height: `${arrowBodyWidth}px`,
             width: "100%",
           }}
         ></div>
