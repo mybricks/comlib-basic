@@ -2,6 +2,5 @@
   "type": "solid",
   "angle": 0,
   "color": "#000000",
-  "dashedColorLength": 5,
-  "dashedBlankLength": 5
+  "lineWidth": 1
 }

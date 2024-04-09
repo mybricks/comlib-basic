@@ -4,10 +4,10 @@ import Style from "./runtime.less";
 export default {
   "@init"({ style }) {
     style.width = 400;
-    style.height = 8;
+    style.height = 1;
   },
   "@resize": {
-    options: ["width", "height"],
+    options: ["width"],
   },
   ":root": {
     style: [
@@ -24,6 +24,7 @@ export default {
         type: "Select",
         options: [
           { value: "solid", label: "实线" },
+          { value: "dotted", label: "点线" },
           { value: "dashed", label: "虚线" },
         ],
         value: {
@@ -32,6 +33,20 @@ export default {
           },
           set({ data }: EditorResult<LineProps>, value: LineProps["type"]) {
             data.type = value;
+          },
+        },
+      },
+      {
+        title: "线宽",
+        type: "inputNumber",
+        options: [{ min: 1, width: 100 }],
+        value: {
+          get({ data }: EditorResult<LineProps>) {
+            return [data.lineWidth];
+          },
+          set({ data, style }: EditorResult<LineProps>, value: number[]) {
+            data.lineWidth = value[0];
+            style.height = value[0];
           },
         },
       },
@@ -59,42 +74,6 @@ export default {
             data.angle = value[0];
           },
         },
-      },
-      {
-        title: "虚线",
-        ifVisible({ data }: EditorResult<LineProps>) {
-          return data.type === "dashed";
-        },
-        items: [
-          {
-            title: "空白段长度",
-            type: "inputNumber",
-            description: "单位 px",
-            options: [{ min: 0, width: 100, formatter: "px" }],
-            value: {
-              get({ data }: EditorResult<LineProps>) {
-                return [data.dashedBlankLength];
-              },
-              set({ data }: EditorResult<LineProps>, value: number[]) {
-                data.dashedBlankLength = value[0];
-              },
-            },
-          },
-          {
-            title: "有色段长度",
-            type: "inputNumber",
-            description: "单位 px",
-            options: [{ min: 0, width: 100, formatter: "px" }],
-            value: {
-              get({ data }: EditorResult<LineProps>) {
-                return [data.dashedColorLength];
-              },
-              set({ data }: EditorResult<LineProps>, value: number[]) {
-                data.dashedColorLength = value[0];
-              },
-            },
-          },
-        ],
       },
     ],
   },

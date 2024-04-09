@@ -84,7 +84,7 @@ export default {
       {
         title: "箭头尖宽",
         type: "inputNumber",
-        description: "三角形高 单位 px",
+        description: "三角形底 单位 px",
         options: [{ min: 0, width: 100, formatter: "px" }],
         value: {
           get({ data }: EditorResult<ArrowProps>) {
@@ -98,7 +98,7 @@ export default {
       {
         title: "箭头尾高",
         type: "inputNumber",
-        description: "单位 px",
+        description: "长方形宽 单位 px",
         options: [{ min: 0, width: 100, formatter: "px" }],
         value: {
           get({ data }: EditorResult<ArrowProps>) {
