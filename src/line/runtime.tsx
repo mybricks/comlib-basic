@@ -6,47 +6,33 @@ const getLineStyle = ({
   type,
   angle,
   color,
-  dashedBlankLength,
-  dashedColorLength,
+  lineWidth
 }: Partial<LineProps>): React.CSSProperties => {
-  const dashed = type === "dashed";
   const style: React.CSSProperties = {
-    backgroundColor: dashed ? void 0 : color,
+    height: 0,
+    width: "100%",
     transform: `rotate(${angle}deg)`,
+    borderTop: `${lineWidth}px ${type} ${color}`
   };
-  if (dashed) {
-    style.background = `repeating-linear-gradient(to right, transparent, transparent ${dashedBlankLength}px, ${color} ${dashedBlankLength}px, ${color} ${
-      (dashedBlankLength || 0) + (dashedColorLength || 0)
-    }px)`;
-  }
   return style;
 };
 
 export default function ({ data }: RuntimeParams<LineProps>) {
-  const {
-    type,
-    color,
-    angle,
-    dashedBlankLength,
-    dashedColorLength,
-  } = data;
+  const { type, color, angle, lineWidth } = data;
   const lineStyle = useMemo(
     () =>
       getLineStyle({
         type,
         angle,
         color,
-        dashedBlankLength,
-        dashedColorLength,
+        lineWidth
       }),
-    [
-      type,
-      color,
-      angle,
-      dashedBlankLength,
-      dashedColorLength,
-    ]
+    [type, color, angle, lineWidth]
   );
 
-  return <div style={lineStyle} className={Style.warrper} />;
+  return (
+    <div className={Style.warrper}>
+      <div style={lineStyle}></div>
+    </div>
+  );
 }
