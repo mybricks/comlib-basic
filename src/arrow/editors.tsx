@@ -4,10 +4,10 @@ import Style from "./runtime.less";
 export default {
   "@init"({ style }) {
     style.width = 200;
-    style.height = 40;
+    style.height = "fit-content";
   },
   "@resize": {
-    options: ["width", "height"],
+    options: ["width"],
   },
   ":root": {
     style: [
@@ -68,30 +68,44 @@ export default {
         },
       },
       {
-        title: "箭头尖长",
+        title: "箭头尖高",
         type: "inputNumber",
-        description: "三角形高 单位 px",
-        options: [{ width: 100, formatter: "px" }],
+        description: "三角形底 单位 px",
+        options: [{ min: 0, width: 100, formatter: "px" }],
         value: {
           get({ data }: EditorResult<ArrowProps>) {
-            return [data.arrowLength];
+            return [data.arrowHeight];
           },
           set({ data }: EditorResult<ArrowProps>, value: number[]) {
-            data.arrowLength = value[0];
+            data.arrowHeight = value[0];
           },
         },
       },
       {
-        title: "箭头尾宽",
+        title: "箭头尖宽",
         type: "inputNumber",
-        description: "单位 px",
-        options: [{ width: 100, formatter: "px" }],
+        description: "三角形高 单位 px",
+        options: [{ min: 0, width: 100, formatter: "px" }],
         value: {
           get({ data }: EditorResult<ArrowProps>) {
-            return [data.arrowBodyWidth];
+            return [data.arrowWidth];
           },
           set({ data }: EditorResult<ArrowProps>, value: number[]) {
-            data.arrowBodyWidth = value[0];
+            data.arrowWidth = value[0];
+          },
+        },
+      },
+      {
+        title: "箭头尾高",
+        type: "inputNumber",
+        description: "单位 px",
+        options: [{ min: 0, width: 100, formatter: "px" }],
+        value: {
+          get({ data }: EditorResult<ArrowProps>) {
+            return [data.arrowBodyHeight];
+          },
+          set({ data }: EditorResult<ArrowProps>, value: number[]) {
+            data.arrowBodyHeight = value[0];
           },
         },
       },

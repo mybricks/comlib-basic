@@ -1,7 +1,8 @@
 {
   "type": "right",
-  "arrowLength": 40,
-  "arrowBodyWidth": 20,
+  "arrowHeight": 40,
+  "arrowWidth": 40,
+  "arrowBodyHeight": 20,
   "angle": 0,
   "color": "#000000"
 }

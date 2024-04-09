@@ -5,16 +5,16 @@ import Style from "./runtime.less";
 const getstyle = (
   type: string,
   color: string,
-  length: number,
-  arrowLength: number
+  arrowHeight: number,
+  arrowWidth: number
 ) => {
   const style: React.CSSProperties = {
     width: 0,
     height: 0,
   };
 
-  const colorSide = `${arrowLength}px solid ${color}`;
-  const transparentSide = `${length / 2}px solid transparent`;
+  const colorSide = `${arrowWidth}px solid ${color}`;
+  const transparentSide = `${arrowHeight / 2}px solid transparent`;
 
   // 根据箭头方向设置边框样式
   switch (type) {
@@ -32,20 +32,19 @@ const getstyle = (
   return style;
 };
 
-const Arrow: React.FC<RuntimeParams<ArrowProps>> = ({ data, style }) => {
-  const { type, color, angle, arrowLength, arrowBodyWidth } = data;
-  const { height } = style;
+const Arrow: React.FC<RuntimeParams<ArrowProps>> = ({ data }) => {
+  const { type, color, angle, arrowWidth, arrowHeight, arrowBodyHeight } = data;
 
   const arrowHeadRender = useCallback(
     (type: ArrowProps["type"]) => {
       return (
         <div
           className={Style.arrowHead}
-          style={getstyle(type, color, height, arrowLength)}
+          style={getstyle(type, color, arrowHeight, arrowWidth)}
         />
       );
     },
-    [type, color, height, arrowLength]
+    [type, color, arrowHeight, arrowWidth]
   );
 
   return (
@@ -58,7 +57,7 @@ const Arrow: React.FC<RuntimeParams<ArrowProps>> = ({ data, style }) => {
         <div
           style={{
             backgroundColor: color,
-            height: `${arrowBodyWidth}px`,
+            height: `${arrowBodyHeight}px`,
             width: "100%",
           }}
         ></div>

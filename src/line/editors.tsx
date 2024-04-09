@@ -70,7 +70,7 @@ export default {
             title: "空白段长度",
             type: "inputNumber",
             description: "单位 px",
-            options: [{ width: 100, formatter: "px" }],
+            options: [{ min: 0, width: 100, formatter: "px" }],
             value: {
               get({ data }: EditorResult<LineProps>) {
                 return [data.dashedBlankLength];
@@ -84,7 +84,7 @@ export default {
             title: "有色段长度",
             type: "inputNumber",
             description: "单位 px",
-            options: [{ width: 100, formatter: "px" }],
+            options: [{ min: 0, width: 100, formatter: "px" }],
             value: {
               get({ data }: EditorResult<LineProps>) {
                 return [data.dashedColorLength];
