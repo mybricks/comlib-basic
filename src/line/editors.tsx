@@ -3,7 +3,7 @@ import Style from "./runtime.less";
 
 export default {
   "@init"({ style }) {
-    style.width = 400;
+    style.width = 200;
     style.height = 1;
   },
   "@resize": {
