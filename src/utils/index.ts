@@ -1,4 +1,4 @@
-export { uuid } from './basic';
+export { uuid, unitConversion } from './basic';
 
 export { dragable, getPosition } from './dom';
 

@@ -1,0 +1,15 @@
+{
+  "title": "线",
+  "namespace": "mybricks.normal-pc.line",
+  "version": "1.0.0",
+  "description": "线",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "inputs": [],
+  "outputs": []
+}

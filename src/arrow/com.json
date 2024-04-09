@@ -1,0 +1,15 @@
+{
+  "title": "箭头",
+  "namespace": "mybricks.normal-pc.arrow",
+  "version": "1.0.0",
+  "description": "箭头",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
+  "inputs": [],
+  "outputs": []
+}
