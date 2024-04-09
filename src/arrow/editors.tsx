@@ -12,11 +12,13 @@ export default {
   ":root": {
     style: [
       {
+        title: "箭头",
         type: "style",
         options: ["background"],
         target: `.${Style.arrowWarrper}`,
       },
       {
+        title: "箭头",
         type: "style",
         options: ["border"],
         target: `.${Style.arrowWarrper}`,
@@ -66,10 +68,10 @@ export default {
         },
       },
       {
-        title: "箭头长",
+        title: "箭头尖长",
         type: "inputNumber",
         description: "三角形高 单位 px",
-        options: [{ width: 100 }],
+        options: [{ width: 100, formatter: "px" }],
         value: {
           get({ data }: EditorResult<ArrowProps>) {
             return [data.arrowLength];
@@ -80,10 +82,10 @@ export default {
         },
       },
       {
-        title: "箭体长",
+        title: "箭头尾宽",
         type: "inputNumber",
-        description: "三角形高 单位 px",
-        options: [{ width: 100 }],
+        description: "单位 px",
+        options: [{ width: 100, formatter: "px" }],
         value: {
           get({ data }: EditorResult<ArrowProps>) {
             return [data.arrowBodyWidth];
