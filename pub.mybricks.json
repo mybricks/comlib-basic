@@ -27,6 +27,8 @@
     "./src/_rsa-encryption/com.json",
     "./src/_encryption/com.json",
     "./src/grid/com.json",
+    "./src/line/com.json",
+    "./src/arrow/com.json",
     "./src/divider/com.json"
   ],
   "componentType": "PC",
