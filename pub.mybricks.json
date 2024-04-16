@@ -30,26 +30,7 @@
     "./src/line/com.json",
     "./src/arrow/com.json"
   ],
-  "external": [
-    {
-      "name": "@ant-design/icons",
-      "version": "4.7.0",
-      "library": "icons",
-      "urls": [
-        "/mfs/mybricks_material_externals/ant-design-icons@4.7.0.min.js"
-      ]
-    },
-    {
-      "name": "antd",
-      "library": "antd",
-      "version": "4.21.6",
-      "urls": [
-        "/mfs/mybricks_material_externals/antd/antd@4.21.6.variable.min.css",
-        "/mfs/mybricks_material_externals/antd/antd@4.21.6.min.js",
-        "/mfs/mybricks_material_externals/antd/locale/zh_CN.js"
-      ]
-    }
-  ],
+  "externals": [],
   "componentType": "PC",
   "tags": "react"
 }
