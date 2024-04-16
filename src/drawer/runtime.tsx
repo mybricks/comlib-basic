@@ -121,8 +121,8 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         style={{ justifyContent: data.footerLayout || AlignEnum.FlexEnd, display: 'flex' }}>
         {(data.footerBtns || []).map((item) => {
           const todo = getWhatToDoWithoutPermission(item.permission);
-          if(todo === 'hide') return null;
-          else if(todo === 'hintLink') {
+          if (todo === 'hide') return null;
+          else if (todo === 'hintLink') {
             return (
               <a
                 href={item.permission?.hintLink}
@@ -177,19 +177,18 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
       ref={ref}>
       <Drawer
         visible={true}
-        title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() :env.i18n(data.title))}
+        title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
         width={data.width || 520}
         height={isMobile ? '100%' : data.height !== 0 ? data.height : 800}
         closable={data.closable}
         footer={data.useFooter ? renderFooter() : null}
         onClose={handleClose}
-        mask={false}
         bodyStyle={data.bodyStyle}
         placement={isMobile ? 'bottom' : data.placement}
         maskClosable={data.maskClosable}
         keyboard={data.keyboard}
         getContainer={false}
-        zIndex={data.isZIndex ? data.zIndex: void 0}
+        zIndex={data.isZIndex ? data.zIndex : void 0}
       >
         <div className={css.slotContainer}>
           {slots['body'].render()}
@@ -203,7 +202,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
       ref={ref}>
       <Drawer
         visible={true}
-        title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() :env.i18n(data.title))}
+        title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
         width={data.width || 520}
         height={isMobile ? '100%' : data.height !== 0 ? data.height : 800}
         closable={data.closable}
@@ -214,7 +213,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         maskClosable={data.maskClosable}
         keyboard={data.keyboard}
         getContainer={() => env?.canvasElement || document.body}
-        zIndex={data.isZIndex ? data.zIndex: void 0}
+        zIndex={data.isZIndex ? data.zIndex : void 0}
       >
         <div className={css.slotContainer}>
           {slots['body'].render()}
@@ -231,11 +230,10 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
     >
       <Drawer
         visible={true}
-        title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() :env.i18n(data.title))}
+        title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
         closable={data.closable}
         footer={data.useFooter ? renderFooter() : null}
         onClose={handleClose}
-        mask={false}
         bodyStyle={data.bodyStyle}
         maskClosable={data.maskClosable}
         style={{ height: data.height !== 0 ? data.height : 800, width: data.width !== 0 ? data.width : 520 }}
