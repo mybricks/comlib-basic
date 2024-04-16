@@ -30,6 +30,7 @@
     "./src/line/com.json",
     "./src/arrow/com.json"
   ],
+  "externals": [],
   "componentType": "PC",
   "tags": "react"
 }

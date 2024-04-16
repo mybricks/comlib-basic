@@ -18,6 +18,7 @@
     "./src/_rsa-encryption/com.json",
     "./src/_encryption/com.json"
   ],
+  "externals": [],
   "componentType": "PC",
   "tags": "vue"
 }
