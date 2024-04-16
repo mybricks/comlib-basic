@@ -21,12 +21,7 @@ export default {
     items: [
       {
         title: "类型",
-        type: "Select",
-        options: [
-          { value: "solid", label: "实线" },
-          { value: "dotted", label: "点线" },
-          { value: "dashed", label: "虚线" },
-        ],
+        type: "line",
         value: {
           get({ data }: EditorResult<LineProps>) {
             return data.type;
