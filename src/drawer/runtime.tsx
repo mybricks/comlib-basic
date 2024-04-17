@@ -236,6 +236,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         footer={data.useFooter ? renderFooter() : null}
         onClose={handleClose}
         mask={false}
+        width={data.width || 520}
         bodyStyle={data.bodyStyle}
         maskClosable={data.maskClosable}
         style={{ height: data.height !== 0 ? data.height : 800, width: data.width !== 0 ? data.width : 520 }}
