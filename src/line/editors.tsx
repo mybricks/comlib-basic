@@ -19,9 +19,25 @@ export default {
       },
     ],
     items: [
+      // {
+      //   title: "类型",
+      //   type: "line",
+      //   value: {
+      //     get({ data }: EditorResult<LineProps>) {
+      //       return data.type;
+      //     },
+      //     set({ data }: EditorResult<LineProps>, value: LineProps["type"]) {
+      //       data.type = value;
+      //     },
+      //   },
+      // },
       {
         title: "类型",
-        type: "line",
+        type: "Select",
+        options: [
+          { value: "solid", label: "实线" },
+          { value: "dashed", label: "虚线" },
+        ],
         value: {
           get({ data }: EditorResult<LineProps>) {
             return data.type;
