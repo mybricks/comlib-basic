@@ -181,6 +181,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         width={data.width || 520}
         height={isMobile ? '100%' : data.height !== 0 ? data.height : 800}
         closable={data.closable}
+        //mask={false}
         footer={data.useFooter ? renderFooter() : null}
         onClose={handleClose}
         bodyStyle={data.bodyStyle}
@@ -234,6 +235,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         closable={data.closable}
         footer={data.useFooter ? renderFooter() : null}
         onClose={handleClose}
+        mask={false}
         bodyStyle={data.bodyStyle}
         maskClosable={data.maskClosable}
         style={{ height: data.height !== 0 ? data.height : 800, width: data.width !== 0 ? data.width : 520 }}
