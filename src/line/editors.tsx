@@ -14,8 +14,18 @@ export default {
       {
         title: "线",
         type: "style",
-        options: ["border"],
-        target: `.${Style.warrper}`,
+        options: [
+          {
+            type: "border",
+            config: {
+              disableBorderStyle: true,
+              disableBorderRadius: true,
+              disableBorderWidth: true,
+              useImportant: true
+            },
+          },
+        ],
+        target: `.${Style.line}`,
       },
     ],
     items: [

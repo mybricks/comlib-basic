@@ -8,8 +8,6 @@ const getLineStyle = ({
   lineWidth,
 }: Partial<LineProps>): React.CSSProperties => {
   const style: React.CSSProperties = {
-    height: 0,
-    width: "100%",
     borderTop: `${lineWidth}px ${type} ${color}`,
   };
   return style;
@@ -29,7 +27,7 @@ export default function ({ data }: RuntimeParams<LineProps>) {
 
   return (
     <div className={Style.warrper}>
-      <div style={lineStyle}></div>
+      <div style={lineStyle} className={Style.line}></div>
     </div>
   );
 }
