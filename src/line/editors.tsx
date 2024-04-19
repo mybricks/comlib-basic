@@ -14,30 +14,24 @@ export default {
       {
         title: "线",
         type: "style",
-        options: ["border"],
-        target: `.${Style.warrper}`,
+        options: [
+          {
+            type: "border",
+            config: {
+              disableBorderStyle: true,
+              disableBorderRadius: true,
+              disableBorderWidth: true,
+              useImportant: true
+            },
+          },
+        ],
+        target: `.${Style.line}`,
       },
     ],
     items: [
-      // {
-      //   title: "类型",
-      //   type: "line",
-      //   value: {
-      //     get({ data }: EditorResult<LineProps>) {
-      //       return data.type;
-      //     },
-      //     set({ data }: EditorResult<LineProps>, value: LineProps["type"]) {
-      //       data.type = value;
-      //     },
-      //   },
-      // },
       {
         title: "类型",
-        type: "Select",
-        options: [
-          { value: "solid", label: "实线" },
-          { value: "dashed", label: "虚线" },
-        ],
+        type: "Line",
         value: {
           get({ data }: EditorResult<LineProps>) {
             return data.type;
@@ -70,19 +64,6 @@ export default {
           },
           set({ data }: EditorResult<LineProps>, value: string) {
             data.color = value;
-          },
-        },
-      },
-      {
-        title: "角度",
-        type: "inputNumber",
-        options: [{ min: -360, max: 360, width: 100 }],
-        value: {
-          get({ data }: EditorResult<LineProps>) {
-            return [data.angle];
-          },
-          set({ data }: EditorResult<LineProps>, value: number[]) {
-            data.angle = value[0];
           },
         },
       },
