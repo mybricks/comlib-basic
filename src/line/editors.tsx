@@ -21,7 +21,10 @@ export default {
               disableBorderStyle: true,
               disableBorderRadius: true,
               disableBorderWidth: true,
-              useImportant: true
+              useImportant: true,
+              disableBorderRight: true,
+              disableBorderBottom: true,
+              disableBorderLeft: true,
             },
           },
         ],
@@ -52,18 +55,6 @@ export default {
           set({ data, style }: EditorResult<LineProps>, value: number[]) {
             data.lineWidth = value[0];
             style.height = value[0];
-          },
-        },
-      },
-      {
-        title: "颜色",
-        type: "COLORPICKER",
-        value: {
-          get({ data }: EditorResult<LineProps>) {
-            return data.color;
-          },
-          set({ data }: EditorResult<LineProps>, value: string) {
-            data.color = value;
           },
         },
       },
