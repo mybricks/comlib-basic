@@ -1,8 +1,5 @@
 {
-  "fileId": 7182,
-  "prodFileId": 30402,
-  "folderId": 28720,
-  "folderIdStaging": 7183,
+  "version": "0.0.3",
   "namespace": "mybricks.basic-comlib",
   "content": "",
   "commitInfo": "init",
@@ -30,7 +27,7 @@
     "./src/line/com.json",
     "./src/arrow/com.json"
   ],
-  "externals": [],
   "componentType": "PC",
-  "tags": "react"
+  "tags": "react",
+  "webpackConfig": "./webpack.config.local.js"
 }
