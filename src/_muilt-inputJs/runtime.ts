@@ -10,7 +10,7 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
   };
 
   let sandbox;
-  
+
   try {
     if (runImmediate) {
       if (env.runtime) {
@@ -31,8 +31,8 @@ export default function ({ env, data, inputs, outputs, logger, onError }: Runtim
         logger.error(`${ex}`);
       }
     });
-    if(typeof env?.runtime?.onComplete === 'function') {
-      env.runtime.onComplete(()=>{
+    if (typeof env?.runtime?.onComplete === 'function') {
+      env.runtime.onComplete(() => {
         sandbox?.dispose()
       })
     }

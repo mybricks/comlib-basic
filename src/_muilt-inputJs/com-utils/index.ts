@@ -22,14 +22,19 @@ interface Props {
   callback?: () => any;
 }
 export function runJs(scriptText: string | any, model?: any[], props?: Props) {
-  const { callback = () => {} } = props || {};
+  const { callback = () => { } } = props || {};
+  // 出码场景下是一个可直接运行的函数
+  if (typeof scriptText === 'string' && scriptText.indexOf(`__MYBRICKS_EXTRACT_FNS__`) !== -1) {
+    return eval(scriptText)(...(model || []))
+  }
+
   if (typeof scriptText === 'object' && scriptText !== null) {
     scriptText = scriptText?.transformCode ?? scriptText?.code;
   }
   if (!scriptText?.includes('var%20_RTFN_')) {
     scriptText = transform(scriptText)
   }
-  let fn: {run: Function}, sandbox: Sandbox;
+  let fn: { run: Function }, sandbox: Sandbox;
   if (model && model.length) {
     sandbox = new Sandbox({ module: true });
     let sourceStr = safeDecoder(scriptText);
@@ -53,7 +58,7 @@ export function runJs(scriptText: string | any, model?: any[], props?: Props) {
 export const transform = (scriptText: string): string => {
   scriptText = safeDecoder(scriptText)
   try {
-    if(!window.Babel) {
+    if (!window.Babel) {
       throw Error('Babel was not found in window');
     }
     let { code } = window.Babel.transform(`_RTFN_ = ${scriptText} `, {
