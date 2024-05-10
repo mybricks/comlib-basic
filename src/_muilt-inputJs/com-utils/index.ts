@@ -22,12 +22,11 @@ interface Props {
   callback?: () => any;
 }
 export function runJs(scriptText: string | any, model?: any[], props?: Props) {
-  const { callback = () => { } } = props || {};
-  // 出码场景下是一个可直接运行的函数
-  if (typeof scriptText === 'string' && scriptText.indexOf(`__MYBRICKS_EXTRACT_FNS__`) !== -1) {
-    return eval(scriptText)(...(model || []))
+  const { callback = () => { }, env = {} } = props || {};
+  if (env?.toCode) {
+    env.extractFns[scriptText](...model)
+    return
   }
-
   if (typeof scriptText === 'object' && scriptText !== null) {
     scriptText = scriptText?.transformCode ?? scriptText?.code;
   }
