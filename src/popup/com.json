@@ -40,6 +40,10 @@
       "schema": {
         "type": "follow"
       }
+    },
+    {
+      "id": "close",
+      "title": "关闭"
     }
   ]
 }
