@@ -209,5 +209,14 @@ export default function ({
   if(typeof data.zIndex === "undefined"){
     data.zIndex = 1000
   }
+  /**
+   * @description 1.0.30->1.0.31  新增 关闭output
+  */
+  if (!output.get('close')) {
+    output.add('close', '关闭')
+  }
+  if(typeof data.autoClose === "undefined"){
+    data.autoClose = true
+  }
   return true;
 }

@@ -75,7 +75,8 @@ export interface Data {
   left: number,
   isMask: boolean,
   isZIndex: boolean,
-  zIndex: number
+  zIndex: number,
+  autoClose: boolean
 }
 
 export const DefaultEvent = ['ok', 'cancel'];
