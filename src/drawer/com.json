@@ -4,7 +4,7 @@
   "namespace": "mybricks.basic-comlib.drawer",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "抽屉",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
@@ -40,6 +40,10 @@
       "schema": {
         "type": "follow"
       }
+    },
+    {
+      "id": "close",
+      "title": "关闭"
     }
   ]
 }

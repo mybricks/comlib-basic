@@ -71,7 +71,14 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
 
   //关闭按钮点击事件
   const handleClose = useCallback(() => {
-    _env.currentScenes.close()
+    if (env.runtime) {
+      if((data.autoClose && data.closable) || data.maskClosable){
+        _env.currentScenes.close();
+        outputs['close']();
+      }else{
+        outputs['close']();
+      }
+    }
   }, [])
 
   //取消按钮点击事件

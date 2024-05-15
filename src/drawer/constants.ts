@@ -66,6 +66,7 @@ export interface Data {
   keyboard?: boolean;
   isZIndex?: boolean;
   zIndex?: number;
+  autoClose?: boolean;
 }
 
 export const DefaultEvent = ['ok', 'cancel'];

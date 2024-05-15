@@ -47,5 +47,6 @@
   "isTitleCustom": false,
   "keyboard": true,
   "isZIndex": false,
-  "zIndex": 1000
+  "zIndex": 1000,
+  "autoClose": true
 }

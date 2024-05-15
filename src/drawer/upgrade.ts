@@ -86,5 +86,15 @@ export default function ({
     data.zIndex = 1000
   }
 
+  /**
+   * @description 1.0.18->1.0.19  新增 关闭output
+  */
+  if (!output.get('close')) {
+    output.add('close', '关闭')
+  }
+  if(typeof data.autoClose === "undefined"){
+    data.autoClose = true
+  }
+
   return true;
 }
