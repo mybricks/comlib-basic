@@ -273,6 +273,18 @@ export default {
               data.keyboard = val;
             }
           }
+        },
+        {
+          items: [
+            {
+              title: '关闭按钮或蒙层点击',
+              type: '_event',
+              description: '取消回调，点击关闭按钮或者蒙层会触发的关闭函数',
+              options: {
+                outputId: 'close'
+              }
+            }
+          ]
         }
       ];
       cate2.title = '操作区';
@@ -404,6 +416,19 @@ export default {
           },
           set({ data }, value: boolean) {
             data.closable = value;
+          }
+        }
+      },
+      {
+        title: '点击自动关闭抽屉',
+        description: '开启时, 单击关闭按钮会自动关闭抽屉',
+        type: 'switch',
+        value: {
+          get({ data }: EditorResult<Data>) {
+            return data.autoClose;
+          },
+          set({ data }: EditorResult<Data>, value: boolean) {
+            data.autoClose = value;
           }
         }
       }
