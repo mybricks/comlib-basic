@@ -546,12 +546,20 @@ export default {
               get({ data }) {
                 return data.isTitleCustom
               },
-              set({ data, slot }, value) {
+              set({ data, slot, input }, value) {
                 data.isTitleCustom = value;
                 if (data.isTitleCustom === true) {
                   slot.add('title', '标题');
+                  if(input.get('title')){
+                    input.remove('title');
+                  }
                 } else {
                   slot.remove('title', '标题');
+                  if(!input.get('title')){
+                    input.add('title', '标题', {
+                      "type": "string"
+                    });
+                  }
                 }
               }
             }
