@@ -172,7 +172,9 @@ export const setSlotLayout = ({
 }) => {
   const { col } = getCol(props);
   const slotInstance = props.slot.get(col?.key);
-  if (slotStyle.position === "absolute") {
+  if (slotStyle.position === "smart") {
+    slotInstance.setLayout("smart");
+  } else if (slotStyle.position === "absolute") {
     slotInstance.setLayout(slotStyle.position);
   } else if (slotStyle.display === "flex") {
     if (slotStyle.flexDirection === "row") {

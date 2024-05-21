@@ -208,7 +208,7 @@ const ResizableCol = ({
       className={classnames}
       data-layout-col-key={`${row.key}@${col.key}`}
     >
-      {slots[col.key]?.render({ key: col.key, style: col.slotStyle })}
+      {slots[col.key]?.render({ style: col.slotStyle })}
       {isDragging && (
         <div
           className={
