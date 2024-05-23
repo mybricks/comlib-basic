@@ -201,6 +201,11 @@ const ResizableCol = ({
     return col.isHover ? editStyles.hover : undefined;
   }, [col.isHover]);
 
+  const colSlot = useMemo(
+    () => slots[col.key]?.render({ style: col.slotStyle }),
+    [col.key, col.slotStyle]
+  );
+
   const colDom = (
     <Col
       ref={colRef}
@@ -208,7 +213,7 @@ const ResizableCol = ({
       className={classnames}
       data-layout-col-key={`${row.key}@${col.key}`}
     >
-      {slots[col.key]?.render({ style: col.slotStyle })}
+      {colSlot}
       {isDragging && (
         <div
           className={
