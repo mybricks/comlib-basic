@@ -520,52 +520,63 @@ export default {
     ],
     items: ({ env }: EditorResult<Data>, cate1) => {
       cate1.title = '标题',
-        cate1.items = [
-          {
-            title: '内容',
-            type: 'text',
-            options: {
-              locale: true
-            },
-            ifVisible({ data }: EditorResult<Data>) {
-              return !data.isTitleCustom;
-            },
-            value: {
-              get({ data }) {
-                return data.title
-              },
-              set({ data }, title) {
-                data.title = title
-              }
-            }
+      cate1.items = [
+        {
+          title: '内容',
+          type: 'text',
+          options: {
+            locale: true
           },
-          {
-            title: '自定义',
-            type: 'switch',
-            value: {
-              get({ data }) {
-                return data.isTitleCustom
-              },
-              set({ data, slot, input }, value) {
-                data.isTitleCustom = value;
-                if (data.isTitleCustom === true) {
-                  slot.add('title', '标题');
-                  if(input.get('title')){
-                    input.remove('title');
-                  }
-                } else {
-                  slot.remove('title', '标题');
-                  if(!input.get('title')){
-                    input.add('title', '标题', {
-                      "type": "string"
-                    });
-                  }
+          ifVisible({ data }: EditorResult<Data>) {
+            return !data.isTitleCustom;
+          },
+          value: {
+            get({ data }) {
+              return data.title
+            },
+            set({ data }, title) {
+              data.title = title
+            }
+          }
+        },
+        {
+          title: '自定义',
+          type: 'switch',
+          value: {
+            get({ data }) {
+              return data.isTitleCustom
+            },
+            set({ data, slot, input }, value) {
+              data.isTitleCustom = value;
+              if (data.isTitleCustom === true) {
+                slot.add('title', '标题');
+                if(input.get('title')){
+                  input.remove('title');
+                }
+              } else {
+                slot.remove('title', '标题');
+                if(!input.get('title')){
+                  input.add('title', '标题', {
+                    "type": "string"
+                  });
                 }
               }
             }
           }
-        ]
+        }
+      ]
     },
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.title;
+        },
+        set({ data }: EditorResult<Data>, value: string) {
+          data.title = value;
+        }
+      }
+    }
   },
   '.ant-modal-close': {
     style: [
@@ -978,7 +989,17 @@ export default {
             }
           }
         ]
+    },
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }) {
+          return findConfig({ data, focusArea }, 'title')
+        },
+        set({ data, focusArea }, value: string) {
+          findConfig({ data, focusArea }).title = value;
+        }
+      }
     }
-
   }
 }
