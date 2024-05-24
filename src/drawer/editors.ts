@@ -410,7 +410,18 @@ export default {
           }
         }
       }
-    ]
+    ],
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data }: EditorResult<Data>) {
+          return data.title;
+        },
+        set({ data }: EditorResult<Data>, value: string) {
+          data.title = value;
+        }
+      }
+    }
   },
   '.ant-drawer-close': {
     title: '关闭按钮',
@@ -771,6 +782,17 @@ export default {
             }
           }
         ]
+    },
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }) {
+          return findConfig({ data, focusArea }, 'title')
+        },
+        set({ data, focusArea }, value: string) {
+          findConfig({ data, focusArea }).title = value;
+        }
+      }
     }
   }
 }
