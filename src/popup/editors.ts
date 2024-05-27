@@ -105,6 +105,9 @@ export default {
     style.width = '100%'
     style.height = '100%'
   },
+  '@resize': {
+    options: ['height', 'width']
+  },
   ':root': {
     style: [
       {
