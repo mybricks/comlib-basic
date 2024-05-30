@@ -10,6 +10,7 @@
   "data": "./data.json",
   "runtime": "./runtime.ts",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [
     {
       "id": "trigger",
