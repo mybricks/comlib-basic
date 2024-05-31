@@ -199,7 +199,9 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         zIndex={data.isZIndex ? data.zIndex : void 0}
       >
         <div className={css.slotContainer}>
-          {slots['body'].render()}
+          {slots['body'].render({
+            style: { overflow: 'auto' }
+          })}
         </div>
       </Drawer>
     </div>
@@ -224,7 +226,9 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         zIndex={data.isZIndex ? data.zIndex : void 0}
       >
         <div className={css.slotContainer}>
-          {slots['body'].render()}
+          {slots['body'].render({
+            style: { overflow: 'auto' }
+          })}
         </div>
       </Drawer>
     </div>
@@ -250,7 +254,9 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         getContainer={false}
       >
         <div className={css.slotContainer}>
-          {slots['body'].render()}
+          {slots['body'].render({
+            style: { overflow: 'auto' }
+          })}
         </div>
       </Drawer>
     </div>
