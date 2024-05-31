@@ -133,7 +133,7 @@ export default {
       },
       {
         title: '宽度',
-        description: '调试态和发布态,在placement为 top 或 bottom 时生效，其余方向时不生效；编辑态，这里的高度高度仅方便搭建。设置0将使用默认宽度：520',
+        description: '调试态和发布态,在placement为 left 或 right 时生效，其余方向时不生效；编辑态，这里的高度高度仅方便搭建。设置0将使用默认宽度：520',
         type: 'Slider',
         options: {
           max: 5000,
