@@ -25,9 +25,10 @@ const defaultRow = {
 };
 
 export const createRow = (props: EditorResult<Data>): DataRowType => {
-  const { data } = props;
+  const { data, output } = props;
   const rowKey = uuid();
   const row = data.rows.find(row => !row.useCustom) ?? defaultRow;
+  output.add(rowKey, "行点击", { type: "any" });
   const cols = row.cols.map((col) => {
     return copyCol(props, col);
   });
@@ -186,8 +187,9 @@ export const setSlotLayout = ({
 };
 
 export const deleteRow = (props: EditorResult<Data>) => {
-  const { data } = props;
+  const { data, output } = props;
   const { row, index } = getRow(props);
+  output.remove(row.key);
   row?.cols.forEach((col) => removeEffect({ col, ...props }));
   data.rows.splice(index, 1);
 };

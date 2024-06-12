@@ -74,11 +74,18 @@ export default ({
     }
   });
 
-  const setWidthComplete = output.get('setWidthComplete')
-  if(!setWidthComplete) {
-    output.add('setWidthComplete', "完成", {type: 'any'})
-    input.get('setWidth').setRels(['setWidthComplete'])
+  const setWidthComplete = output.get("setWidthComplete");
+  if (!setWidthComplete) {
+    output.add("setWidthComplete", "完成", { type: "any" });
+    input.get("setWidth").setRels(["setWidthComplete"]);
   }
+
+  /**
+   * @description 1.0.16->1.0.17 新增行点击事件
+   */
+  data.rows.forEach((row) => {
+    output.add(row.key, "行点击", { type: "any" });
+  });
 
   return true;
 };

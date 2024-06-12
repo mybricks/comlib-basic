@@ -1,5 +1,5 @@
 import React, { CSSProperties } from "react";
-import { Layout, Row, Col, WidthUnitEnum, ColType } from "./components";
+import { Layout, Row, Col, WidthUnitEnum, ColType, RowType } from "./components";
 import { Data } from "./types";
 import Resizable from "../components/Resizable";
 import { RuntimeContext } from "./context";
@@ -30,12 +30,16 @@ export default (props: RuntimeParams<Data>) => {
   const onColClick = ({ key }: ColType) => {
     !!key && outputs[key]();
   };
+  
+  const onRowClick = ({ key }: RowType) => {
+    !!key && outputs[key]();
+  };
 
   return (
     <RuntimeContext.Provider value={{ ...props }}>
       <Layout className={"mybricks-layout"}>
         {data.rows.map((row) => (
-          <Row row={row} key={row.key} className={"mybricks-row"}>
+          <Row row={row} key={row.key} onClick={onRowClick} className={"mybricks-row"}>
             {row.cols.map((col, index) => {
               const isLastCol = index === row.cols.length - 1;
               const colProps = {

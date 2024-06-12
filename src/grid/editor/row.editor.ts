@@ -153,6 +153,19 @@ export default {
           ],
         },
       ];
+      cate[1].title = "交互";
+      cate[1].items = [
+        {
+          title: "点击",
+          type: "_Event",
+          options(props: EditorResult<Data>) {
+            const { row } = getRow(props);
+            return {
+              outputId: row?.key,
+            };
+          },
+        },
+      ];
     },
     style: [
       {
