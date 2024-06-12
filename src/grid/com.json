@@ -4,7 +4,7 @@
     "namespace": "mybricks.basic-comlib.grid",
     "author": "tangxiaoxin",
     "author_name": "tangxiaoxin",
-    "version": "1.0.16",
+    "version": "1.0.17",
     "description": "布局",
     "icon": "./icon.svg",
     "runtime": "./runtime.tsx",
@@ -52,6 +52,10 @@
       }
     ],
     "outputs": [
+      {
+        "id": "row0",
+        "title": "行点击"
+      },
       {
         "id": "col0",
         "title": "列点击"

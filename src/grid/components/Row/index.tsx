@@ -11,6 +11,7 @@ export interface RowProps {
   row: RowType;
   className?: string;
   children?: ReactNode;
+  onClick?: (row: RowType) => void;
 }
 
 export type RowType = {
@@ -21,7 +22,7 @@ export type RowType = {
   style?: CSSProperties;
 };
 
-const Row = ({ row, className, children, ...rest }: RowProps) => {
+const Row = ({ row, className, children, onClick, ...rest }: RowProps) => {
   const rowStyle = useMemo(() => {
     const style = { ...(row.style ?? {}) };
     if (row.heightMode === HeightUnitEnum.Auto) {
@@ -44,8 +45,17 @@ const Row = ({ row, className, children, ...rest }: RowProps) => {
     return classnames.join(" ");
   }, [className]);
 
+  const handleClick = (e, row: RowType) => {
+    typeof onClick === "function" && onClick(row);
+  };
+
   return (
-    <div style={rowStyle} className={classnames} {...rest}>
+    <div
+      style={rowStyle}
+      className={classnames}
+      onClick={(e) => handleClick(e, row)}
+      {...rest}
+    >
       {children}
     </div>
   );
