@@ -28,7 +28,14 @@
     "./src/_encryption/com.json",
     "./src/grid/com.json",
     "./src/line/com.json",
-    "./src/arrow/com.json"
+    "./src/arrow/com.json",
+    "./src/_meta/_create-scene/com.json",
+    "./src/_meta/_create-com/com.json",
+    "./src/_meta/_update-com/com.json",
+    "./src/_meta/_delete-com/com.json",
+    "./src/_meta/_update-var/com.json",
+    "./src/_meta/_generate-page/com.json",
+    "./src/_meta/_get-com/com.json"
   ],
   "externals": [],
   "componentType": "PC",

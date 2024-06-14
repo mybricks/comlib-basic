@@ -1,0 +1,33 @@
+{
+  "title": "创建场景",
+  "namespace": "mybricks.comlib-meta.createScene",
+  "version": "1.0.1",
+  "description": "创建场景",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "rtType": "js",
+  "type": "meta",
+  "inputs": [
+    {
+      "id": "create",
+      "title": "开始",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "finish",
+      "title": "完成",
+      "schema": {
+        "type": "string",
+        "description": "场景ID"
+      }
+    }
+  ]
+}
