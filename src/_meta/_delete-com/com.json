@@ -1,0 +1,38 @@
+{
+  "title": "删除组件",
+  "namespace": "mybricks.comlib-meta.deleteCom",
+  "version": "1.0.1",
+  "description": "删除组件",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "rtType": "js",
+  "type": "meta",
+  "inputs": [
+    {
+      "id": "create",
+      "title": "开始",
+      "schema": [
+        {
+          "name": "sceneId",
+          "title": "场景ID",
+          "type": "string",
+          "description": "删除该场景（ID）下的组件"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "finish",
+      "title": "完成",
+      "schema": {
+        "type": "string",
+        "description": "场景ID"
+      }
+    }
+  ]
+}

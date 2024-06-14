@@ -1,0 +1,28 @@
+{
+  "title": "生成页面数据",
+  "namespace": "mybricks.comlib-meta.generatePage",
+  "version": "1.0.3",
+  "description": "生成页面数据",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "rtType": "js",
+  "type": "meta",
+  "inputs": [
+    {
+      "id": "input",
+      "title": "输入项",
+      "schema": [
+        {
+          "name": "inputValue0",
+          "title": "参数0",
+          "type": "follow"
+        }
+      ],
+      "editable": true
+    }
+  ]
+}

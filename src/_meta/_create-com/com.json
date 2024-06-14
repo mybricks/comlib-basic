@@ -1,0 +1,37 @@
+{
+  "title": "创建组件",
+  "namespace": "mybricks.comlib-meta.createCom",
+  "version": "1.0.1",
+  "description": "创建并放置组件",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "rtType": "js-autorun",
+  "type": "meta",
+  "inputs": [
+    {
+      "id": "create",
+      "title": "创建",
+      "schema": {
+        "name": "init",
+        "title": "初始化信息",
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "description": "组件数据"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "finish",
+      "title": "完成"
+    }
+  ]
+}
