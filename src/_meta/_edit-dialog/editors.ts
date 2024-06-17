@@ -1,4 +1,4 @@
-import { uuid } from "../utils"
+import { uuid } from "../../utils"
 
 export interface Option {
   title: string
@@ -17,7 +17,7 @@ export default {
       title: '选择组件',
       type: 'sceneComSelector',
       options: {
-        filter: ({ namespace}) => {
+        filter: ({ namespace }) => {
           return namespace === 'mybricks.basic-comlib.popup'
         }
       },
@@ -86,9 +86,9 @@ export default {
       },
       value: {
         set({ data, setDesc }, comDef) {
-          if(data.comList?.length) {
+          if (data.comList?.length) {
             data.comList.push(comDef)
-          }else {
+          } else {
             data.comList = [comDef]
           }
         }
@@ -166,7 +166,7 @@ export default {
         },
         set({ data, }, options: Option[]) {
           data.actionOptions = options.map(item => {
-            return { ...item, visible: item.visible === false ? false : true}
+            return { ...item, visible: item.visible === false ? false : true }
           });
         }
       }
