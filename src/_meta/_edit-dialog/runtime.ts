@@ -1,5 +1,5 @@
 import { merge } from "lodash"
-import { uuid } from "../utils"
+import { uuid } from "../../utils"
 
 export interface Data {
   title?: string
@@ -8,11 +8,11 @@ export interface Data {
   comList?: Array<Record<string, any>>
   useStaticData: boolean
   useFooter: boolean
-  actionOptions: Array<{id: string, label: string, value: any, visible: boolean }>
+  actionOptions: Array<{ id: string, label: string, value: any, visible: boolean }>
 }
-export default function ({ env, data, inputs, outputs, onError }: { env: any,  onError: any, data: Data, inputs: any, outputs: any}) {
+export default function ({ env, data, inputs, outputs, onError }: { env: any, onError: any, data: Data, inputs: any, outputs: any }) {
 
-  const next =  !env.runtime.debug // !env.runtime.debug // !env.runtime.debug // !env.runtime.debug // !env.runtime.debug //  
+  const next = !env.runtime.debug // !env.runtime.debug // !env.runtime.debug // !env.runtime.debug // !env.runtime.debug //  
   inputs['store']((store) => {
     console.log('store', store, store.comDef, data)
     if (next) {
@@ -24,12 +24,12 @@ export default function ({ env, data, inputs, outputs, onError }: { env: any,  o
 
       let comForm
       try {
-       comForm = env.command.getCom({ sceneId: data.comDef.sceneId, comId: data.comDef.id })
+        comForm = env.command.getCom({ sceneId: data.comDef.sceneId, comId: data.comDef.id })
       } catch (error) {
       }
       console.log('comForm', comForm, data)
       let newItems = []
-      if(formData) {
+      if (formData) {
         const slot = comForm.slots.find(({ id }) => id === "body");
         formData.forEach(item => {
           let comItem = slot.appendChild({
@@ -38,8 +38,8 @@ export default function ({ env, data, inputs, outputs, onError }: { env: any,  o
           console.log('comItem', comItem, item)
         })
       }
-      const { title, hideTitle, actionOptions = [], useFooter, comList, useStaticData = false  } = data
-      if(!formData && useStaticData && comList?.length) {
+      const { title, hideTitle, actionOptions = [], useFooter, comList, useStaticData = false } = data
+      if (!formData && useStaticData && comList?.length) {
         const slot = comForm.slots.find(({ id }) => id === "body");
         comList.forEach(item => {
           let comItem = slot.appendChild({
