@@ -3,7 +3,6 @@ export default function ({ env, data, inputs, outputs }) {
     inputs['get']((nextValue) => {
       const { sceneId, store } = nextValue
       const com = env.command.getCom({ sceneId: data.comDef.sceneId, comId: data.comDef.id })
-      console.log(`nextValue`, sceneId, com)
       outputs['finish'](com)
     })
   }

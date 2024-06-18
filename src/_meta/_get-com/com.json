@@ -1,7 +1,7 @@
 {
   "title": "读取组件信息",
   "namespace": "mybricks.comlib-meta.getCom",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "读取组件信息",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -15,13 +15,6 @@
     {
       "id": "get",
       "title": "读取",
-      "schema": [
-        {
-          "name": "sceneId",
-          "title": "场景ID",
-          "type": "string"
-        }
-      ],
       "rels": [
         "finish"
       ]
