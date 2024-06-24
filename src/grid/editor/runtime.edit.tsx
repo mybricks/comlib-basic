@@ -25,7 +25,7 @@ const EditLayout = (props: RuntimeParams<Data>) => {
         {data.rows.map((row, index) => (
           <ResizableRow
             key={row.key}
-            row={row}
+            row={data.rows.length === 1 ? {...row, height: '100%' } : row}
             resizable={index !== data.rows.length - 1}
             {...props}
           >

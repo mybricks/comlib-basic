@@ -102,8 +102,12 @@ function icon(dataset: string) {
 
 export default {
   '@init'({ style }) {
-    style.width = '100%'
-    style.height = '100%'
+    style.width = 570
+    style.height = 800
+  },
+  ':slot': {},
+  '@resize': {
+    options: [ 'width', 'height' ]
   },
   ':root': {
     style: [
@@ -145,8 +149,13 @@ export default {
           get({ data }) {
             return data.width;
           },
-          set({ data }, value: number) {
+          set({ data, style }, value: number) {
             data.width = value;
+            if(['left', 'right'].includes(data.placement)){
+              style.width = value + 50;
+            }else{
+              style.width = value;
+            }
           }
         }
       },
@@ -164,8 +173,13 @@ export default {
           get({ data }) {
             return data.height;
           },
-          set({ data }, value: number) {
+          set({ data, style }, value: number) {
             data.height = value
+            if(['top', 'bottom'].includes(data.placement)){
+              style.height = value + 50;
+            }else{
+              style.height = value;
+            }
           }
         }
       },

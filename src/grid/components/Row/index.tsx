@@ -26,7 +26,11 @@ const Row = ({ row, className, children, onClick, ...rest }: RowProps) => {
   const rowStyle = useMemo(() => {
     const style = { ...(row.style ?? {}) };
     if (row.heightMode === HeightUnitEnum.Auto) {
-      style.height = row.heightMode;
+      if(row.height === '100%'){
+        style.height = row.height
+      }else{
+        style.height = row.heightMode;
+      }
     }
     if (row.heightMode === HeightUnitEnum.Px) {
       style.height = `${parseFloat(row.height as string)}px`;

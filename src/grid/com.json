@@ -4,7 +4,7 @@
     "namespace": "mybricks.basic-comlib.grid",
     "author": "tangxiaoxin",
     "author_name": "tangxiaoxin",
-    "version": "1.0.17",
+    "version": "1.0.18",
     "description": "布局",
     "icon": "./icon.svg",
     "runtime": "./runtime.tsx",

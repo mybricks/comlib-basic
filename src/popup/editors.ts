@@ -102,8 +102,12 @@ function icon(dataset: string) {
 
 export default {
   '@init'({ style }) {
-    style.width = '100%'
+    style.width = '620px'
     style.height = '100%'
+  },
+  ':slot': {},
+  '@resize': {
+    options: [ 'width', 'height' ]
   },
   ':root': {
     style: [
@@ -252,8 +256,9 @@ export default {
           get({ data }) {
             return data.width;
           },
-          set({ data }, value: number) {
+          set({ data, style }, value: number) {
             data.width = value || undefined;
+            style.width = value + 100;
           }
         }
       },

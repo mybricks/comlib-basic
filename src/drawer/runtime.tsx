@@ -5,7 +5,7 @@ import * as Icons from '@ant-design/icons';
 
 import css from './runtime.less'
 
-export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
+export default function ({ env, _env, data, slots, outputs, inputs, logger, style }) {
   const ref = useRef<any>();
   const isMobile = env?.canvas?.type === 'mobile';
   const paddingMap = {
@@ -250,7 +250,15 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger }) {
         width={data.width || 520}
         bodyStyle={data.bodyStyle}
         maskClosable={data.maskClosable}
-        style={{ height: data.height !== 0 ? data.height : 800, width: data.width !== 0 ? data.width : 520 }}
+        //style={{ height: data.height !== 0 ? data.height : 800, width: data.width !== 0 ? data.width : 520 }}
+        style={{ 
+          height: ['left', 'right'].includes(data.placement) 
+            ? (typeof style.height === 'number' ? style.height : data.height) 
+            : (typeof style.height === 'number' ? style.height - 50 : data.height -50), 
+          width: ['top', 'bottom'].includes(data.placement) 
+            ? (typeof style.width === 'number' ? style.width : data.width) 
+            : (typeof style.width === 'number' ? style.width - 50 : data.width -50),
+        }}
         getContainer={false}
       >
         <div className={css.slotContainer}>

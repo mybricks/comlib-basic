@@ -6,7 +6,7 @@ import * as Icons from '@ant-design/icons';
 
 import css from './runtime.less'
 
-export default function ({ id, env, _env, data, slots, outputs, inputs, logger }) {
+export default function ({ id, env, _env, data, slots, outputs, inputs, logger, style }) {
   const ref = useRef<any>();
   const isMobile = env?.canvas?.type === 'mobile';
 
@@ -243,18 +243,23 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger }
       <Modal
         visible={true}
         title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
-        width={isMobile ? '100%' : data.width}
+        //width={isMobile ? '100%' : data.width}
+        width={typeof style.width === 'number' || isMobile  ? '100%' : data.width}
         footer={data.useFooter ? renderFooter() : null}
         onCancel={handleClose}
         mask={false}
         transitionName=""
         //bodyStyle={data.bodyStyle}
-
-        wrapClassName={css.container}
+        style={{ height: typeof style.height === 'number' ? style.height - 100 : void 0, minHeight: '186px' }}
+        wrapClassName={css.editContainer}
         closable={data.closable}
         getContainer={false}
       >
-        {slots['body'].render()}
+        {slots['body'].render({
+          style: {
+            overflow: 'auto'
+          }
+        })}
       </Modal>
     </ConfigProvider>
   )
