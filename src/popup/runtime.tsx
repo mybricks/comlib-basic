@@ -200,8 +200,6 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
         } : void 0}
         zIndex={data.isZIndex ? data.zIndex: void 0}
       >
-        {style.height}
-        {style.width}
         {slots['body'].render()}
       </Modal>
     </ConfigProvider>
@@ -246,7 +244,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
         visible={true}
         title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
         //width={isMobile ? '100%' : data.width}
-        width={'100%'}
+        width={typeof style.width === 'number' || isMobile  ? '100%' : data.width}
         footer={data.useFooter ? renderFooter() : null}
         onCancel={handleClose}
         mask={false}

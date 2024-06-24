@@ -39,7 +39,13 @@ export default (props: RuntimeParams<Data>) => {
     <RuntimeContext.Provider value={{ ...props }}>
       <Layout className={"mybricks-layout"}>
         {data.rows.map((row) => (
-          <Row row={row} key={row.key} onClick={onRowClick} className={"mybricks-row"}>
+          <Row 
+            row={data.rows.length ===1 ? {...row, height: '100%' } :row }
+            //row={{...row, height: '100%' }} 
+            key={row.key} 
+            onClick={onRowClick} 
+            className={"mybricks-row"}
+          >
             {row.cols.map((col, index) => {
               const isLastCol = index === row.cols.length - 1;
               const colProps = {

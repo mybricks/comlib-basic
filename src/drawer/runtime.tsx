@@ -199,8 +199,6 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
         zIndex={data.isZIndex ? data.zIndex : void 0}
       >
         <div className={css.slotContainer}>
-          {style.height}
-          {style.width}
           {slots['body'].render({
             style: { overflow: 'auto' }
           })}
