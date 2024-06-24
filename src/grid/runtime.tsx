@@ -40,7 +40,7 @@ export default (props: RuntimeParams<Data>) => {
       <Layout className={"mybricks-layout"}>
         {data.rows.map((row) => (
           <Row 
-            row={data.rows.length ===1 ? {...row, height: '100%' } :row }
+            row={data.rows.length === 1 ? {...row, height: '100%' } :row }
             //row={{...row, height: '100%' }} 
             key={row.key} 
             onClick={onRowClick} 
