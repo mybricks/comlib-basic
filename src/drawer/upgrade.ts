@@ -4,6 +4,7 @@ export default function ({
   input,
   output,
   data,
+  style,
   setDeclaredStyle,
   getDeclaredStyle,
   removeDeclaredStyle
@@ -98,5 +99,15 @@ export default function ({
     data.autoClose = true
   }
 
+  /**
+   * @description 1.0.23->1.0.24  宽度兼容
+  */
+  if(style.width === '100%'){
+    if(['left', 'right'].includes(data.placement)){
+      style.width = data.width + 50
+    }else{
+      style.width = data.width
+    }
+  }
   return true;
 }
