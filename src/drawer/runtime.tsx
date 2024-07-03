@@ -195,7 +195,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
         placement={isMobile ? 'bottom' : data.placement}
         maskClosable={data.maskClosable}
         keyboard={data.keyboard}
-        getContainer={false}
+        getContainer={ env?.canvasElement || document.body}
         zIndex={data.isZIndex ? data.zIndex : void 0}
       >
         <div className={css.slotContainer}>
