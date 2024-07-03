@@ -6,3 +6,10 @@ export function uuid(pre = 'u_', len = 6) {
   }
   return pre + rtn;
 }
+
+
+export function polyfillRuntime () {
+  if (!window?.['react']) {
+    window['react'] = window['React']
+  }
+}

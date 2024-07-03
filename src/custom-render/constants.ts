@@ -2,7 +2,7 @@
 export const Comments = `import { useState } from 'react';
 import styles from 'index.less';
 
-export default ({ inputs, outputs }) => {
+export default () => {
   const [count, setCount] = useState(0)
 
   return <div className={styles.component} onClick={() => setCount(c => ++c)}>
@@ -13,7 +13,7 @@ export default ({ inputs, outputs }) => {
 export const DefaultCode = `import { useState } from 'react';
 import styles from 'index.less';
 
-export default ({ inputs, outputs }) => {
+export default () => {
   const [count, setCount] = useState(0)
 
   return <div className={styles.component} onClick={() => setCount(c => ++c)}>
