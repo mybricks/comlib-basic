@@ -11,12 +11,7 @@ export default {
   '@init': ({ style, data, id }: EditorResult<Data>) => {
     data.extraLib = getParamsType()
     data._code = encodeURIComponent(DefaultCode);
-    transformTsx(DefaultCode).then(code => {
-      data.code = code
-      data._jsxErr = '';
-    }).catch(e => {
-      data._jsxErr = e?.message ?? '未知错误'
-    });
+  
     data.cssLan = CSS_LANGUAGE.Less;
 
     data._less = encodeURIComponent(DefaultLessCode)
@@ -40,6 +35,14 @@ export default {
         }).catch(e => {
           data._cssErr = e?.message ?? '未知错误'
         })
+      }
+      if (id && data._code && !data.code) {
+        transformTsx(DefaultCode, { id }).then(code => {
+          data.code = code
+          data._jsxErr = '';
+        }).catch(e => {
+          data._jsxErr = e?.message ?? '未知错误'
+        });
       }
 
       catalog[0].title = '配置';
@@ -75,10 +78,10 @@ export default {
                 get({ data }: EditorResult<Data>) {
                   return data._code;
                 },
-                set({ data }: EditorResult<Data>, val: string) {
+                set({ data, id }: EditorResult<Data>, val: string) {
                   data._code = val;
 
-                  transformTsx(decodeURIComponent(val)).then(code => {
+                  transformTsx(decodeURIComponent(val), { id }).then(code => {
                     data.code = code;
                     data._jsxErr = '';
                   }).catch(e => {

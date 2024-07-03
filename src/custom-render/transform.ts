@@ -1,48 +1,54 @@
 import { CSS_LANGUAGE } from './types'
 import { getParamsType } from './constants';
 
-const transform = (code: string) => {
-  const options = {
-    presets: ['env', 'react'],
-    plugins: [
-      ['proposal-decorators', { legacy: true }],
-      'proposal-class-properties',
-      [
-        'transform-typescript',
-        {
-          isTSX: true
-        }
-      ]
-    ]
-  };
-  if (!window.Babel) {
-    loadBabel()
-    throw Error('当前环境 BaBel编译器 未准备好');
-  }
-  return window.Babel.transform(code, options).code;
-};
+function supportLessCssModules (code) {
+  let res
+  res = code.replace(`import styles from 'index.less'`, 'const styles = new Proxy({}, { get(target, key) { return key } })');
+  return res
+}
 
-const transformTsx = async (code): Promise<string> => {
-  if(code.includes('var _RTFN_')) {
-    return Promise.resolve(encodeURIComponent(code))
-  }
-
+const transformTsx = async (code, context: { id: string }): Promise<string> => {
   return new Promise((resolve, reject) => {
-    code = `var _RTFN_ = ${code.trim().replace(/;$/, '')} `;
     let transformCode
     try {
-      transformCode = transform(code);
+      const options = {
+        presets: [
+          [
+            "env",
+            {
+              "modules": "umd"
+            }
+          ],
+          'react'
+        ],
+        moduleId: `mbcrjsx_${context.id}`,
+        plugins: [
+          ['proposal-decorators', { legacy: true }],
+          'proposal-class-properties',
+          [
+            'transform-typescript',
+            {
+              isTSX: true
+            }
+          ]
+        ]
+      };
+      if (!window.Babel) {
+        loadBabel()
+        throw Error('当前环境 BaBel编译器 未准备好');
+      } else {
+        transformCode = window.Babel.transform(supportLessCssModules(code), options).code
+      }
     } catch (error) {
       reject(error)
     }
-    transformCode = `(function() {\n${transformCode}\nreturn _RTFN_; })()`
     return resolve(encodeURIComponent(transformCode))
   })
 }
 
 const genLibTypes = async (schema: Record<string, any>) => {
   const SchemaToTypes = window.jstt;
-  if(!SchemaToTypes) return;
+  if (!SchemaToTypes) return;
   schema.title = 'Props';
   const propTypes = await SchemaToTypes.compile(schema, '', {
     bannerComment: '',
@@ -108,7 +114,7 @@ function addIdScopeToCssRules(cssText, id) {
   return prefixedCssText;
 }
 
-async function requireFromCdn (cdnUrl) {
+async function requireFromCdn(cdnUrl) {
   return new Promise((resolve, reject) => {
     const el = document.createElement('script');
     el.src = cdnUrl
@@ -122,14 +128,14 @@ async function requireFromCdn (cdnUrl) {
   })
 }
 
-async function loadLess () {
+async function loadLess() {
   if (window?.less) {
     return
   }
   await requireFromCdn('https://f2.beckwai.com/udata/pkg/eshop/fangzhou/asset/less/4.2.0/less.js')
 }
 
-async function loadBabel () {
+async function loadBabel() {
   if (window?.Babel) {
     return
   }

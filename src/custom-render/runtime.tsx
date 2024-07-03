@@ -44,16 +44,16 @@ export default ({ data, inputs, env, outputs, logger, id }: RuntimeParams<Data>)
   // 注入 CSS 代码
   useMemo(() => {
     if (data.css) {
-      // mbcr = mybricks_custom_render缩写
-      appendCssApi.set(`mbcr_${id}`, decodeURIComponent(data.css))
+      // mbcrcss = mybricks_custom_render_css缩写
+      appendCssApi.set(`mbcrcss_${id}`, decodeURIComponent(data.css))
     }
   }, [data.css, appendCssApi])
 
   // 卸载 CSS 代码
   useEffect(() => {
     return () => {
-      // mbcr = mybricks_custom_render缩写
-      appendCssApi.remove(`mbcr_${id}`)
+      // mbcrcss = mybricks_custom_render缩写
+      appendCssApi.remove(`mbcrcss_${id}`)
     }
   }, [])
 
@@ -76,7 +76,9 @@ export default ({ data, inputs, env, outputs, logger, id }: RuntimeParams<Data>)
     if (errorInfo) return errorInfo.tip;
 
     try {
-      return eval(decodeURIComponent(data.code));
+      eval(decodeURIComponent(data.code))
+      const rt = window[`mbcrjsx_${id}`]
+      return rt?.default;
     } catch (error) {
       return error?.toString();
     }

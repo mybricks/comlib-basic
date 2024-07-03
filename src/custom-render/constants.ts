@@ -1,29 +1,22 @@
-export const Comments = `
- interface Context {
-   React: React;
- }
- /**
-  * @param context 注入对象（包含React，antd，icons等）
-  * @param outputs 事件输出
-  * @return 自定义渲染
-  */
- ({ inputs, outputs, context }: Params) => {
-    const { React } = context;
 
-    const [count, setCount] = React.useState(0)
+export const Comments = `import { useState } from 'react';
+import styles from 'index.less';
 
-    return <div className="component" onClick={() => setCount(c => ++c)}>
-      我是自定义渲染的组件，<span>我被点击了{count}次</span>
-    </div>;
- }
-`;
+export default ({ inputs, outputs }) => {
+  const [count, setCount] = useState(0)
 
-export const DefaultCode = `({ inputs, outputs, context }: Params) => {
-  const { React } = context;
+  return <div className={styles.component} onClick={() => setCount(c => ++c)}>
+    我是自定义渲染的组件，<span>我被点击了{count}次</span>
+  </div>;
+}`;
 
-  const [count, setCount] = React.useState(0)
+export const DefaultCode = `import { useState } from 'react';
+import styles from 'index.less';
 
-  return <div className="component" onClick={() => setCount(c => ++c)}>
+export default ({ inputs, outputs }) => {
+  const [count, setCount] = useState(0)
+
+  return <div className={styles.component} onClick={() => setCount(c => ++c)}>
     我是自定义渲染的组件，<span>我被点击了{count}次</span>
   </div>;
 }`;
