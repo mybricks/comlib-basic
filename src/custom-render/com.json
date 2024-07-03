@@ -1,0 +1,16 @@
+{
+  "title": "JSX",
+  "namespace": "mybricks.basic-comlib.custom-render",
+  "author": "mybricks-team",
+  "author_name": "mybricks-team",
+  "version": "0.0.1",
+  "description": "自定义渲染 --- tsx",
+  "icon": "./icon.svg",
+  "runtime": "./runtime.tsx",
+  "editors": "./editor.tsx",
+  "data": "./data.json",
+  "docs": "",
+  "inputs": [
+    
+  ]
+}

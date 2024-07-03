@@ -102,6 +102,7 @@ type StyleModeType<T> = Partial<{
 
 declare interface Window {
   Babel: any
+  less: any
   BricksJsSandbox: any
   jstt: {
     compile(schema: Record<string, any>, name: string, options: Record<string, any>): Promise<string>
