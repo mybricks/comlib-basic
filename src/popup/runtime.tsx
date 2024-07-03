@@ -188,7 +188,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
         keyboard={data.keyboard}
         wrapClassName={css.container}
         closable={data.closable}
-        getContainer={false}
+        getContainer={() => env?.canvasElement || document.body}
         style={data.isCustomPosition ? {
           //调整浮层位置
           top: data.vertical === 'top' ?  data.top : 'unset',
