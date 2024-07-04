@@ -30,6 +30,7 @@
     "./src/grid/com.json",
     "./src/line/com.json",
     "./src/arrow/com.json",
+    "./src/custom-render/com.json",
     "./src/_meta/_generate-page/com.json",
     "./src/_meta/_update-var/com.json",
     "./src/_meta/_get-com/com.json",
