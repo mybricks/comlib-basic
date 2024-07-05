@@ -13,3 +13,12 @@ export function polyfillRuntime () {
     window['react'] = window['React']
   }
 }
+
+export function safeDecodeParseJsonCode(jsonCode: string) {
+  try {
+    return JSON.parse(decodeURIComponent(jsonCode))
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+}

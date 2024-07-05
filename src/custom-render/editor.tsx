@@ -1,30 +1,69 @@
 import { Data, IOEvent, CSS_LANGUAGE } from './types';
-import { DefaultCode, DefaultLessCode, Comments, getParamsType } from './constants';
+import { DefaultCode, DefaultLessCode, DefaultJSONCode, Comments, getParamsType } from './constants';
 import { transformTsx, transformCss, genLibTypes, loadLess, loadBabel } from './transform'
-import { uuid } from './util'
+import { uuid, safeDecodeParseJsonCode } from './util'
 
 // TODO: 后面去掉
 loadLess()
 loadBabel()
 
+function updateIOConfigurations(params: EditorResult<Data>, comJSON) {
+  const { input, output } = params;
+  const { inputs, outputs } = comJSON;
+  inputs.forEach(({ id, schema, title, rels }) => {
+    const I = input.get(id);
+    if (!I) {
+      input.add(id, title, schema);
+      input.get(id).setRels(rels);
+    } else {
+      I.setTitle(title);
+      I.setSchema(schema);
+      I.setRels(rels);
+    }
+  })
+  outputs.forEach(({ id, schema, title}) => {
+    const O = output.get(id);
+    if (!O) {
+      output.add(id, title, schema);
+    } else {
+      O.setTitle(title);
+      O.setSchema(schema);
+    }
+  })
+}
+
 export default {
-  '@init': ({ style, data, id }: EditorResult<Data>) => {
+  '@init': (params: EditorResult<Data>) => {
+    const { style, data, id, input, output } = params;
+    style.width = 'fit-content';
+    style.height = 'auto';
+  
     data.extraLib = getParamsType()
     data._code = encodeURIComponent(DefaultCode);
   
     data.cssLan = CSS_LANGUAGE.Less;
 
     data._less = encodeURIComponent(DefaultLessCode)
+
+    data._JSON = encodeURIComponent(DefaultJSONCode)
+
+    updateIOConfigurations(params, JSON.parse(DefaultJSONCode));
   },
-  async '@inputConnected'({ data, output, input }: EditorResult<Data>, fromPin, toPin) {
-    data.extraLib = await genLibTypes(fromPin.schema)
+  '@resize': {
+    options: ['width', 'height']
   },
-  async '@inputUpdated'({ data, input }: EditorResult<Data>, updatePin) {
-    data.extraLib = await genLibTypes(updatePin.schema)
-  },
-  async '@inputDisConnected'({ data, input }: EditorResult<Data>, fromPin, toPin) {
-    data.extraLib = await genLibTypes({type: 'null'})
-  },
+  // async '@inputConnected'({ data, output, input }: EditorResult<Data>, fromPin, toPin) {
+  //   console.log("@inputConnected")
+  //   data.extraLib = await genLibTypes(fromPin.schema)
+  // },
+  // async '@inputUpdated'({ data, input }: EditorResult<Data>, updatePin) {
+  //   console.log("@inputUpdated")
+  //   data.extraLib = await genLibTypes(updatePin.schema)
+  // },
+  // async '@inputDisConnected'({ data, input }: EditorResult<Data>, fromPin, toPin) {
+  //   console.log("@inputDisConnected")
+  //   data.extraLib = await genLibTypes({type: 'null'})
+  // },
   ':root': {
     items({ data, env, id }: EditorResult<Data>, ...catalog) {
       // 兼容一下，发现@init里面没有id，只能在这里先实现了
@@ -43,6 +82,9 @@ export default {
         }).catch(e => {
           data._jsxErr = e?.message ?? '未知错误'
         });
+      }
+      if (!data._JSON) {
+        data._JSON = encodeURIComponent(DefaultJSONCode)
       }
 
       catalog[0].title = '配置';
@@ -140,6 +182,35 @@ export default {
                 }
               }
             },
+            {
+              title: '配置',
+              type: 'code',
+              catelog: '配置',
+              options: {
+                title: 'JSON',
+                language: 'json',
+                width: 600,
+                minimap: {
+                  enabled: false
+                },
+                autoSave: false,
+                preview: false
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data._JSON;
+                },
+                set(params: EditorResult<Data>, val: string) {
+                  const json = safeDecodeParseJsonCode(val);
+
+                  if (json) {
+                    const { data, id } = params;
+                    updateIOConfigurations(params, json);
+                    data._JSON = val;
+                  }
+                }
+              }
+            }
             // {
             //   title: 'Css代码',
             //   type: 'code',
@@ -241,10 +312,29 @@ export default {
         //   ]
         // }
       ];
-      // catalog[1].title = '事件输出';
-      // catalog[1].items = [
-        
-      // ];
+
+      const { inputs, outputs } = JSON.parse(decodeURIComponent(data._JSON))
+      const relOutputIdMap = {}
+      inputs.forEach(({ rels }) => {
+        if (rels) {
+          rels.forEach((relOutputId) => {
+            relOutputIdMap[relOutputId] = true
+          })
+        }
+      })
+
+      catalog[1].title = '事件';
+      catalog[1].items = outputs.filter(({ id }) => {
+        return !relOutputIdMap[id]
+      }).map(({ id, title }) => {
+        return {
+          title,
+          type: '_Event',
+          options: {
+            outputId: id
+          }
+        }
+      });
     }
   }
 };

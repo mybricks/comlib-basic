@@ -28,6 +28,8 @@ export interface Data {
   _less?: string;
   /** 未编译Css，用于回显 */
   _css?: string;
+  /** com.json 配置部分能力 */
+  _JSON?: string;
 
 
   /** jsx编译错误提示 */
