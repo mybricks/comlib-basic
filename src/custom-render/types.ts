@@ -1,8 +1,13 @@
-export type IOEvent = Partial<{
-  _id: string;
+export interface Output {
+  id: string;
   key: string;
-  label: string;
-}>;
+  title: string;
+  schema: any;
+};
+
+export interface Input extends Output {
+  rels: string[]
+}
 
 export enum CSS_LANGUAGE {
   Css = 'css',
@@ -18,7 +23,10 @@ export interface Data {
   /** 已编译Css */
   css?: string;
 
-  events?: Array<IOEvent>;
+  outputs: Output[];
+  inputs: Input[];
+
+  // events?: Array<IOEvent>;
   extraLib?: string
 
   

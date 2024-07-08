@@ -87,8 +87,67 @@ export default ({ data, inputs, env, outputs, logger, id }: RuntimeParams<Data>)
     }
   }, [data.code, errorInfo]);
 
+  const scope = useMemo(() => {
+    return {
+      inputs: new Proxy({}, {
+        get(_, key) {
+          if (env.runtime) {
+            const inputId = data.inputs.find((input) => input.id === key)?.key
 
-  const scope = { inputs, outputs, env, context: { React } }
+            if (inputId) {
+              return (fn) => {
+                inputs[inputId]((value, relOutputs) => {
+                  fn(value, new Proxy({}, {
+                    get(_, key) {
+                      const outputId = data.outputs.find((input) => input.id === key)?.key || ""
+                      return relOutputs[outputId]
+                    }
+                  }))
+                })
+              }
+            }
+
+            return () => {}
+          }
+          return () => {}
+        }
+      }),
+      outputs: new Proxy({}, {
+        get(_, key) {
+          if (env.runtime) {
+            const outputId = data.outputs.find((input) => input.id === key)?.key
+            return outputId ? (outputs[outputId] || (() => {})) : () => {}
+          }
+          return () => {}
+        }
+      }),
+      env,
+      context: { React }
+    }
+  }, [])
+
+  // const scope = useMemo(() => {
+  //   return {
+  //     inputs: new Proxy({}, {
+  //       get(_, key) {
+  //         if (env.runtime) {
+  //           return inputs[key]
+  //         }
+  //         return () => {}
+  //       }
+  //     }),
+  //     outputs: new Proxy({}, {
+  //       get(_, key) {
+  //         if (env.runtime) {
+  //           return outputs[key]
+  //         }
+  //         return () => {}
+  //       }
+  //     }),
+  //     env,
+  //     context: { React }
+  //   }
+  // }, [])
 
   return (
     <>

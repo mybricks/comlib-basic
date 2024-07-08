@@ -1,7 +1,7 @@
-import { Data, IOEvent, CSS_LANGUAGE } from './types';
+import { Data, CSS_LANGUAGE } from './types';
 import { DefaultCode, DefaultLessCode, DefaultJSONCode, Comments, getParamsType } from './constants';
 import { transformTsx, transformCss, genLibTypes, loadLess, loadBabel } from './transform'
-import { uuid, safeDecodeParseJsonCode } from './util'
+import { uuid, safeDecodeParseJsonCode, compareIO } from './util'
 
 // TODO: 后面去掉
 loadLess()
@@ -45,9 +45,9 @@ export default {
 
     data._less = encodeURIComponent(DefaultLessCode)
 
-    data._JSON = encodeURIComponent(DefaultJSONCode)
+    // data._JSON = encodeURIComponent(DefaultJSONCode)
 
-    updateIOConfigurations(params, JSON.parse(DefaultJSONCode));
+    // updateIOConfigurations(params, JSON.parse(DefaultJSONCode));
   },
   '@resize': {
     options: ['width', 'height']
@@ -65,7 +65,7 @@ export default {
   //   data.extraLib = await genLibTypes({type: 'null'})
   // },
   ':root': {
-    items({ data, env, id }: EditorResult<Data>, ...catalog) {
+    items({ data, env, id, input, output }: EditorResult<Data>, ...catalog) {
       // 兼容一下，发现@init里面没有id，只能在这里先实现了
       if (id && data._less && !data.css) {
         transformCss(DefaultLessCode, CSS_LANGUAGE.Less, { id }).then(css => {
@@ -83,8 +83,47 @@ export default {
           data._jsxErr = e?.message ?? '未知错误'
         });
       }
-      if (!data._JSON) {
-        data._JSON = encodeURIComponent(DefaultJSONCode)
+      // if (!data._JSON) {
+      //   data._JSON = encodeURIComponent(DefaultJSONCode)
+      // }
+      if (!data.outputs) {
+        const setTitleDoneKey = uuid()
+        data.outputs = [
+          {
+            id: 'click',
+            title: '单击',
+            key: uuid(),
+            schema: {
+              type: 'string'
+            },
+          },
+          {
+            id: 'setTitleDone',
+            key: setTitleDoneKey,
+            title: '设置标题完成',
+            schema: {
+              type: 'string'
+            },
+          }
+        ]
+        data.inputs = [
+          {
+            id: 'setTitle',
+            key: uuid(),
+            title: '设置标题',
+            schema: {
+              type: 'string'
+            },
+            rels: [setTitleDoneKey]
+          },
+        ]
+        data.outputs.forEach(({ id, key, schema, title }) => {
+          output.add(key, title, schema)
+        })
+        data.inputs.forEach(({ id, key, schema, title, rels }) => {
+          input.add(key, title, schema)
+          input.get(key).setRels(rels)
+        })
       }
 
       catalog[0].title = '配置';
@@ -182,35 +221,35 @@ export default {
                 }
               }
             },
-            {
-              title: '配置',
-              type: 'code',
-              catelog: '配置',
-              options: {
-                title: 'JSON',
-                language: 'json',
-                width: 600,
-                minimap: {
-                  enabled: false
-                },
-                autoSave: false,
-                preview: false
-              },
-              value: {
-                get({ data }: EditorResult<Data>) {
-                  return data._JSON;
-                },
-                set(params: EditorResult<Data>, val: string) {
-                  const json = safeDecodeParseJsonCode(val);
+            // {
+            //   title: '配置',
+            //   type: 'code',
+            //   catelog: '配置',
+            //   options: {
+            //     title: 'JSON',
+            //     language: 'json',
+            //     width: 600,
+            //     minimap: {
+            //       enabled: false
+            //     },
+            //     autoSave: false,
+            //     preview: false
+            //   },
+            //   value: {
+            //     get({ data }: EditorResult<Data>) {
+            //       return data._JSON;
+            //     },
+            //     set(params: EditorResult<Data>, val: string) {
+            //       const json = safeDecodeParseJsonCode(val);
 
-                  if (json) {
-                    const { data, id } = params;
-                    updateIOConfigurations(params, json);
-                    data._JSON = val;
-                  }
-                }
-              }
-            }
+            //       if (json) {
+            //         const { data, id } = params;
+            //         updateIOConfigurations(params, json);
+            //         data._JSON = val;
+            //       }
+            //     }
+            //   }
+            // }
             // {
             //   title: 'Css代码',
             //   type: 'code',
@@ -242,24 +281,212 @@ export default {
             // },
           ]
         },
+
+        {
+          title: '输入',
+          items: [
+            {
+              type: 'Array',
+              options: {
+                draggable: false,
+                getTitle: (item) => {
+                  return `${item.title}(${item.id})`;
+                },
+                onAdd: () => {
+                  const id = uuid();
+                  return {
+                    id,
+                    key: id,
+                    title: '输入项',
+                    rels: [],
+                    schema: {
+                      type: 'any'
+                    }
+                  };
+                },
+                items: [
+                  {
+                    title: 'ID',
+                    type: 'text',
+                    value: 'id'
+                  },
+                  {
+                    title: '名称',
+                    type: 'text',
+                    value: 'title'
+                  },
+                  {
+                    title: '关联输出项',
+                    type: 'select',
+                    value: 'rels',
+                    options: {
+                      options: [{ label: '[无]', value: '' }].concat(data.outputs.map((output) => {
+                        return {
+                          label: output.title,
+                          value: output.key
+                        }
+                      }))
+                    }
+                  }
+                ]
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.inputs.map((input) => {
+                    return {
+                      ...input,
+                      rels: input.rels[0]
+                    }
+                  });
+                },
+                set({ data, input }: EditorResult<Data>, value) {
+                  const { deleteIds, addIdsMap } = compareIO(data.inputs, value);
+                  // 删除输入
+                  deleteIds.forEach((id) => {
+                    input.remove(id)
+                  })
+                  // 更新inputs数据
+                  data.inputs = value.map(({ id, key, title, schema, rels: rel, ...other }) => {
+                    const rels = [rel];
+                    if (addIdsMap[key]) {
+                      // 添加
+                      input.add(key, title, schema)
+                      input.get(key).setRels(rels)
+                    } else {
+                      // 更新
+                      const currentInput = input.get(key)
+                      currentInput.setTitle(title)
+                      currentInput.setSchema(schema)
+                      currentInput.setRels(rels)
+                    }
+
+                    return {
+                      ...other,
+                      id,
+                      key,
+                      title,
+                      schema,
+                      rels
+                    }
+                  })
+                }
+              }
+            },
+          ]
+        },
+
+        {
+          title: '输出',
+          items: [
+            {
+              type: 'Array',
+              options: {
+                draggable: false,
+                getTitle: (item) => {
+                  return `${item.title}(${item.id})`;
+                },
+                onAdd: () => {
+                  const id = uuid();
+                  return {
+                    id,
+                    key: id,
+                    title: '输出项',
+                    schema: {
+                      type: 'any'
+                    }
+                  };
+                },
+                items: [
+                  {
+                    title: 'ID',
+                    type: 'text',
+                    value: 'id'
+                  },
+                  {
+                    title: '名称',
+                    type: 'text',
+                    value: 'title'
+                  },
+                ]
+              },
+              value: {
+                get({ data }: EditorResult<Data>) {
+                  return data.outputs
+                },
+                set({ data, output }: EditorResult<Data>, value) {
+                  const { deleteIds, addIdsMap } = compareIO(data.outputs, value);
+                  // 删除输入
+                  deleteIds.forEach((id) => {
+                    output.remove(id)
+                  })
+                  // 更新outputs数据
+                  data.outputs = value.map(({ id, key, title, schema, ...other }) => {
+                    if (addIdsMap[key]) {
+                      // 添加
+                      output.add(key, title, schema)
+                    } else {
+                      // 更新
+                      const currentOutput = output.get(key)
+                      currentOutput.setTitle(title)
+                      currentOutput.setSchema(schema)
+                    }
+
+                    return {
+                      ...other,
+                      id,
+                      key,
+                      title,
+                      schema,
+                    }
+                  })
+                }
+              }
+            },
+            ...(() => {
+              const relOutputIdMap = {}
+              data.inputs.forEach(({ rels }) => {
+                if (rels) {
+                  rels.forEach((relOutputId) => {
+                    relOutputIdMap[relOutputId] = true
+                  })
+                }
+              })
+              return data.outputs.filter(({ key }) => {
+                return !relOutputIdMap[key]
+              }).map(({ key, title }) => {
+                return {
+                  title,
+                  type: '_Event',
+                  options: {
+                    outputId: key
+                  }
+                }
+              })
+            })()
+          ]
+        },
+
+     
        
         // {
-        //   title: '事件',
+        //   title: '输出',
         //   items: [
         //     {
-        //       title: '输出配置',
+        //       // title: '输出配置',
         //       type: 'Array',
         //       options: {
         //         draggable: false,
-        //         getTitle: (item: IOEvent, index: number) => {
+        //         getTitle: (item: IOEvent) => {
         //           if (!item.label) {
-        //             item.label = `输出项${index + 1}`;
+        //             item.label = `输出项`;
         //           }
         //           return `${item.label}(${item.key})`;
         //         },
         //         onAdd: () => {
+        //           const id = uuid();
         //           return {
-        //             key: uuid()
+        //             id,
+        //             key: id,
         //           };
         //         },
         //         items: [
@@ -280,6 +507,7 @@ export default {
         //           return data.events || [];
         //         },
         //         set({ data, output }: EditorResult<Data>, value: Array<IOEvent>) {
+        //           console.log("data.events: ", data.events)
         //           if (Array.isArray(value)) {
         //             value.forEach((item) => {
         //               const hasEvent = output.get(item.key);
@@ -313,28 +541,28 @@ export default {
         // }
       ];
 
-      const { inputs, outputs } = JSON.parse(decodeURIComponent(data._JSON))
-      const relOutputIdMap = {}
-      inputs.forEach(({ rels }) => {
-        if (rels) {
-          rels.forEach((relOutputId) => {
-            relOutputIdMap[relOutputId] = true
-          })
-        }
-      })
+      // const { inputs, outputs } = JSON.parse(decodeURIComponent(data._JSON))
+      // const relOutputIdMap = {}
+      // inputs.forEach(({ rels }) => {
+      //   if (rels) {
+      //     rels.forEach((relOutputId) => {
+      //       relOutputIdMap[relOutputId] = true
+      //     })
+      //   }
+      // })
 
-      catalog[1].title = '事件';
-      catalog[1].items = outputs.filter(({ id }) => {
-        return !relOutputIdMap[id]
-      }).map(({ id, title }) => {
-        return {
-          title,
-          type: '_Event',
-          options: {
-            outputId: id
-          }
-        }
-      });
+      // catalog[1].title = '事件';
+      // catalog[1].items = outputs.filter(({ id }) => {
+      //   return !relOutputIdMap[id]
+      // }).map(({ id, title }) => {
+      //   return {
+      //     title,
+      //     type: '_Event',
+      //     options: {
+      //       outputId: id
+      //     }
+      //   }
+      // });
     }
   }
 };
