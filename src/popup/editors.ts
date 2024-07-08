@@ -102,12 +102,23 @@ function icon(dataset: string) {
 
 export default {
   '@init'({ style }) {
-    style.width = '620px'
-    style.height = '100%'
+    style.width = 620
+    style.height = 'auto'
   },
   ':slot': {},
   '@resize': {
-    options: [ 'width', 'height' ]
+    options: ['width', 'height'],
+    value: {
+      set({data}, {width, height}) {
+      console.log('editor里的height',height)
+      console.log('editor里的width',width)
+      // data.height = height
+        if (height) {
+          console.log(height)
+          //data.height = height
+        }
+      }
+    }
   },
   ':root': {
     style: [
@@ -434,6 +445,50 @@ export default {
             }
           ]
         },
+        {
+          items: [
+            {
+              title: '弹窗宽度',
+              description: '拖拽改变弹窗宽度, 实际宽度',
+              type: 'Text',
+              options: { readOnly: true },
+              value: {
+                get: ({ data, style }) => {
+                  if(typeof style.width === 'number'  ){
+                    return style.width - 100
+                  }else{
+                    return style.width;
+                  }
+                },
+                // set: ({ data, style }) => {
+                //   if (v !== ctx.absoluteNamePath) {
+                //     ctx.absoluteNamePath = v
+                //   }
+                // },
+              },
+            },
+            {
+              title: '弹窗高度',
+              description: '拖拽改变弹窗宽度, 实际宽度',
+              type: 'Text',
+              options: { readOnly: true },
+              value: {
+                get: ({ data, style }) => {
+                  if(typeof style.height === 'number'  ){
+                    return style.height - 100
+                  }else{
+                    return style.height;
+                  }
+                },
+                // set: ({ data, style }) => {
+                //   if (v !== ctx.absoluteNamePath) {
+                //     ctx.absoluteNamePath = v
+                //   }
+                // },
+              },
+            }
+          ]
+        }
       ];
       cate2.title = '操作区';
       cate2.items = [

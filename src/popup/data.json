@@ -57,5 +57,7 @@
   "isMask": true,
   "isZIndex": false,
   "zIndex": 1000,
-  "autoClose": true
+  "autoClose": true,
+  "styleHeight": "auto",
+  "styleWidth": 620
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useEffect } from 'react';
+import React, { useCallback, useMemo, useRef, useEffect, useState } from 'react';
 import { AlignEnum, Location, InputIds, DialogButtonProps } from './constants';
 import ConfigProvider from '../utils/ConfigProvider'
 import { Button, Modal } from 'antd';
@@ -9,6 +9,9 @@ import css from './runtime.less'
 export default function ({ id, env, _env, data, slots, outputs, inputs, logger, style }) {
   const ref = useRef<any>();
   const isMobile = env?.canvas?.type === 'mobile';
+  
+  const [width, setWidth] = useState(typeof style.width === 'number' ? style.width - 100 : style.width);
+  const [height, setHeight] = useState(typeof style.height === 'number' ? style.height - 100 : style.height);
 
   /**
    * 获取没有权限时组件要做的操作
@@ -63,6 +66,13 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
       });
     }
   }, [])
+
+  useEffect(()=>{
+    // console.log('runtime里的width', width);
+    // console.log('runtime里的height', height);
+    setWidth(typeof style.width === 'number' ? style.width - 100 : style.width);
+    setHeight(typeof style.height === 'number' ? style.height - 100 : style.height)
+  },[])
 
   //点击关闭按钮、蒙层，关闭对话框事件
   const handleClose = useCallback(() => {
@@ -178,7 +188,10 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
       <Modal
         visible={true}
         title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
-        width={isMobile ? '100%' : data.width}
+        //width={isMobile ? '100%' : data.width}
+        //width={isMobile ? '100%' : width}
+        width={isMobile ? '100%' : (typeof style.width === 'number' ? style.width - 100 : style.width)}
+        //width={isMobile ? '100%' : (typeof style.width === 'number' ? style.width - 100 : (style.width === '100%' ? 1024 : style.width))}
         footer={data.useFooter ? renderFooter() : null}
         onCancel={handleClose}
         centered={data.centered}
@@ -186,7 +199,8 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
 
         maskClosable={data.maskClosable}
         keyboard={data.keyboard}
-        wrapClassName={css.container}
+        //wrapClassName={css.container}
+        wrapClassName={`${css.editContainer} ${style.height === '100%' ? css.publishHeightContainer : ''}`}
         closable={data.closable}
         getContainer={() => env?.canvasElement || document.body}
         style={data.isCustomPosition ? {
@@ -197,7 +211,14 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
           left: data.horizontal === 'left' ?  data.left : void 0,
           padding: 0,
           position: 'absolute',
-        } : void 0}
+          height: typeof style.height === 'number' ? style.height - 100 : style.height,  
+          minHeight: '186px'
+        } : {
+          height: typeof style.height === 'number' ? style.height - 100 : style.height,  
+          //height: 400,
+          top: style.height === '100%' ? 0 : void 0,
+          minHeight: '186px'
+        }}
         zIndex={data.isZIndex ? data.zIndex: void 0}
       >
         {slots['body'].render()}
@@ -210,7 +231,8 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
       <Modal
         visible={true}
         title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
-        width={isMobile ? '100%' : data.width}
+        //width={isMobile ? '100%' : data.width}
+        width={isMobile ? '100%' : (typeof style.width === 'number' ? style.width - 100 : style.width)}
         footer={data.useFooter ? renderFooter() : null}
         onCancel={handleClose}
         centered={data.centered}
@@ -218,7 +240,8 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
 
         maskClosable={data.maskClosable}
         keyboard={data.keyboard}
-        wrapClassName={`${css.container} ${id}`}
+        //wrapClassName={`${css.container} ${id}`}
+        wrapClassName={`${css.publishContainer} ${id} ${style.height === '100%' ? css.publishHeightContainer : ''}`}
         closable={data.closable}
         getContainer={() => env?.canvasElement || document.body}
         style={data.isCustomPosition ? {
@@ -229,7 +252,12 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
           left: data.horizontal === 'left' ?  data.left : void 0,
           padding: 0,
           position: 'absolute',
-        } : void 0}
+        } : {
+          height: typeof style.height === 'number' ? style.height - 100 : style.height,  
+          //height: 400,
+          top: style.height === '100%' ? 0 : void 0,
+          minHeight: '186px'
+        }}
         mask={data.isMask}
         zIndex={data.isZIndex ? data.zIndex: void 0}
       >
@@ -237,6 +265,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
       </Modal>
     </ConfigProvider>
   )
+
   //编辑态
   const editPopup = (
     <ConfigProvider locale={env.vars?.locale}>
@@ -244,13 +273,18 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
         visible={true}
         title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
         //width={isMobile ? '100%' : data.width}
-        width={typeof style.width === 'number' || isMobile  ? '100%' : data.width}
+        width={isMobile ? '100%' : (typeof style.width === 'number' ? style.width - 100 : (style.width === '100%' ? 1024 : style.width))}
+        //width={typeof style.width === 'number' || isMobile  ? '100%' : data.width}
         footer={data.useFooter ? renderFooter() : null}
         onCancel={handleClose}
         mask={false}
         transitionName=""
         //bodyStyle={data.bodyStyle}
-        style={{ height: typeof style.height === 'number' ? style.height - 100 : void 0, minHeight: '186px' }}
+        style={{ 
+          //height: typeof style.height === 'number' ? style.height - 100 : void 0,
+          height: typeof style.height === 'number' ? style.height - 100 : (style.height === '100%' ? 800 : style.height),  
+          minHeight: '186px' 
+        }}
         wrapClassName={css.editContainer}
         closable={data.closable}
         getContainer={false}
@@ -264,12 +298,32 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
     </ConfigProvider>
   )
 
+
+  const paddingCalc = (height, width)=>{
+    if(height === '100%' && width === '100%'){
+      return {
+        padding: 0
+      }
+    }else{
+      if(height === '100%'){
+        return {
+          padding: '0 50px'
+        }
+      }else if(width === '100%'){
+        return {
+          padding: '50px 0'
+        }
+      }else{
+        return {}
+      }
+    }
+  }
   const getContent = () => {
     //调试态
     if (env.runtime && env.runtime.debug) {
       return (
         <div
-          className={`${css.debugMask} ${!data.centered ? css.debugMargin : ''}`}
+          className={`${css.debugMask} ${!data.centered && style.height!=='100%' ? css.debugMargin : ''}`}
         >
           <div className={`${css.mask} ${data.isMask ? '' : css.hideMask}`}>
             {debugPopup}
@@ -280,6 +334,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
     } else if (env.edit) {
       return <div
         className={css.antdMask}
+        style={paddingCalc(style.height, style.width)}
       >
         {editPopup}
       </div>
