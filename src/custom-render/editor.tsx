@@ -298,7 +298,7 @@ export default {
                     id,
                     key: id,
                     title: '输入项',
-                    rels: [],
+                    rels: '',
                     schema: {
                       type: 'any'
                     }
@@ -335,7 +335,7 @@ export default {
                   return data.inputs.map((input) => {
                     return {
                       ...input,
-                      rels: input.rels[0]
+                      rels: input.rels[0] || ''
                     }
                   });
                 },
@@ -347,7 +347,7 @@ export default {
                   })
                   // 更新inputs数据
                   data.inputs = value.map(({ id, key, title, schema, rels: rel, ...other }) => {
-                    const rels = [rel];
+                    const rels = rel ? [rel] : [];
                     if (addIdsMap[key]) {
                       // 添加
                       input.add(key, title, schema)
