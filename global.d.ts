@@ -21,6 +21,7 @@ interface Env {
     getCookies: () => any;
     getRouter: () => Record<string, Function>
   }
+  i18n: (text: any) => any
   [x: string]: any
 }
 interface RuntimeParams<T> {

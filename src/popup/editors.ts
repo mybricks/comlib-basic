@@ -17,11 +17,11 @@ function findConfig({ data, focusArea }, propKey?: string) {
 let btnsLength,
   addBtn;
 
-const initParams = (data: Data, output) => {
+const initParams = (data: Data, output, env) => {
   btnsLength = (data.footerBtns || []).length;
   addBtn = (btn) => {
     data.footerBtns.unshift(btn);
-    output.add(btn.id, `点击${btn.title}`, { type: 'any' })
+    output.add(btn.id, `点击${env.i18n(btn.title)}`, { type: 'any' })
   };
 };
 
@@ -555,7 +555,7 @@ export default {
           },
           value: {
             get({ data, output }: EditorResult<Data>) {
-              initParams(data, output);
+              initParams(data, output, env);
               return data.footerBtns || [];
             },
             set({ data }: EditorResult<Data>, val: any[]) {
@@ -754,7 +754,7 @@ export default {
           },
           value: {
             get({ data, output }: EditorResult<Data>) {
-              initParams(data, output);
+              initParams(data, output, env);
               return data.footerBtns || [];
             },
             set({ data }: EditorResult<Data>, val: any[]) {
@@ -871,9 +871,40 @@ export default {
               get({ data, focusArea }) {
                 return findConfig({ data, focusArea }, 'title')
               },
-              set({ data, focusArea }, value: string) {
-                findConfig({ data, focusArea }).title = value;
-              }
+              set({ data, focusArea, input, output, env }, value: string) {
+                const item = findConfig({ data, focusArea });
+                item.title = value;
+                const setTitle = (key: string, title: string) => {
+                  if (input.get(key)) {
+                    input.setTitle(key, title);
+                  }
+                };
+                const id = item.id;
+                const title = env.i18n(item.title);
+                
+                output.setTitle(id, title);
+                if (item.useDynamicDisabled) {
+                  const eventKey1 = `${InputIds.SetEnable}_${id}`;
+                  const eventKey2 = `${InputIds.SetDisable}_${id}`;
+
+                  setTitle(eventKey1, `启用-"${title}"`);
+                  setTitle(eventKey2, `禁用-"${title}"`);
+                }
+                if (item.useDynamicHidden) {
+                  const eventKey1 = `${InputIds.SetShow}_${id}`;
+                  const eventKey2 = `${InputIds.SetHidden}_${id}`;
+
+                  setTitle(eventKey1, `显示-"${title}"`);
+                  setTitle(eventKey2, `隐藏-"${title}"`);
+                }
+                if (item.useDynamicLoadding) {
+                  const eventKey1 = `${InputIds.SetBtnOpenLoading}_${id}`;
+                  const eventKey2 = `${InputIds.SetBtnCloseLoading}_${id}`;
+
+                  setTitle(eventKey1, `开启"${title}"loading`);
+                  setTitle(eventKey2, `关闭"${title}"loading`);
+                }
+              },
             }
           },
           {
@@ -973,10 +1004,10 @@ export default {
               get({ data, focusArea }: EditorResult<Data>) {
                 return !!findConfig({ data, focusArea }, 'useDynamicDisabled');
               },
-              set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+              set({ data, focusArea, input, env }: EditorResult<Data>, value: boolean) {
                 if (!focusArea) return;
                 const id = findConfig({ data, focusArea }, 'id');
-                const title = findConfig({ data, focusArea }, 'title');
+                const title = env.i18n(findConfig({ data, focusArea }, 'title'));
                 const eventKey1 = `${InputIds.SetEnable}_${id}`;
                 const eventKey2 = `${InputIds.SetDisable}_${id}`;
 
@@ -1000,10 +1031,10 @@ export default {
               get({ data, focusArea }: EditorResult<Data>) {
                 return !!findConfig({ data, focusArea }, 'useDynamicHidden')
               },
-              set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+              set({ data, focusArea, input, env }: EditorResult<Data>, value: boolean) {
                 if (!focusArea) return;
                 const id = findConfig({ data, focusArea }, 'id');
-                const title = findConfig({ data, focusArea }, 'title');
+                const title = env.i18n(findConfig({ data, focusArea }, 'title'));
                 const eventKey1 = `${InputIds.SetShow}_${id}`;
                 const eventKey2 = `${InputIds.SetHidden}_${id}`;
 
@@ -1027,10 +1058,10 @@ export default {
               get({ data, focusArea }: EditorResult<Data>) {
                 return !!findConfig({ data, focusArea }, 'useDynamicLoadding')
               },
-              set({ data, focusArea, input }: EditorResult<Data>, value: boolean) {
+              set({ data, focusArea, input, env }: EditorResult<Data>, value: boolean) {
                 if (!focusArea) return;
                 const id = findConfig({ data, focusArea }, 'id');
-                const title = findConfig({ data, focusArea }, 'title');
+                const title = env.i18n(findConfig({ data, focusArea }, 'title'));
                 const eventKey1 = `${InputIds.SetBtnOpenLoading}_${id}`;
                 const eventKey2 = `${InputIds.SetBtnCloseLoading}_${id}`;
 
