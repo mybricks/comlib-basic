@@ -4,6 +4,7 @@ export default function ({
   data,
   output,
   input,
+  style,
   setDeclaredStyle,
   getDeclaredStyle,
   removeDeclaredStyle
@@ -219,6 +220,19 @@ export default function ({
   }
   if(typeof data.autoClose === "undefined"){
     data.autoClose = true
+  }
+
+  /**
+   * @description 1.0.35->1.0.36  resize style宽高，替代data
+  */
+  if(typeof data.width === 'number' && typeof data.styleWidth === 'undefined'){
+    style.width = data.width + 100
+    data.styleWidth = style.width;
+    data.width = ''
+  }
+  
+  if(typeof data.styleHeight === 'undefined'){
+    data.styleHeight = style.height;
   }
   return true;
 }

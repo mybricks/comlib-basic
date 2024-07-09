@@ -10,8 +10,8 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
   const ref = useRef<any>();
   const isMobile = env?.canvas?.type === 'mobile';
   
-  const [width, setWidth] = useState(typeof style.width === 'number' ? style.width - 100 : style.width);
-  const [height, setHeight] = useState(typeof style.height === 'number' ? style.height - 100 : style.height);
+  const [width, setWidth] = useState();
+  const [height, setHeight] = useState();
 
   /**
    * 获取没有权限时组件要做的操作
@@ -68,11 +68,9 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
   }, [])
 
   useEffect(()=>{
-    // console.log('runtime里的width', width);
-    // console.log('runtime里的height', height);
-    setWidth(typeof style.width === 'number' ? style.width - 100 : style.width);
-    setHeight(typeof style.height === 'number' ? style.height - 100 : style.height)
-  },[])
+    setWidth(typeof data.styleWidth === 'number' ? data.styleWidth - 100 : data.styleWidth);
+    setHeight(typeof data.styleHeight=== 'number' ? data.styleHeight - 100 : data.styleHeight)
+  },[data.styleWidth, data.styleHeight])
 
   //点击关闭按钮、蒙层，关闭对话框事件
   const handleClose = useCallback(() => {
@@ -188,10 +186,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
       <Modal
         visible={true}
         title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
-        //width={isMobile ? '100%' : data.width}
-        //width={isMobile ? '100%' : width}
-        width={isMobile ? '100%' : (typeof style.width === 'number' ? style.width - 100 : style.width)}
-        //width={isMobile ? '100%' : (typeof style.width === 'number' ? style.width - 100 : (style.width === '100%' ? 1024 : style.width))}
+        width={isMobile ? '100%' : width}
         footer={data.useFooter ? renderFooter() : null}
         onCancel={handleClose}
         centered={data.centered}
@@ -211,12 +206,12 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
           left: data.horizontal === 'left' ?  data.left : void 0,
           padding: 0,
           position: 'absolute',
-          height: typeof style.height === 'number' ? style.height - 100 : style.height,  
+          height: height,  
           minHeight: '186px'
         } : {
-          height: typeof style.height === 'number' ? style.height - 100 : style.height,  
+          height: height,  
           //height: 400,
-          top: style.height === '100%' ? 0 : void 0,
+          top: height=== '100%' ? 0 : void 0,
           minHeight: '186px'
         }}
         zIndex={data.isZIndex ? data.zIndex: void 0}
@@ -231,8 +226,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
       <Modal
         visible={true}
         title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
-        //width={isMobile ? '100%' : data.width}
-        width={isMobile ? '100%' : (typeof style.width === 'number' ? style.width - 100 : style.width)}
+        width={isMobile ? '100%' : width}
         footer={data.useFooter ? renderFooter() : null}
         onCancel={handleClose}
         centered={data.centered}
@@ -253,9 +247,8 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
           padding: 0,
           position: 'absolute',
         } : {
-          height: typeof style.height === 'number' ? style.height - 100 : style.height,  
-          //height: 400,
-          top: style.height === '100%' ? 0 : void 0,
+          height: height,
+          top: height === '100%' ? 0 : void 0,
           minHeight: '186px'
         }}
         mask={data.isMask}
@@ -272,17 +265,14 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
       <Modal
         visible={true}
         title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
-        //width={isMobile ? '100%' : data.width}
-        width={isMobile ? '100%' : (typeof style.width === 'number' ? style.width - 100 : (style.width === '100%' ? 1024 : style.width))}
-        //width={typeof style.width === 'number' || isMobile  ? '100%' : data.width}
+        width={isMobile ? '100%' : (width === '100%' ? 1024 : width)}
         footer={data.useFooter ? renderFooter() : null}
         onCancel={handleClose}
         mask={false}
         transitionName=""
         //bodyStyle={data.bodyStyle}
-        style={{ 
-          //height: typeof style.height === 'number' ? style.height - 100 : void 0,
-          height: typeof style.height === 'number' ? style.height - 100 : (style.height === '100%' ? 800 : style.height),  
+        style={{
+          height: height !== '100%' ? height : 800,
           minHeight: '186px' 
         }}
         wrapClassName={css.editContainer}

@@ -103,19 +103,18 @@ function icon(dataset: string) {
 export default {
   '@init'({ style }) {
     style.width = 620
-    style.height = 'auto'
+    style.height = 'fit-content'
   },
   ':slot': {},
   '@resize': {
     options: ['width', 'height'],
     value: {
       set({data}, {width, height}) {
-      console.log('editor里的height',height)
-      console.log('editor里的width',width)
-      // data.height = height
         if (height) {
-          console.log(height)
-          //data.height = height
+          data.styleHeight = height
+        }
+        if (width) {
+          data.styleWidth = width
         }
       }
     }
@@ -253,26 +252,26 @@ export default {
           }
         }
       },
-      {
-        title: '弹窗宽度',
-        description: '设置0将使用默认宽度：520',
-        type: 'Slider',
-        options: {
-          max: 5000,
-          min: 0,
-          step: 100,
-          formatter: 'px'
-        },
-        value: {
-          get({ data }) {
-            return data.width;
-          },
-          set({ data, style }, value: number) {
-            data.width = value || undefined;
-            style.width = value + 100;
-          }
-        }
-      },
+      // {
+      //   title: '弹窗宽度',
+      //   description: '设置0将使用默认宽度：520',
+      //   type: 'Slider',
+      //   options: {
+      //     max: 5000,
+      //     min: 0,
+      //     step: 100,
+      //     formatter: 'px'
+      //   },
+      //   value: {
+      //     get({ data }) {
+      //       return data.width;
+      //     },
+      //     set({ data, style }, value: number) {
+      //       data.width = value || undefined;
+      //       style.width = value + 100;
+      //     }
+      //   }
+      // },
       {
         title: '内容高度限制',
         description: '设置0为不限制，超出高度限制出现滚动条',
