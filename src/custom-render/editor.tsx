@@ -52,6 +52,28 @@ export default {
   '@resize': {
     options: ['width', 'height']
   },
+  '@toJSON': ({ data }) => {
+    // 只保留运行时需要用的数据
+    const { code, css, inputs, outputs, _cssErr, _jsxErr } = data;
+    return {
+      data: {
+        code,
+        css,
+        inputs: inputs.map(({ id, key }) => {
+          return {
+            id, key
+          }
+        }),
+        outputs: outputs.map(({ id, key }) => {
+          return {
+            id, key
+          }
+        }),
+        _cssErr,
+        _jsxErr
+      }
+    }
+  },
   // async '@inputConnected'({ data, output, input }: EditorResult<Data>, fromPin, toPin) {
   //   console.log("@inputConnected")
   //   data.extraLib = await genLibTypes(fromPin.schema)
