@@ -206,13 +206,11 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
           left: data.horizontal === 'left' ?  data.left : void 0,
           padding: 0,
           position: 'absolute',
-          height: height,  
-          minHeight: '186px'
+          height: height
         } : {
           height: height,  
           //height: 400,
-          top: height=== '100%' ? 0 : void 0,
-          minHeight: '186px'
+          top: height=== '100%' ? 0 : void 0
         }}
         zIndex={data.isZIndex ? data.zIndex: void 0}
       >
@@ -248,8 +246,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
           position: 'absolute',
         } : {
           height: height,
-          top: height === '100%' ? 0 : void 0,
-          minHeight: '186px'
+          top: height === '100%' ? 0 : void 0
         }}
         mask={data.isMask}
         zIndex={data.isZIndex ? data.zIndex: void 0}
@@ -272,8 +269,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
         transitionName=""
         //bodyStyle={data.bodyStyle}
         style={{
-          height: height !== '100%' ? height : 800,
-          minHeight: '186px' 
+          height: height !== '100%' ? height : 800
         }}
         wrapClassName={css.editContainer}
         closable={data.closable}
