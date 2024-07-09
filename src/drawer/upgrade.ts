@@ -109,5 +109,30 @@ export default function ({
       style.width = data.width
     }
   }
+
+  /**
+   * @description 1.0.25->1.0.26  resize style宽高，替代data
+  */
+  if(typeof data.styleWidth === 'undefined'){
+    const realWidth = data.width === 0 ? 520 : data.width
+    if(['left', 'right'].includes(data.placement)){
+      style.width = realWidth + 50
+      data.styleWidth = realWidth + 50;
+    }else{
+      style.width = realWidth
+      data.styleWidth = realWidth
+    }
+  }
+  
+  if(typeof data.styleHeight === 'undefined'){
+    const realHeight = data.height === 0 ? 800 : data.height
+    if(['top', 'bottom'].includes(data.placement)){
+      style.height = realHeight + 50
+      data.styleHeight = realHeight + 50;
+    }else{
+      style.height = realHeight;
+      data.styleHeight = realHeight
+    }
+  }
   return true;
 }

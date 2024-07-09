@@ -103,11 +103,21 @@ function icon(dataset: string) {
 export default {
   '@init'({ style }) {
     style.width = 570
-    style.height = 800
+    style.height = '100%'
   },
   ':slot': {},
   '@resize': {
-    options: [ 'width', 'height' ]
+    options: [ 'width', 'height' ],
+    value: {
+      set({data}, {width, height}) {
+        if (height) {
+          data.styleHeight = height
+        }
+        if (width) {
+          data.styleWidth = width
+        }
+      }
+    }
   },
   ':root': {
     style: [
@@ -135,54 +145,54 @@ export default {
           }
         }
       },
-      {
-        title: '宽度',
-        description: '调试态和发布态,在placement为 left 或 right 时生效，其余方向时不生效；编辑态，这里的高度高度仅方便搭建。设置0将使用默认宽度：520',
-        type: 'Slider',
-        options: {
-          max: 5000,
-          min: 0,
-          step: 100,
-          formatter: 'px'
-        },
-        value: {
-          get({ data }) {
-            return data.width;
-          },
-          set({ data, style }, value: number) {
-            data.width = value;
-            if(['left', 'right'].includes(data.placement)){
-              style.width = value + 50;
-            }else{
-              style.width = value;
-            }
-          }
-        }
-      },
-      {
-        title: '抽屉高度',
-        description: '调试态和发布态,在placement为 top 或 bottom 时生效，其余方向时不生效；编辑态，这里的高度高度仅方便搭建。设置0将使用默认高度：800',
-        type: 'Slider',
-        options: {
-          max: 5000,
-          min: 0,
-          step: 100,
-          formatter: 'px'
-        },
-        value: {
-          get({ data }) {
-            return data.height;
-          },
-          set({ data, style }, value: number) {
-            data.height = value
-            if(['top', 'bottom'].includes(data.placement)){
-              style.height = value + 50;
-            }else{
-              style.height = value;
-            }
-          }
-        }
-      },
+      // {
+      //   title: '宽度',
+      //   description: '调试态和发布态,在placement为 left 或 right 时生效，其余方向时不生效；编辑态，这里的高度高度仅方便搭建。设置0将使用默认宽度：520',
+      //   type: 'Slider',
+      //   options: {
+      //     max: 5000,
+      //     min: 0,
+      //     step: 100,
+      //     formatter: 'px'
+      //   },
+      //   value: {
+      //     get({ data }) {
+      //       return data.width;
+      //     },
+      //     set({ data, style }, value: number) {
+      //       data.width = value;
+      //       if(['left', 'right'].includes(data.placement)){
+      //         style.width = value + 50;
+      //       }else{
+      //         style.width = value;
+      //       }
+      //     }
+      //   }
+      // },
+      // {
+      //   title: '抽屉高度',
+      //   description: '调试态和发布态,在placement为 top 或 bottom 时生效，其余方向时不生效；编辑态，这里的高度高度仅方便搭建。设置0将使用默认高度：800',
+      //   type: 'Slider',
+      //   options: {
+      //     max: 5000,
+      //     min: 0,
+      //     step: 100,
+      //     formatter: 'px'
+      //   },
+      //   value: {
+      //     get({ data }) {
+      //       return data.height;
+      //     },
+      //     set({ data, style }, value: number) {
+      //       data.height = value
+      //       if(['top', 'bottom'].includes(data.placement)){
+      //         style.height = value + 50;
+      //       }else{
+      //         style.height = value;
+      //       }
+      //     }
+      //   }
+      // },
       {
         title: '自定义层级',
         description: '是否自定义抽屉的z-index',
@@ -297,6 +307,50 @@ export default {
               options: {
                 outputId: 'close'
               }
+            }
+          ]
+        },
+        {
+          items: [
+            {
+              title: '抽屉宽度',
+              description: '拖拽改变弹窗宽度, 实际宽度',
+              type: 'Text',
+              options: { readOnly: true },
+              value: {
+                get: ({ data, style }) => {
+                  if(typeof style.width === 'number' && ['left', 'right'].includes(data.placement)){
+                    return style.width - 50
+                  }else{
+                    return style.width;
+                  }
+                },
+                // set: ({ data, style }) => {
+                //   if (v !== ctx.absoluteNamePath) {
+                //     ctx.absoluteNamePath = v
+                //   }
+                // },
+              },
+            },
+            {
+              title: '抽屉高度',
+              description: '拖拽改变弹窗宽度, 实际宽度',
+              type: 'Text',
+              options: { readOnly: true },
+              value: {
+                get: ({ data, style }) => {
+                  if(typeof style.height === 'number'  && ['top', 'bottom'].includes(data.placement)){
+                    return style.height - 50
+                  }else{
+                    return style.height;
+                  }
+                },
+                // set: ({ data, style }) => {
+                //   if (v !== ctx.absoluteNamePath) {
+                //     ctx.absoluteNamePath = v
+                //   }
+                // },
+              },
             }
           ]
         }

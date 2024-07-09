@@ -1,8 +1,6 @@
 {
   "title": "抽屉",
   "hideTitle": false,
-  "width": 520,
-  "height": 800,
   "placement": "right",
   "useFooter": true,
   "footerLayout": "flex-end",
@@ -48,5 +46,7 @@
   "keyboard": true,
   "isZIndex": false,
   "zIndex": 1000,
-  "autoClose": true
+  "autoClose": true,
+  "styleHeight": "100%",
+  "styleWidth": 570
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AlignEnum, Location, InputIds, DialogButtonProps } from './constants';
 import { Button, Drawer } from 'antd';
 import * as Icons from '@ant-design/icons';
@@ -15,6 +15,21 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
     right: { paddingLeft: '50px' }
   }
 
+  const paddingCalc = (placement, width, height) => {
+    let padding = paddingMap[placement];
+    if(['left', 'right'].includes(placement) && width === '100%'){
+      padding = {}
+    }
+
+    if(['top', 'bottom'].includes(placement) && height === '100%'){
+      padding = {}
+    }
+
+    return padding
+  }
+
+  const [width, setWidth] = useState();
+  const [height, setHeight] = useState();
   /**
    * 获取没有权限时组件要做的操作
    * 返回值如下：
@@ -36,6 +51,16 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
     return 'hide';
   };
 
+
+  useEffect(()=>{
+    if(data.placement === "left" || data.placement === "right") {
+      setWidth(typeof data.styleWidth === 'number' ? data.styleWidth - 50 : data.styleWidth);
+      setHeight(data.styleHeight);
+    }else{
+      setHeight(typeof data.styleHeight === 'number' ? data.styleHeight - 50 : data.styleHeight);
+      setWidth(data.styleWidth);
+    }
+  }, [data.styleHeight, data.styleWidth, data.placement])
   useEffect(() => {
     inputs['title']((val: string) => {
       if (typeof val !== 'string') {
@@ -185,8 +210,8 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
       <Drawer
         visible={true}
         title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
-        width={data.width || 520}
-        height={isMobile ? '100%' : data.height !== 0 ? data.height : 800}
+        width={width || 520}
+        height={isMobile ? '100%' : height || 800}
         closable={data.closable}
         //mask={false}
         footer={data.useFooter ? renderFooter() : null}
@@ -213,8 +238,8 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
       <Drawer
         visible={true}
         title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
-        width={data.width || 520}
-        height={isMobile ? '100%' : data.height !== 0 ? data.height : 800}
+        width={width || 520}
+        height={isMobile ? '100%' : height || 800}
         closable={data.closable}
         footer={data.useFooter ? renderFooter() : null}
         onClose={handleClose}
@@ -233,11 +258,15 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
       </Drawer>
     </div>
   )
+
   //编辑态
   const editDrawer = (
     <div
-      className={css.antdDrawer}
-      style={paddingMap[data.placement]}
+      className={`${css.antdDrawer} 
+        ${width === 'fit-content'&& ['left', 'right'].includes(data.placement) ? css.drawerWidthContent : ''}
+        ${height === 'fit-content'&& ['top', 'bottom'].includes(data.placement) ? css.drawerHeightContent : ''}`
+      }
+      style = {paddingCalc(data.placement ,width, height)}
       ref={ref}
     >
       <Drawer
@@ -247,17 +276,15 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
         footer={data.useFooter ? renderFooter() : null}
         onClose={handleClose}
         mask={false}
-        width={data.width || 520}
         bodyStyle={data.bodyStyle}
         maskClosable={data.maskClosable}
-        //style={{ height: data.height !== 0 ? data.height : 800, width: data.width !== 0 ? data.width : 520 }}
         style={{ 
           height: ['left', 'right'].includes(data.placement) 
-            ? (typeof style.height === 'number' ? style.height : data.height) 
-            : (typeof style.height === 'number' ? style.height - 50 : data.height -50), 
+            ? typeof height !== 'number' ? 800 : height
+            : height === '100%' ? 800 : height, 
           width: ['top', 'bottom'].includes(data.placement) 
-            ? (typeof style.width === 'number' ? style.width : data.width) 
-            : (typeof style.width === 'number' ? style.width - 50 : data.width -50),
+            ? (typeof width !== 'number' ? 1024 : width) 
+            : width === '100%' ? 1024 : width,
         }}
         getContainer={false}
       >
@@ -279,7 +306,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
     )
     //编辑态
   } else if (env.edit) {
-    return editDrawer;
+    return editDrawer
   }
   //预览态 (发布态)
   return publishDrawer;

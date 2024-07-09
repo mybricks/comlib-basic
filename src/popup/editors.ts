@@ -102,12 +102,22 @@ function icon(dataset: string) {
 
 export default {
   '@init'({ style }) {
-    style.width = '620px'
-    style.height = '100%'
+    style.width = 620
+    style.height = 'fit-content'
   },
   ':slot': {},
   '@resize': {
-    options: [ 'width', 'height' ]
+    options: ['width', 'height'],
+    value: {
+      set({data}, {width, height}) {
+        if (height) {
+          data.styleHeight = height
+        }
+        if (width) {
+          data.styleWidth = width
+        }
+      }
+    }
   },
   ':root': {
     style: [
@@ -242,26 +252,26 @@ export default {
           }
         }
       },
-      {
-        title: '弹窗宽度',
-        description: '设置0将使用默认宽度：520',
-        type: 'Slider',
-        options: {
-          max: 5000,
-          min: 0,
-          step: 100,
-          formatter: 'px'
-        },
-        value: {
-          get({ data }) {
-            return data.width;
-          },
-          set({ data, style }, value: number) {
-            data.width = value || undefined;
-            style.width = value + 100;
-          }
-        }
-      },
+      // {
+      //   title: '弹窗宽度',
+      //   description: '设置0将使用默认宽度：520',
+      //   type: 'Slider',
+      //   options: {
+      //     max: 5000,
+      //     min: 0,
+      //     step: 100,
+      //     formatter: 'px'
+      //   },
+      //   value: {
+      //     get({ data }) {
+      //       return data.width;
+      //     },
+      //     set({ data, style }, value: number) {
+      //       data.width = value || undefined;
+      //       style.width = value + 100;
+      //     }
+      //   }
+      // },
       {
         title: '内容高度限制',
         description: '设置0为不限制，超出高度限制出现滚动条',
@@ -434,6 +444,50 @@ export default {
             }
           ]
         },
+        {
+          items: [
+            {
+              title: '弹窗宽度',
+              description: '拖拽改变弹窗宽度, 实际宽度',
+              type: 'Text',
+              options: { readOnly: true },
+              value: {
+                get: ({ data, style }) => {
+                  if(typeof style.width === 'number'  ){
+                    return style.width - 100
+                  }else{
+                    return style.width;
+                  }
+                },
+                // set: ({ data, style }) => {
+                //   if (v !== ctx.absoluteNamePath) {
+                //     ctx.absoluteNamePath = v
+                //   }
+                // },
+              },
+            },
+            {
+              title: '弹窗高度',
+              description: '拖拽改变弹窗宽度, 实际宽度',
+              type: 'Text',
+              options: { readOnly: true },
+              value: {
+                get: ({ data, style }) => {
+                  if(typeof style.height === 'number'  ){
+                    return style.height - 100
+                  }else{
+                    return style.height;
+                  }
+                },
+                // set: ({ data, style }) => {
+                //   if (v !== ctx.absoluteNamePath) {
+                //     ctx.absoluteNamePath = v
+                //   }
+                // },
+              },
+            }
+          ]
+        }
       ];
       cate2.title = '操作区';
       cate2.items = [

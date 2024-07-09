@@ -2,7 +2,6 @@
   "title": "对话框",
   "hideTitle": false,
   "centered": false,
-  "width": 520,
   "useFooter": true,
   "footerLayout": "flex-end",
   "footerBtns": [
@@ -57,5 +56,7 @@
   "isMask": true,
   "isZIndex": false,
   "zIndex": 1000,
-  "autoClose": true
+  "autoClose": true,
+  "styleHeight": "fit-content",
+  "styleWidth": 620
 }
