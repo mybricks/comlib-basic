@@ -232,6 +232,7 @@ export default function ({
   }
   
   if(typeof data.styleHeight === 'undefined'){
+    style.height = 'fit-content';
     data.styleHeight = style.height;
   }
   return true;
