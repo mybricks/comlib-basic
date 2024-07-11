@@ -197,7 +197,8 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
         //wrapClassName={css.container}
         wrapClassName={`${css.editContainer} ${style.height === '100%' ? css.publishHeightContainer : ''}`}
         closable={data.closable}
-        getContainer={() => env?.canvasElement || document.body}
+        //getContainer={() => env?.canvasElement || document.body}
+        getContainer={() => env?.creatPortalElement || document.body}
         style={data.isCustomPosition ? {
           //调整浮层位置
           top: data.vertical === 'top' ?  data.top : 'unset',
