@@ -1,0 +1,31 @@
+{
+  "title": "设置页面标题",
+  "namespace": "mybricks.basic-comlib.document-title",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "动态设置HTML页面的Title标题",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "icon": "./icon.svg",
+  "inputs": [
+    {
+      "id": "setTitle",
+      "title": "设置标题",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setTitleDone",
+      "title": "设置标题后",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}
