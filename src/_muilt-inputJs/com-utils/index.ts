@@ -23,7 +23,7 @@ interface Props {
 }
 export function runJs(scriptText: string | any, model?: any[], props?: Props) {
   const { callback = () => { }, env = {} } = props || {};
-  if (env?.toCode && Number.isInteger(scriptText)) {
+  if ((env?.toCode || !!env.extractFns) && Number.isInteger(scriptText)) {
     env.extractFns[scriptText](...model)
     return
   }
