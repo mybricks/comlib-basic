@@ -22,7 +22,7 @@
   "outputs": [
     {
       "id": "setTitleDone",
-      "title": "设置标题后",
+      "title": "设置标题完成",
       "schema": {
         "type": "string"
       }
