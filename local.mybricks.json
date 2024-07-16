@@ -23,6 +23,7 @@
     "./src/_copy/com.json",
     "./src/_rsa-encryption/com.json",
     "./src/_encryption/com.json",
+    "./src/_document-title/com.json",
     "./src/grid/com.json",
     "./src/line/com.json",
     "./src/arrow/com.json"
