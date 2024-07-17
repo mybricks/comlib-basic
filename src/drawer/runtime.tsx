@@ -30,6 +30,8 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
 
   const [width, setWidth] = useState();
   const [height, setHeight] = useState();
+
+  const [container, setContainer] = useState<any>(false);
   /**
    * 获取没有权限时组件要做的操作
    * 返回值如下：
@@ -202,6 +204,17 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
     )
   }
 
+  useEffect(()=>{
+    if(typeof width === 'number' && width > env?.canvasElement.clientWidth && ["left", "right"].includes(data.placement)){
+      setContainer(env?.creatPortalElement || document.body)
+      return
+    }
+    if(typeof height === 'number' && height > env?.canvasElement.clientHeight && ["top", "bottom"].includes(data.placement)){
+      setContainer(env?.creatPortalElement || document.body)
+      return
+    }
+  },[width, height])
+
   //调试态
   const debugDrawer = (
     <div
@@ -220,8 +233,9 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
         placement={isMobile ? 'bottom' : data.placement}
         maskClosable={data.maskClosable}
         keyboard={data.keyboard}
+        getContainer={container}
         //getContainer={() => env?.canvasElement || document.body}
-        getContainer={() => env?.creatPortalElement || document.body}
+        //getContainer={() => env?.creatPortalElement || document.body}
         zIndex={data.isZIndex ? data.zIndex : void 0}
       >
         <div className={css.slotContainer}>
