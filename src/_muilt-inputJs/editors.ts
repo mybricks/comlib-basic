@@ -28,7 +28,7 @@ export default {
     data.extraLib = await genLibTypes(schemaList)
   },
   async '@inputDisConnected'({ data, input }: EditorResult<Data>, fromPin, toPin) {
-    const schemaList = setInputSchema(toPin.id, {type: 'null'}, data, input)
+    const schemaList = setInputSchema(toPin.id, { type: 'null' }, data, input)
     data.extraLib = await genLibTypes(schemaList)
   },
   ':root': [
@@ -105,6 +105,7 @@ export default {
           return data.fns;
         },
         set({ data }: EditorResult<Data>, fns: any) {
+          if (fns === '') return;
           data.fns = fns;
         }
       }
