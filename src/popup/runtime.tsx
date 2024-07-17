@@ -13,6 +13,8 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
   const [width, setWidth] = useState();
   const [height, setHeight] = useState();
 
+  const [container, setContainer] = useState<any>(false);
+
   /**
    * 获取没有权限时组件要做的操作
    * 返回值如下：
@@ -180,6 +182,18 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
   }
 
 
+  useEffect(()=>{
+    if(typeof width === 'number' && width > env?.canvasElement.clientWidth){
+      setContainer(env?.creatPortalElement || document.body)
+      return
+    }
+    if(typeof height === 'number' && height > env?.canvasElement.clientHeight){
+      setContainer(env?.creatPortalElement || document.body)
+      return
+    }
+  },[width, height])
+  
+
   //调试态
   const debugPopup = (
     <ConfigProvider locale={env.vars?.locale}>
@@ -197,8 +211,9 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
         //wrapClassName={css.container}
         wrapClassName={`${css.editContainer} ${style.height === '100%' ? css.publishHeightContainer : ''}`}
         closable={data.closable}
+        getContainer={container}
         //getContainer={() => env?.canvasElement || document.body}
-        getContainer={() => env?.creatPortalElement || document.body}
+        //getContainer={() => env?.creatPortalElement || document.body}
         style={data.isCustomPosition ? {
           //调整浮层位置
           top: data.vertical === 'top' ?  data.top : 'unset',
