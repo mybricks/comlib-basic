@@ -10,6 +10,30 @@ export default () => {
   </div>;
 }`;
 
+// export const DefaultCode = `import { useState, useEffect } from 'react';
+// import styles from 'index.less';
+
+// export default ({ inputs, outputs }) => {
+//   const [title, setTitle] = useState("标题");
+
+//   useEffect(() => {
+//     inputs['setTitle']((title, relOutputs) => {
+//       setTitle(title);
+//       relOutputs['setTitleDone'](title);
+//     })
+//   }, [])
+
+//   const handleClick = () => {
+//     outputs['click']();
+//   }
+
+//   return (
+//     <div className={styles.component} onClick={handleClick}>
+//       我是自定义渲染的组件，<span>{title}</span>
+//     </div>
+//   );
+// }`;
+
 export const DefaultCode = `import { useState, useEffect } from 'react';
 import styles from 'index.less';
 
@@ -17,9 +41,8 @@ export default ({ inputs, outputs }) => {
   const [title, setTitle] = useState("标题");
 
   useEffect(() => {
-    inputs['setTitle']((title, relOutputs) => {
+    inputs['setTitle']((title) => {
       setTitle(title);
-      relOutputs['setTitleDone'](title);
     })
   }, [])
 

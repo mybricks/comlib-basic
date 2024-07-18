@@ -110,6 +110,35 @@ export default {
       // }
       if (!data.outputs) {
         const setTitleDoneKey = uuid()
+        // data.outputs = [
+        //   {
+        //     id: 'click',
+        //     title: '单击',
+        //     key: uuid(),
+        //     schema: {
+        //       type: 'string'
+        //     },
+        //   },
+        //   {
+        //     id: 'setTitleDone',
+        //     key: setTitleDoneKey,
+        //     title: '设置标题完成',
+        //     schema: {
+        //       type: 'string'
+        //     },
+        //   }
+        // ]
+        // data.inputs = [
+        //   {
+        //     id: 'setTitle',
+        //     key: uuid(),
+        //     title: '设置标题',
+        //     schema: {
+        //       type: 'string'
+        //     },
+        //     rels: [setTitleDoneKey]
+        //   },
+        // ]
         data.outputs = [
           {
             id: 'click',
@@ -119,14 +148,6 @@ export default {
               type: 'string'
             },
           },
-          {
-            id: 'setTitleDone',
-            key: setTitleDoneKey,
-            title: '设置标题完成',
-            schema: {
-              type: 'string'
-            },
-          }
         ]
         data.inputs = [
           {
@@ -136,7 +157,7 @@ export default {
             schema: {
               type: 'string'
             },
-            rels: [setTitleDoneKey]
+            rels: []
           },
         ]
         data.outputs.forEach(({ id, key, schema, title }) => {
