@@ -183,11 +183,11 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
 
 
   useEffect(()=>{
-    if(typeof width === 'number' && width > env?.canvasElement.clientWidth){
+    if(typeof width === 'number' && env?.canvasElement && width > env?.canvasElement.clientWidth){
       setContainer(env?.creatPortalElement || document.body)
       return
     }
-    if(typeof height === 'number' && height > env?.canvasElement.clientHeight){
+    if(typeof height === 'number' && env?.canvasElement && height > env?.canvasElement.clientHeight){
       setContainer(env?.creatPortalElement || document.body)
       return
     }

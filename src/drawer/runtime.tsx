@@ -205,11 +205,17 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
   }
 
   useEffect(()=>{
-    if(typeof width === 'number' && width > env?.canvasElement.clientWidth && ["left", "right"].includes(data.placement)){
+    if(typeof width === 'number'
+        && env?.canvasElement 
+        && width > env?.canvasElement.clientWidth 
+        && ["left", "right"].includes(data.placement)){
       setContainer(env?.creatPortalElement || document.body)
       return
     }
-    if(typeof height === 'number' && height > env?.canvasElement.clientHeight && ["top", "bottom"].includes(data.placement)){
+    if(typeof height === 'number'
+        && env?.canvasElement 
+        && height > env?.canvasElement.clientHeight 
+        && ["top", "bottom"].includes(data.placement)){
       setContainer(env?.creatPortalElement || document.body)
       return
     }
