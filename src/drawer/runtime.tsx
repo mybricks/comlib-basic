@@ -208,16 +208,14 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
     if(typeof width === 'number'
         && env?.canvasElement 
         && width > env?.canvasElement.clientWidth 
-        && ["left", "right"].includes(data.placement)
-      ){
+        && ["left", "right"].includes(data.placement)){
       setContainer(env?.creatPortalElement || document.body)
       return
     }
     if(typeof height === 'number'
         && env?.canvasElement 
         && height > env?.canvasElement.clientHeight 
-        && ["top", "bottom"].includes(data.placement)
-      ){
+        && ["top", "bottom"].includes(data.placement)){
       setContainer(env?.creatPortalElement || document.body)
       return
     }
