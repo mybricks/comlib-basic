@@ -7,7 +7,6 @@
   "content": "",
   "commitInfo": "init",
   "comAry": [
-    "./src/custom-render/com.json",
     "./src/rectangle/com.json",
     "./src/shape/com.json",
     "./src/popup/com.json",
