@@ -5,6 +5,7 @@ export default function ({
   output,
   input,
   style,
+  slot,
   setDeclaredStyle,
   getDeclaredStyle,
   removeDeclaredStyle
@@ -235,5 +236,23 @@ export default function ({
     style.height = 'fit-content';
     data.styleHeight = style.height;
   }
+
+  /**
+   * @description 1.0.41->1.0.42  fix slot 宽高的影响
+  */
+  const slotStyle =  slot.get('body').getStyle();
+  
+  if(slotStyle.height){
+    slot.get('body').setStyle({
+      height: undefined
+    })
+  }
+
+  if(slotStyle.width){
+    slot.get('body').setStyle({
+      width: undefined
+    })
+  }
+  
   return true;
 }
