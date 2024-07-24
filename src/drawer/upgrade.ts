@@ -3,6 +3,7 @@
 export default function ({
   input,
   output,
+  slot,
   data,
   style,
   setDeclaredStyle,
@@ -134,5 +135,22 @@ export default function ({
       data.styleHeight = realHeight
     }
   }
+
+   /**
+   * @description 1.0.30->1.0.31  fix slot 宽高的影响
+  */
+   const slotStyle =  slot.get('body').getStyle();
+   
+   if(slotStyle.height){
+     slot.get('body').setStyle({
+       height: undefined
+     })
+   }
+ 
+   if(slotStyle.width){
+     slot.get('body').setStyle({
+       width: undefined
+     })
+   }
   return true;
 }
