@@ -76,6 +76,7 @@ export default {
           return data.style;
         },
         set({data}, value: object) {
+          console.log(value)
           data.style = {
             ...data.style,
             ...value
@@ -94,7 +95,6 @@ export default {
           return data.textStyle;
         },
         set({data}, value: object) {
-          console.log(value)
           data.textStyle = {
             ...data.textStyle,
             ...value

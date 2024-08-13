@@ -5,6 +5,10 @@
 
   pointer-events: auto !important;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   .middlePoint {
     position: absolute;
     top: 50%;
@@ -14,8 +18,8 @@
   .borderRadius {
     display: none;
     pointer-events: auto !important;
-    cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAA4hJREFUWEftl19Ik1EYxh81nLZcKkbRCmSgIitFL5zuRlFUPqbiRRRChoZeiIPQBIlIw7AMG8pckX+YsIsuJIQgUAyHk7AIHYbrRiVlaYPPNrGVTTdbvPJN1tjc1IleeOCwMc6+9/c+73Pec74QHPEIOeL4OHYABETTyc1DF8hdgVAAYcvLy8+FQuEdAFsA7IcN4g5wCkCkyWRqWl9fv7G5udmUnJz8GsAGAMdhgXgCCLRa7bWIiIiniYmJfJZlPywtLTUVFBR8ArDJqRLUsrgDhAGIrqiouNrZ2TkcHR3Na29vh1wut5vNZlVbW9szlUpl5sryN1gU7gD0/SyASxaLZSI3NzdqenoaKSkpUCgUDrFYvGK1WluTkpI0AGzBKovnNjwDQGgwGAYUCkVKf3//TqLl5eXo6OiwW63WjyaT6bFUKh3n/EFm3ffwBIgEcGFiYqJZr9eXyeXycM8nU1nq6+udLMt2Dw4OKmpra78dpCyeABTwnFqtLhOLxQ8lEgnfW2oikQh9fX22tLS0tdXVVYVIJHq537J4ApARY2UyWerAwMAQn8+nrelzlJaWQq1W0zadXFxc7EhPTx/aa1k8AVxGvMyy7HuGYQRTU1M+AXg8HrKzsyGVStHc3Ayz2fwiLi7uLgdB3dTv8HYWbBtxZmbmVVdXV3pPT89/D0lISIBMJkN+fv5GVlZWqNPptBuNxhmLxfJudnZ2tKamZhLAOoCAtqo3ADLieZ1O92Bubu5mVVXVjhHr6urQ0tJin5+fX1xYWJjSarWfVSrVFwA/AVCP+AFgjfPDvhWggHG9vb3XMzIyWlNTU0+TBBKJBGNjY1uNjY2PlEol1YUC/eay/QOAJmXu6hF+5acF3hQgI8bk5ORcGRkZGQ0PD6dDCjqdzuZwON7m5eV1AVjhsqZg1KLprKBJPSEg6V103gDcjahjGCamqKgIlZWVS/Hx8eUAjJzclDEF3VNAT1l8XUjIiBcNBoNGqVRKuru7qR3fa2hoeAPgO4BfwTqYfAFsG3F8fLxRIBDcstlsw5mZmU8AUNdb5WQPqMb+FvkCICPGajSaYoZh7hcWFt7W6/VfAbCc2QJyuL/gvkxIv5MRo4qLi4XV1dVZJSUlo1zm1mBJv5sJXWA8ABEAqB2T012ODySxgNfsdiveviMCoE/aXjSDJr0/BQLO4KALj917wUET2vP/TxQ4UeAfJ/5DMCBPRGUAAAAASUVORK5CYII=)
-        4 4,
+    cursor: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MiIgaGVpZ2h0PSI0MiIgZmlsbD0ibm9uZSI+PGcgZmlsbD0iIzAwMCIgc3Ryb2tlPSIjZmZmIiBmaWx0ZXI9InVybCgjZmlsdGVyMF9kXzE3ODRfNDA3MDkpIj48cGF0aCBkPSJtMTYuMTU4IDE1LjUyNi0uOTQ5LS4zMTYuMzE3Ljk0OCA0LjM4NyAxMy4xNjMuNDE2IDEuMjQ4LjUxOC0xLjIxIDIuNTg2LTYuMDQ0IDUuOTIyLTIuNDY2IDEuMjMzLS41MTQtMS4yNjctLjQyMi0xMy4xNjMtNC4zODdaTTI4LjI0MyAzMy4xOTJsLjM1My0uMzUzLS4zNTMtLjM1NGEzIDMgMCAwIDEgNC4yNDItNC4yNDJsLjM1NC4zNTMuMzUzLS4zNTMuNzA4LS43MDcuMzUzLS4zNTQtLjM1My0uMzU0YTUgNSAwIDAgMC03LjA3MiA3LjA3MmwuMzU0LjM1My4zNTQtLjM1My43MDctLjcwOFoiLz48L2c+PGRlZnM+PGZpbHRlciBpZD0iZmlsdGVyMF9kXzE3ODRfNDA3MDkiIHdpZHRoPSI0NiIgaGVpZ2h0PSI0NiIgeD0iLTIiIHk9Ii0xIiBjb2xvci1pbnRlcnBvbGF0aW9uLWZpbHRlcnM9InNSR0IiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PGZlRmxvb2QgZmxvb2Qtb3BhY2l0eT0iMCIgcmVzdWx0PSJCYWNrZ3JvdW5kSW1hZ2VGaXgiLz48ZmVDb2xvck1hdHJpeCBpbj0iU291cmNlQWxwaGEiIHJlc3VsdD0iaGFyZEFscGhhIiB2YWx1ZXM9IjAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDEyNyAwIi8+PGZlT2Zmc2V0IGR5PSIxIi8+PGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMSIvPjxmZUNvbG9yTWF0cml4IHZhbHVlcz0iMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMC40IDAiLz48ZmVCbGVuZCBpbjI9IkJhY2tncm91bmRJbWFnZUZpeCIgcmVzdWx0PSJlZmZlY3QxX2Ryb3BTaGFkb3dfMTc4NF80MDcwOSIvPjxmZUJsZW5kIGluPSJTb3VyY2VHcmFwaGljIiBpbjI9ImVmZmVjdDFfZHJvcFNoYWRvd18xNzg0XzQwNzA5IiByZXN1bHQ9InNoYXBlIi8+PC9maWx0ZXI+PC9kZWZzPjwvc3ZnPg==)
+        14 14,
       auto !important;
     position: absolute;
     width: 8px;
@@ -27,36 +31,69 @@
     z-index: 99;
   }
 
-  &:hover {
+  &.show,&:hover {
     .borderTopLeftRadius,.borderTopRightRadius,.borderBottomLeftRadius,.borderBottomRightRadius {
       display: block !important;
     }
   }
+  
+  .radiusTip() {
+    position: absolute;
+    content: attr(data-text);
+    padding: 2px 4px;
+    font-size: 12px;
+    color: #FFFFFF;
+    border-radius: 2px;
+    white-space: nowrap;
+    background-color: var(--mybricks-color-primary);
+  }
 
   .borderTopLeftRadius {
     .borderRadius;
+    &.moving,&:hover {
+      &:after {
+        top: 16px;
+        left: 16px;
+        .radiusTip();
+      }
+    }
   }
 
   .borderTopRightRadius {
     .borderRadius;
+    &.moving,&:hover {
+      &:after {
+        top: 16px;
+        right: 16px;
+        .radiusTip();
+      }
+    }
   }
 
   .borderBottomLeftRadius {
     .borderRadius;
+    &.moving,&:hover {
+      &:after {
+        bottom: 16px;
+        left: 16px;
+        .radiusTip();
+      }
+    }
   }
 
   .borderBottomRightRadius {
     .borderRadius;
+    &.moving,&:hover {
+      &:after {
+        bottom: 16px;
+        right: 16px;
+        .radiusTip();
+      }
+    }
   }
 }
 
 .innerText {
   width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-
-  .text {
-    width: 100%;
-  }
+  min-height: 20px;
 }

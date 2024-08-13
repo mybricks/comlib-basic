@@ -6,9 +6,9 @@ export default {
     style.width = 200;
     style.height = 1;
   },
-  // "@resize": {
-  //   options: ["width"],
-  // },
+  "@resize": {
+    options: ["width"],
+  },
   ":root": {
     style: [
       {

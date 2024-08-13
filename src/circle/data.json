@@ -1,5 +1,20 @@
 {
   "asSlot": false,
+  "style": {
+    "styleEditorUnfold": true,
+    "borderTopColor": "rgba(34,34,34,1.00)",
+    "borderRightColor": "rgba(34,34,34,1.00)",
+    "borderBottomColor": "rgba(34,34,34,1.00)",
+    "borderLeftColor": "rgba(34,34,34,1.00)",
+    "borderTopWidth": "2px",
+    "borderRightWidth": "2px",
+    "borderBottomWidth": "2px",
+    "borderLeftWidth": "2px",
+    "borderTopStyle": "solid",
+    "borderRightStyle": "solid",
+    "borderBottomStyle": "solid",
+    "borderLeftStyle": "solid"
+  },
   "textStyle": {
     "fontSize": "14px",
     "color": "#222222",

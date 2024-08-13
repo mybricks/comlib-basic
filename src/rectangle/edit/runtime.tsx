@@ -20,6 +20,8 @@ export default function ({ data, slots, style, env }) {
     borderBottomLeftRef = useRef<HTMLDivElement>(null),
     borderBottomRightRef = useRef<HTMLDivElement>(null);
 
+  const [movingDirection, setMovingDirection] = useState('');
+
   const getMaxBorderRadiusLimit = useCallback(() => {
     const shortSideLength = style.width > style.height ? style.height : style.width;
     return shortSideLength / 2
@@ -71,6 +73,8 @@ export default function ({ data, slots, style, env }) {
       }
 
       if (state === 'ing') {
+        setMovingDirection(borderRadiusDirection)
+
         // --- 计算往内还是往外，决定是 增加 还是 减少 ---
         const moveTarget = {
           x: moveInfoRef.current.last.x + dpo.dx,
@@ -87,13 +91,13 @@ export default function ({ data, slots, style, env }) {
 
         dx < dy ? (dx = dy) : (dy = dx);
   
-        const mdoifyBorderRadius = Math.sqrt(dx * dx + dy * dy) * MoveRatio;
+        const modifyBorderRadius = Math.sqrt(dx * dx + dy * dy) * MoveRatio;
 
-        const borderRadius = data?.style?.borderTopLeftRadius ? parseFloat(data.style.borderTopLeftRadius) : 0;
+        const lastBorderRadius = data?.style?.borderTopLeftRadius ? parseFloat(data.style.borderTopLeftRadius) : 0;
         const maxBorderRadius = getMaxBorderRadiusLimit();
-        const lastBorderRadius = Math.min(maxBorderRadius, Math.max(0, borderRadius))
 
-        const finnalRadius = moreInner ? `${Math.round(lastBorderRadius + mdoifyBorderRadius)}px` : `${Math.round(lastBorderRadius - mdoifyBorderRadius)}px`
+        let finnalRadius: any = moreInner ? Math.round(lastBorderRadius + modifyBorderRadius) : Math.round(lastBorderRadius - modifyBorderRadius);
+        finnalRadius = Math.min(maxBorderRadius, Math.max(0, finnalRadius)) + 'px';
 
         if (!data.style) {
           data.style = {}
@@ -104,6 +108,10 @@ export default function ({ data, slots, style, env }) {
         data.style.borderBottomLeftRadius = finnalRadius
         data.style.borderBottomRightRadius = finnalRadius
       }
+
+      if (state === 'finish') {
+        setMovingDirection('')
+      }
     })
     e.stopPropagation();
   }, [])
@@ -111,10 +119,10 @@ export default function ({ data, slots, style, env }) {
   const borderTranslate = getTranslate();
 
   return (
-    <div className={css.rectangle} style={{ ...(data?.style ?? {}) }}>
+    <div className={`${css.rectangle} ${!!movingDirection ? css.show : ''}`} style={{ ...(data?.style ?? {}) }}>
       <div
         ref={borderTopLeftRef}
-        className={css.borderTopLeftRadius}
+        className={`${css.borderTopLeftRadius} ${movingDirection === 'borderTopLeftRadius' ? css.moving : ''}`}
         style={{
           transform: `translate(${
             borderTranslate + "px"
@@ -122,12 +130,13 @@ export default function ({ data, slots, style, env }) {
           top: BorderRadiusHandleGap,
           left: BorderRadiusHandleGap,
         }}
+        data-text={`圆角${data.style.borderTopLeftRadius}`}
         // @ts-ignore
         onMouseDown={(e) => handleDragBorderRadius(e, "borderTopLeftRadius")}
       />
       <div
         ref={borderTopRightRef}
-        className={css.borderTopRightRadius}
+        className={`${css.borderTopRightRadius} ${movingDirection === 'borderTopRightRadius' ? css.moving : ''}`}
         style={{
           transform: `translate(-${
             borderTranslate + "px"
@@ -135,12 +144,13 @@ export default function ({ data, slots, style, env }) {
           top: BorderRadiusHandleGap,
           right: BorderRadiusHandleGap
         }}
+        data-text={`圆角${data.style.borderTopRightRadius}`}
         // @ts-ignore
         onMouseDown={(e) => handleDragBorderRadius(e, "borderTopRightRadius")}
       />
       <div
         ref={borderBottomLeftRef}
-        className={css.borderBottomLeftRadius}
+        className={`${css.borderBottomLeftRadius} ${movingDirection === 'borderBottomLeftRadius' ? css.moving : ''}`}
         style={{
           transform: `translate(${
             borderTranslate + "px"
@@ -148,12 +158,13 @@ export default function ({ data, slots, style, env }) {
           bottom: BorderRadiusHandleGap,
           left: BorderRadiusHandleGap
         }}
+        data-text={`圆角${data.style.borderBottomLeftRadius}`}
         // @ts-ignore
         onMouseDown={(e) => handleDragBorderRadius(e, "borderBottomLeftRadius")}
       />
       <div
         ref={borderBottomRightRef}
-        className={css.borderBottomRightRadius}
+        className={`${css.borderBottomRightRadius} ${movingDirection === 'borderBottomRightRadius' ? css.moving : ''}`}
         style={{
           transform: `translate(-${
             borderTranslate + "px"
@@ -161,12 +172,13 @@ export default function ({ data, slots, style, env }) {
           bottom: BorderRadiusHandleGap,
           right: BorderRadiusHandleGap
         }}
+        data-text={`圆角${data.style.borderBottomRightRadius}`}
         // @ts-ignore
         onMouseDown={(e) => handleDragBorderRadius(e, "borderBottomRightRadius")}
       />
       <div className={css.middlePoint} ref={middleNodeRef}></div>
-      <div className={`${css.innerText} mybricks-rectangle-text`}>
-        <div className={`${css.text}`} style={data.textStyle}>{data.text}</div>
+      <div className={`${css.innerText} mybricks-rectangle-text`} style={data.textStyle}>
+        {data.text}
       </div>
       {data.asSlot ? slots["container"].render() : null}
     </div>
