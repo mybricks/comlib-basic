@@ -6,8 +6,14 @@ const BorderRadiusHandleGap = 6;
 const BorderRadiusClientWidth = 10;
 const BorderRadiosClientWidthHalf = BorderRadiusClientWidth / 2;
 
+/** 计算两点之间的距离 */
+function distance(a, b) {
+  return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
+}
+
 export default function ({ data, slots, style, env }) {
-  const borderTopLeftRef = useRef<HTMLDivElement>(null),
+  const middleNodeRef = useRef<HTMLDivElement>(null),
+    borderTopLeftRef = useRef<HTMLDivElement>(null),
     borderTopRightRef = useRef<HTMLDivElement>(null),
     borderBottomLeftRef = useRef<HTMLDivElement>(null),
     borderBottomRightRef = useRef<HTMLDivElement>(null);
@@ -24,49 +30,56 @@ export default function ({ data, slots, style, env }) {
     return Math.max(0, finalRadius - BorderRadiusHandleGap - BorderRadiosClientWidthHalf);
   }, [style.width, style.height, data?.style?.borderTopLeftRadius]);
 
-  const handleDrgeBorderRadius = useCallback((e, borderRadiusDirection) => {
-    dragable(e, ({ dpo, origin }, state) => {
-      if (state === 'ing') {
-        let borderRadiusRef;
-        switch (borderRadiusDirection) {
-          case "borderTopLeftRadius":
-            borderRadiusRef = borderTopLeftRef;
-            break;
-          case "borderTopRightRadius":
-            borderRadiusRef = borderTopRightRef;
-            break;
-          case "borderBottomLeftRadius":
-            borderRadiusRef = borderBottomLeftRef;
-            break;
-          case "borderBottomRightRadius":
-            borderRadiusRef = borderBottomRightRef;
-            break;
-        }
+  const moveInfoRef = useRef<{
+    middle: { x: number, y: number },
+    last: { x: number, y: number }
+  }>({} as any);
 
-        // 往外还是往内，决定是 增加 还是 减少
-        let moreInner = false
-        switch (borderRadiusDirection) {
-          case "borderTopLeftRadius":
-            if (dpo.dx > 0 || dpo.dy > 0) {
-              moreInner = true
-            }
-            break;
-          case "borderTopRightRadius":
-            if (dpo.dx < 0 || dpo.dy > 0) {
-              moreInner = true
-            }
-            break;
-          case "borderBottomLeftRadius":
-            if (dpo.dx > 0 || dpo.dy < 0) {
-              moreInner = true
-            }
-            break;
-          case "borderBottomRightRadius":
-            if (dpo.dx < 0 || dpo.dy < 0) {
-              moreInner = true
-            }
-            break;
+  const handleDragBorderRadius = useCallback((e, borderRadiusDirection) => {
+    let borderRadiusRef;
+    switch (borderRadiusDirection) {
+      case "borderTopLeftRadius":
+        borderRadiusRef = borderTopLeftRef;
+        break;
+      case "borderTopRightRadius":
+        borderRadiusRef = borderTopRightRef;
+        break;
+      case "borderBottomLeftRadius":
+        borderRadiusRef = borderBottomLeftRef;
+        break;
+      case "borderBottomRightRadius":
+        borderRadiusRef = borderBottomRightRef;
+        break;
+    }
+
+    dragable(e, ({ dpo, origin }, state) => {
+      if (state === 'start' && middleNodeRef.current) {
+        const rect = middleNodeRef.current.getBoundingClientRect();
+        // 记录中心点
+        moveInfoRef.current.middle = {
+          x: rect.x,
+          y: rect.y
         }
+        const startRect = borderRadiusRef.current.getBoundingClientRect();
+        // 记录起始xy
+        moveInfoRef.current.last = {
+          x: startRect.x,
+          y: startRect.y
+        }
+      }
+
+      if (state === 'ing') {
+        // --- 计算往内还是往外，决定是 增加 还是 减少 ---
+        const moveTarget = {
+          x: moveInfoRef.current.last.x + dpo.dx,
+          y: moveInfoRef.current.last.y + dpo.dy,
+        }
+        console.log(distance(moveInfoRef.current.middle, moveTarget))
+        // 往外还是往内，
+        const moreInner = distance(moveInfoRef.current.middle, moveInfoRef.current.last) > distance(moveInfoRef.current.middle, moveTarget)
+        // 记录上一次的xy
+        moveInfoRef.current.last = moveTarget
+        // --- 计算往内还是往外，决定是 增加 还是 减少 ---
 
         let dx = Math.abs(dpo.dx);
         let dy = Math.abs(dpo.dy);
@@ -109,7 +122,7 @@ export default function ({ data, slots, style, env }) {
           left: BorderRadiusHandleGap,
         }}
         // @ts-ignore
-        onMouseDown={(e) => handleDrgeBorderRadius(e, "borderTopLeftRadius")}
+        onMouseDown={(e) => handleDragBorderRadius(e, "borderTopLeftRadius")}
       />
       <div
         ref={borderTopRightRef}
@@ -122,7 +135,7 @@ export default function ({ data, slots, style, env }) {
           right: BorderRadiusHandleGap
         }}
         // @ts-ignore
-        onMouseDown={(e) => handleDrgeBorderRadius(e, "borderTopRightRadius")}
+        onMouseDown={(e) => handleDragBorderRadius(e, "borderTopRightRadius")}
       />
       <div
         ref={borderBottomLeftRef}
@@ -135,7 +148,7 @@ export default function ({ data, slots, style, env }) {
           left: BorderRadiusHandleGap
         }}
         // @ts-ignore
-        onMouseDown={(e) => handleDrgeBorderRadius(e, "borderBottomLeftRadius")}
+        onMouseDown={(e) => handleDragBorderRadius(e, "borderBottomLeftRadius")}
       />
       <div
         ref={borderBottomRightRef}
@@ -148,8 +161,9 @@ export default function ({ data, slots, style, env }) {
           right: BorderRadiusHandleGap
         }}
         // @ts-ignore
-        onMouseDown={(e) => handleDrgeBorderRadius(e, "borderBottomRightRadius")}
+        onMouseDown={(e) => handleDragBorderRadius(e, "borderBottomRightRadius")}
       />
+      <div className={css.middlePoint} ref={middleNodeRef}></div>
       <div className={`${css.text} mybricks-rectangle-text`}>{data.text}</div>
       {data.asSlot ? slots["container"].render() : null}
     </div>
