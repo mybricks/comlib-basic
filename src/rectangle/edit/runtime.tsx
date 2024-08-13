@@ -74,7 +74,6 @@ export default function ({ data, slots, style, env }) {
           x: moveInfoRef.current.last.x + dpo.dx,
           y: moveInfoRef.current.last.y + dpo.dy,
         }
-        console.log(distance(moveInfoRef.current.middle, moveTarget))
         // 往外还是往内，
         const moreInner = distance(moveInfoRef.current.middle, moveInfoRef.current.last) > distance(moveInfoRef.current.middle, moveTarget)
         // 记录上一次的xy
