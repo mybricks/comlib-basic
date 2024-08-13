@@ -1,3 +1,8 @@
 {
-  "asSlot": false
+  "asSlot": false,
+  "textStyle": {
+    "fontSize": "14px",
+    "color": "#222222",
+    "textAlign": "center"
+  }
 }

@@ -5,6 +5,8 @@ import css from "./runtime.less";
 const BorderRadiusHandleGap = 6;
 const BorderRadiusClientWidth = 10;
 const BorderRadiosClientWidthHalf = BorderRadiusClientWidth / 2;
+// 阻尼倍数
+const MoveRatio = 0.7
 
 /** 计算两点之间的距离 */
 function distance(a, b) {
@@ -85,13 +87,13 @@ export default function ({ data, slots, style, env }) {
 
         dx < dy ? (dx = dy) : (dy = dx);
   
-        const mdoifyBorderRadius = Math.sqrt(dx * dx + dy * dy);
+        const mdoifyBorderRadius = Math.sqrt(dx * dx + dy * dy) * MoveRatio;
 
         const borderRadius = data?.style?.borderTopLeftRadius ? parseFloat(data.style.borderTopLeftRadius) : 0;
         const maxBorderRadius = getMaxBorderRadiusLimit();
         const lastBorderRadius = Math.min(maxBorderRadius, Math.max(0, borderRadius))
 
-        const finnalRadius = moreInner ? `${lastBorderRadius + mdoifyBorderRadius}px` : `${lastBorderRadius - mdoifyBorderRadius}px`
+        const finnalRadius = moreInner ? `${Math.round(lastBorderRadius + mdoifyBorderRadius)}px` : `${Math.round(lastBorderRadius - mdoifyBorderRadius)}px`
 
         if (!data.style) {
           data.style = {}
@@ -163,7 +165,9 @@ export default function ({ data, slots, style, env }) {
         onMouseDown={(e) => handleDragBorderRadius(e, "borderBottomRightRadius")}
       />
       <div className={css.middlePoint} ref={middleNodeRef}></div>
-      <div className={`${css.text} mybricks-rectangle-text`}>{data.text}</div>
+      <div className={`${css.innerText} mybricks-rectangle-text`}>
+        <div className={`${css.text}`} style={data.textStyle}>{data.text}</div>
+      </div>
       {data.asSlot ? slots["container"].render() : null}
     </div>
   );

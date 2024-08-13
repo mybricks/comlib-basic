@@ -6,20 +6,20 @@ export default {
   '@resize': {
     options: ['width', 'height']
   },
-  // '.mybricks-circle-text': {
-  //   items: [],
-  //   '@dblclick': {
-  //     type: 'text',
-  //     value: {
-  //       get({ data, focusArea }) {
-  //         return data.text
-  //       },
-  //       set({ data, focusArea }, value: string) {
-  //         data.text = value;
-  //       }
-  //     }
-  //   }
-  // },
+  '.mybricks-circle-text': {
+    items: [],
+    '@dblclick': {
+      type: 'text',
+      value: {
+        get({ data, focusArea }) {
+          return data.text
+        },
+        set({ data, focusArea }, value: string) {
+          data.text = value;
+        }
+      }
+    }
+  },
   ':root': [
     // {
     //   title: '显示插槽',
@@ -78,6 +78,25 @@ export default {
         set({data}, value: object) {
           data.style = {
             ...data.style,
+            ...value
+          };
+        }
+      }
+    },
+    {
+      title: '文本样式',
+      type: 'Style',
+      options: {
+        plugins: ['font']
+      },
+      value: {
+        get({data}) {
+          return data.textStyle;
+        },
+        set({data}, value: object) {
+          console.log(value)
+          data.textStyle = {
+            ...data.textStyle,
             ...value
           };
         }

@@ -1,0 +1,43 @@
+.warrper {
+  width: 100%;
+
+  position: relative;
+
+  overflow: visible !important;
+  pointer-events: auto !important;
+
+  // &:hover {
+  //   .handle {
+  //     display: block;
+  //   }
+  // }
+
+  .handle {
+    // display: none;
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border-color: #f87029;
+    border-width: 1px;
+    border-style: solid;
+    pointer-events: auto !important;
+
+    &.left {
+      left: 0px;
+      top: 50%;
+      transform: translateX(-100%) translateY(-50%);
+    }
+
+    &.right {
+      right: 0px;
+      top: 50%;
+      transform: translateX(100%) translateY(-50%);
+    }
+  }
+}
+
+.line {
+  height: 0;
+  width: 100%;
+}

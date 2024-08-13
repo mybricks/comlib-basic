@@ -14,7 +14,9 @@ export default ({ env, data, slots, inputs, outputs }) => {
 
   return (
     <div className={css.rectangle} onClick={onClick} style={{ ...(data?.style ?? {}) }}>
-      <div className={`${css.text} mybricks-rectangle-text`}>{data.text}</div>
+      <div className={`${css.innerText} mybricks-rectangle-text`}>
+        <div className={`${css.text}`} style={data.textStyle}>{data.text}</div>
+      </div>
       {data.asSlot ? slots["container"].render() : null}
     </div>
   );
