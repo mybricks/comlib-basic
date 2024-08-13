@@ -1,12 +1,13 @@
 {
   "title": "矩形",
-  "visibility": false,
   "namespace": "mybricks.basic-comlib.rectangle",
   "author": "CheMingjun",
   "author_name": "CheMingjun",
   "version": "1.0.0",
   "description": "矩形",
+  "icon": "./icon.svg",
   "data": "./data.json",
+  "runtime.edit": "./edit/runtime.tsx",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
   "inputs": [

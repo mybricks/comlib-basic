@@ -1,0 +1,24 @@
+{
+  "title": "圆形",
+  "namespace": "mybricks.basic-comlib.circle",
+  "author": "CheMingjun",
+  "author_name": "CheMingjun",
+  "version": "1.0.0",
+  "description": "圆形",
+  "data": "./data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "./editors.tsx",
+  "icon": "./icon.svg",
+  "inputs": [
+   
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

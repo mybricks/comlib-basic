@@ -1,12 +1,12 @@
 export default {
   '@init'({style}) {
-    style.height = 80
-    style.width = 180
+    style.height = 60
+    style.width = 60
   },
   '@resize': {
     options: ['width', 'height']
   },
-  // '.mybricks-rectangle-text': {
+  // '.mybricks-circle-text': {
   //   items: [],
   //   '@dblclick': {
   //     type: 'text',

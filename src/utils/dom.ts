@@ -49,6 +49,7 @@ export function dragable(e, dragingFn, options?) {
       if (state === 'finish') {
         dragingFn({
           po: {x, y}, epo: {ex, ey}, dpo: {dx: 0, dy: 0}, adpo: {adx, ady},
+          origin: e,
           targetStyle: {x: po.x, y: po.y, w, h}
         }, state, dom)
       } else {
@@ -57,6 +58,7 @@ export function dragable(e, dragingFn, options?) {
 
           dragingFn({
             po: {x, y}, epo: {ex, ey}, dpo: {dx, dy}, adpo: {adx, ady},
+            origin: e,
             targetStyle: {x: po.x, y: po.y, w, h}
           }, state, dom)
         }
