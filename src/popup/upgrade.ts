@@ -253,6 +253,18 @@ export default function ({
       width: undefined
     })
   }
-  
+
+  /**
+   * @description 1.0.42->1.0.43  补齐rels
+  */
+  if (!output.get("setTitleDone")) {
+    output.add("setTitleDone", '修改标题完成', {type: "string"});
+  }
+  if (output.get("setTitleDone") &&
+    input.get("setTitle") &&
+    !input.get("setTitle")?.rels?.includes("setTitleDone")) {
+    input.get("setTitle").setRels(["setTitleDone"]);
+  }
+
   return true;
 }

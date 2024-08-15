@@ -37,11 +37,12 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
   };
 
   useEffect(() => {
-    inputs['title']((val: string) => {
+    inputs['title']((val: string, relOutputs) => {
       if (typeof val !== 'string') {
         logger.error('title 必须为string类型');
       } else {
         data.title = val;
+        relOutputs['setTitleDone'](val);
       }
     });
     if (env.runtime) {

@@ -4,7 +4,7 @@
   "namespace": "mybricks.basic-comlib.drawer",
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.31",
+  "version": "1.0.32",
   "description": "抽屉",
   "data": "./data.json",
   "runtime": "./runtime.tsx",
@@ -22,7 +22,10 @@
       "title": "修改标题",
       "schema": {
         "type": "string"
-      }
+      },
+      "rels": [
+        "setTitleDone"
+      ]
     }
   ],
   "outputs": [
@@ -44,6 +47,13 @@
     {
       "id": "close",
       "title": "关闭"
+    },
+    {
+      "id": "setTitleDone",
+      "title": "修改标题完成",
+      "schema": {
+        "type": "string"
+      }
     }
   ]
 }
