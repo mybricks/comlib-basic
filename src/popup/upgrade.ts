@@ -258,12 +258,13 @@ export default function ({
    * @description 1.0.42->1.0.43  补齐rels
   */
   if (!output.get("setTitleDone")) {
+    console.log('走到这了嘛')
     output.add("setTitleDone", '修改标题完成', {type: "string"});
   }
   if (output.get("setTitleDone") &&
-    input.get("setTitle") &&
-    !input.get("setTitle")?.rels?.includes("setTitleDone")) {
-    input.get("setTitle").setRels(["setTitleDone"]);
+    input.get("title") &&
+    !input.get("title")?.rels?.includes("setTitleDone")) {
+    input.get("title").setRels(["setTitleDone"]);
   }
 
   return true;
