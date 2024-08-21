@@ -67,8 +67,9 @@ export default {
     // {},
     {
       title: '样式',
-      type: 'Style',
+      type: 'Stylenew',
       options: {
+        defaultOpen: true,
         plugins: ['border', 'bgcolor']
       },
       value: {
@@ -76,7 +77,6 @@ export default {
           return data.style;
         },
         set({data}, value: object) {
-          console.log(value)
           data.style = {
             ...data.style,
             ...value
@@ -86,9 +86,10 @@ export default {
     },
     {
       title: '文本样式',
-      type: 'Style',
+      type: 'Stylenew',
       options: {
-        plugins: ['font']
+        defaultOpen: true,
+        plugins: [{ type: 'font', config: { disableTextAlign: true, disableLineHeight: true,  disableLetterSpacing: true, disableWhiteSpace: true } }]
       },
       value: {
         get({data}) {

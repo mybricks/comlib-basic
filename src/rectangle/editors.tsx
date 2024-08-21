@@ -1,10 +1,10 @@
 export default {
-  '@init'({style}) {
+  '@init'({ style }) {
     style.height = 80
     style.width = 180
   },
   '@resize': {
-    options: ['width', 'height']
+    options: ['width', 'height'],
   },
   '.mybricks-rectangle-text': {
     items: [],
@@ -15,10 +15,10 @@ export default {
           return data.text
         },
         set({ data, focusArea }, value: string) {
-          data.text = value;
-        }
-      }
-    }
+          data.text = value
+        },
+      },
+    },
   },
   ':root': [
     // {
@@ -67,39 +67,55 @@ export default {
     // {},
     {
       title: '样式',
-      type: 'Style',
+      type: 'Stylenew',
       options: {
-        plugins: ['border', 'bgcolor']
+        defaultOpen: true,
+        plugins: [
+          {
+            type: 'border',
+          },
+        ],
       },
       value: {
-        get({data}) {
-          return data.style;
+        get({ data }) {
+          return data.style
         },
-        set({data}, value: object) {
+        set({ data }, value: object) {
           data.style = {
             ...data.style,
-            ...value
-          };
-        }
-      }
+            ...value,
+          }
+        },
+      },
     },
     {
       title: '文本样式',
-      type: 'Style',
+      type: 'Stylenew',
       options: {
-        plugins: ['font']
+        defaultOpen: true,
+        plugins: [
+          {
+            type: 'font',
+            config: {
+              disableTextAlign: true,
+              disableLineHeight: true,
+              disableLetterSpacing: true,
+              disableWhiteSpace: true,
+            },
+          },
+        ],
       },
       value: {
-        get({data}) {
-          return data.textStyle;
+        get({ data }) {
+          return data.textStyle
         },
-        set({data}, value: object) {
+        set({ data }, value: object) {
           data.textStyle = {
             ...data.textStyle,
-            ...value
-          };
-        }
-      }
+            ...value,
+          }
+        },
+      },
     },
     {
       title: '事件',
@@ -108,10 +124,10 @@ export default {
           title: '单击',
           type: '_Event',
           options: {
-            outputId: 'click'
-          }
+            outputId: 'click',
+          },
         },
-      ]
-    }
-  ]
+      ],
+    },
+  ],
 }
