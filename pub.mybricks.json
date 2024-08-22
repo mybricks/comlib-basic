@@ -8,6 +8,7 @@
   "commitInfo": "init",
   "comAry": [
     "./src/rectangle/com.json",
+    "./src/circle/com.json",
     "./src/shape/com.json",
     "./src/popup/com.json",
     "./src/drawer/com.json",
