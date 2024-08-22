@@ -7,7 +7,7 @@ export default {
     style.height = 1;
   },
   "@resize": {
-    options: ["width", 'asLine']
+    options: ["width", 'asLine', 'rotatable'],
   },
   ":root": {
     style: [
