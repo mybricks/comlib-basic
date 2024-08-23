@@ -1,18 +1,18 @@
-import React, { useMemo } from 'react'
-import { LineProps } from './constants'
+import React, {useMemo} from 'react'
+import {LineProps} from './constants'
 import Style from './runtime.less'
 
-export default function ({ data, style, env }: RuntimeParams<LineProps>) {
+export default function ({data, style, env}: RuntimeParams<LineProps>) {
   
   const lineWidth = useMemo(() => {
     return data.lineWidth ?? 1;
   }, [data.lineWidth])
-
+  
   // 画对角线
   const position = useMemo(() => {
     const width = parseFloat(style.width),
       height = parseFloat(style.height)
-
+    
     // 第二象限
     let x1 = 0,
       y1 = 0,
@@ -34,24 +34,35 @@ export default function ({ data, style, env }: RuntimeParams<LineProps>) {
       ;(y1 = height), (x2 = width), (y2 = 0)
     }
     return [
-      [x1, y1],
-      [x2, y2],
+      [Math.ceil(x1), Math.ceil(y1)],
+      [Math.ceil(x2), Math.ceil(y2)],
     ]
   }, [data.widthReverse, data.heightReverse, style.width, style.height])
-
+  
   // 修正宽 / 高正好等于线宽的情况下，不能使用对角线，而是应该直接画线
   const fixPostion = useMemo(() => {
+    // const [a, b] = position;
+    // const xGap = Math.abs(a[0] - b[0]);
+    // const yGap = Math.abs(a[1] - b[1]);
+    // if (Math.abs(xGap - lineWidth) <= 3) {
+    //   return [[Math.ceil(xGap / 2), a[1]], [Math.ceil(xGap / 2), b[1]]]
+    // } else if (Math.abs(yGap - lineWidth) <= 3) {
+    //   return [[a[0], Math.ceil(yGap / 2)], [b[0], Math.ceil(yGap / 2)]]
+    // }
+    
     const [a, b] = position;
-    const xGap = Math.abs(a[0] - b[0]);
-    const yGap = Math.abs(a[1] - b[1]);
-    if (xGap === lineWidth) {
-      return [[xGap / 2, a[1]], [xGap / 2, b[1]]]
-    } else if (yGap === lineWidth) {
-      return [[a[0], yGap / 2], [b[0], yGap / 2]]
+    if(Math.abs(a[0]-b[0])<=1){
+      return [[a[0], a[1]], [a[0], b[1]]]
     }
+    
+    if(Math.abs(a[1]-b[1])<=1){
+      return [[a[0], a[1]], [b[0], a[1]]]
+    }
+    
+    
     return position
   }, [position, lineWidth])
-
+  
   return (
     <div className={Style.warrper}>
       <Line
@@ -61,21 +72,21 @@ export default function ({ data, style, env }: RuntimeParams<LineProps>) {
         type={data.type}
         strokeWidth={lineWidth}
         stroke={data.color}
-        supportHover={env.edit}
+        supportHover={env.edit.hovered}
       />
     </div>
   )
 }
 
 const Line = ({
-  width,
-  height,
-  position,
-  type,
-  strokeWidth,
-  stroke,
-  supportHover = false,
-}) => {
+                width,
+                height,
+                position,
+                type,
+                strokeWidth,
+                stroke,
+                supportHover = false,
+              }) => {
   const strokeDasharray = useMemo(() => {
     switch (type) {
       case 'dashed':
@@ -86,7 +97,7 @@ const Line = ({
         return 'none'
     }
   }, [type])
-
+  
   return (
     <div
       style={{
@@ -97,7 +108,7 @@ const Line = ({
     >
       <svg
         className={`${supportHover ? Style.supportHover : ''}`}
-        style={{ width, height, position: 'absolute', top: 0, left: 0 }}
+        style={{width, height, position: 'absolute', top: 0, left: 0}}
       >
         {/* 实际线条 */}
         <path
