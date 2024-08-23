@@ -3,23 +3,33 @@ import { LineProps } from './constants'
 import Style from './runtime.less'
 
 export default function ({ data, style, env }: RuntimeParams<LineProps>) {
+  
+  const lineWidth = useMemo(() => {
+    return data.lineWidth ?? 1;
+  }, [data.lineWidth])
+
+  // 画对角线
   const position = useMemo(() => {
     const width = parseFloat(style.width),
       height = parseFloat(style.height)
 
+    // 第二象限
     let x1 = 0,
       y1 = 0,
       x2 = width,
       y2 = height
+    // 第四象限
     if (data.heightReverse && data.widthReverse) {
       return [
         [x1, y1],
         [x2, y2],
       ]
     }
+    // 第一象限
     if (data.heightReverse) {
       ;(y1 = height), (x2 = width), (y2 = 0)
     }
+    // 第三象限
     if (data.widthReverse) {
       ;(y1 = height), (x2 = width), (y2 = 0)
     }
@@ -29,14 +39,27 @@ export default function ({ data, style, env }: RuntimeParams<LineProps>) {
     ]
   }, [data.widthReverse, data.heightReverse, style.width, style.height])
 
+  // 修正宽 / 高正好等于线宽的情况下，不能使用对角线，而是应该直接画线
+  const fixPostion = useMemo(() => {
+    const [a, b] = position;
+    const xGap = Math.abs(a[0] - b[0]);
+    const yGap = Math.abs(a[1] - b[1]);
+    if (xGap === lineWidth) {
+      return [[xGap / 2, a[1]], [xGap / 2, b[1]]]
+    } else if (yGap === lineWidth) {
+      return [[a[0], yGap / 2], [b[0], yGap / 2]]
+    }
+    return position
+  }, [position, lineWidth])
+
   return (
     <div className={Style.warrper}>
       <Line
         width={style.width}
         height={style.height}
-        position={position}
+        position={fixPostion}
         type={data.type}
-        strokeWidth={data.lineWidth ?? 1}
+        strokeWidth={lineWidth}
         stroke={data.color}
         supportHover={env.edit}
       />
