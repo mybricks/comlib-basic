@@ -6,11 +6,12 @@ export default {
     style.width = 200;
     style.height = 1;
   },
+  '@hover': false,
   "@resize": {
     options: ['asLine'],
     value: {
-      set({ data }, opt) {
-        const {width, height,widthReverse,heightReverse} = opt;
+      set({data}, opt) {
+        const {width, height, widthReverse, heightReverse} = opt;
         if (widthReverse !== undefined) {
           data.widthReverse = widthReverse
         }
