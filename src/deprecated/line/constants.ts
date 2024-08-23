@@ -3,6 +3,4 @@ export interface LineProps {
   angle?: number;
   type: "solid" | "dashed" | "dotted";
   lineWidth: number;
-  heightReverse?: boolean
-  widthReverse?: boolean
 }

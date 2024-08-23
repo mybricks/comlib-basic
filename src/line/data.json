@@ -1,5 +1,7 @@
 {
   "type": "solid",
   "color": "#000000",
-  "lineWidth": 1
+  "lineWidth": 1,
+  "widthReverse": false,
+  "heightReverse": false
 }

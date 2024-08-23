@@ -1,7 +1,8 @@
 {
   "title": "线",
-  "namespace": "mybricks.basic-comlib.line",
-  "version": "1.0.0",
+  "visibility": false,
+  "namespace": "mybricks.normal-pc.line",
+  "version": "1.0.4",
   "description": "线",
   "author": "MyBricks",
   "author_name": "MyBricks",
@@ -9,6 +10,7 @@
   "data": "./data.json",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "upgrade": "./upgrade.ts",
   "inputs": [],
   "outputs": []
 }

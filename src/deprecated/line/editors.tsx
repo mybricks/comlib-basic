@@ -1,24 +1,13 @@
-import {LineProps} from "./constants";
+import { LineProps } from "./constants";
 import Style from "./runtime.less";
 
 export default {
-  "@init"({style}) {
+  "@init"({ style }) {
     style.width = 200;
-    style.height = 100;
+    style.height = 1;
   },
   "@resize": {
-    options: ['asLine'],
-    value: {
-      set({ data }, opt) {
-        const {width, height,widthReverse,heightReverse} = opt;
-        if (widthReverse !== undefined) {
-          data.widthReverse = widthReverse
-        }
-        if (heightReverse !== undefined) {
-          data.heightReverse = heightReverse
-        }
-      }
-    }
+    options: ["width"],
   },
   ":root": {
     style: [
@@ -47,10 +36,10 @@ export default {
         title: "类型",
         type: "Line",
         value: {
-          get({data}: EditorResult<LineProps>) {
+          get({ data }: EditorResult<LineProps>) {
             return data.type;
           },
-          set({data}: EditorResult<LineProps>, value: LineProps["type"]) {
+          set({ data }: EditorResult<LineProps>, value: LineProps["type"]) {
             data.type = value;
           },
         },
@@ -58,30 +47,17 @@ export default {
       {
         title: "线宽",
         type: "inputNumber",
-        options: [{min: 1, width: 100}],
+        options: [{ min: 1, width: 100 }],
         value: {
-          get({data}: EditorResult<LineProps>) {
+          get({ data }: EditorResult<LineProps>) {
             return [data.lineWidth];
           },
-          set({data, style}: EditorResult<LineProps>, value: number[]) {
+          set({ data, style }: EditorResult<LineProps>, value: number[]) {
             data.lineWidth = value[0];
             style.height = value[0];
           },
         },
       },
-      {
-        title: '颜色',
-        type: 'colorPicker',
-        options: [{min: 1, width: 100}],
-        value: {
-          get({data}: EditorResult<LineProps>) {
-            return data.color;
-          },
-          set({data}: EditorResult<LineProps>, value: string) {
-            data.color = value;
-          },
-        },
-      }
     ],
   },
 };
