@@ -25,6 +25,7 @@ export default {
             { value: WidthUnitEnum.Auto, label: "自动填充" },
             { value: WidthUnitEnum.Percent, label: "百分比" },
             { value: WidthUnitEnum.Px, label: "固定宽度" },
+            { value: WidthUnitEnum.Fit, label: "适应内容" }
           ],
           value: {
             get(props: EditorResult<Data>) {
