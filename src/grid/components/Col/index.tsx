@@ -11,6 +11,7 @@ export enum WidthUnitEnum {
   Px = "px",
   Auto = "auto",
   Percent = "%",
+  Fit = "fit-content"
 }
 
 export type ColType = {
@@ -44,6 +45,9 @@ const Col = (
     if (col.widthMode === WidthUnitEnum.Percent) {
       style.flex = `0 0 ${col.width}%`;
       style.maxWidth = `${col.width}%`;
+    }
+    if (col.widthMode === WidthUnitEnum.Fit) {
+      style.flex = "0 1 auto";
     }
     return { ...style, ...(col.style ?? {}) };
   }, [JSON.stringify(col.style), col.width, col.widthMode]);
