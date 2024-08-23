@@ -4,7 +4,7 @@ import Style from "./runtime.less";
 export default {
   "@init"({style}) {
     style.width = 200;
-    style.height = 100;
+    style.height = 1;
   },
   "@resize": {
     options: ['asLine'],
