@@ -67,6 +67,9 @@ export interface Data {
   isZIndex?: boolean;
   zIndex?: number;
   autoClose?: boolean;
+
+  isShow?: boolean;
+  position: 'extra' | 'footer'
 }
 
 export const DefaultEvent = ['ok', 'cancel'];

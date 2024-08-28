@@ -48,5 +48,8 @@
   "zIndex": 1000,
   "autoClose": true,
   "styleHeight": "100%",
-  "styleWidth": 570
+  "styleWidth": 570,
+
+  "isShow": true,
+  "position":  "footer"
 }
