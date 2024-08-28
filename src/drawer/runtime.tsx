@@ -153,7 +153,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
       <div
         data-toolbar
         className={isMobile ? css.mobileFooter : "toolbar"}
-        style={{ justifyContent: data.footerLayout || AlignEnum.FlexEnd, display: 'flex' }}>
+        style={{ justifyContent: data.footerLayout || AlignEnum.FlexEnd, display: 'flex', flexFlow: 'wrap' }}>
         {(data.footerBtns || []).map((item) => {
           const todo = getWhatToDoWithoutPermission(item.permission);
           if (todo === 'hide') return null;
@@ -234,7 +234,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
         height={isMobile ? '100%' : height || 800}
         closable={data.closable}
         //mask={false}
-        footer={data.useFooter ? renderFooter() : null}
+        footer={data.position === 'footer' && data.isShow ? renderFooter() : null}
         onClose={handleClose}
         bodyStyle={data.bodyStyle}
         placement={isMobile ? 'bottom' : data.placement}
@@ -244,6 +244,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
         //getContainer={() => env?.canvasElement || document.body}
         //getContainer={() => env?.creatPortalElement || document.body}
         zIndex={data.isZIndex ? data.zIndex : void 0}
+        extra={data.position === 'extra' && data.isShow ? renderFooter() : null}
       >
         <div className={css.slotContainer}>
           {slots['body'].render({
@@ -263,7 +264,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
         width={width || 520}
         height={isMobile ? '100%' : height || 800}
         closable={data.closable}
-        footer={data.useFooter ? renderFooter() : null}
+        footer={data.position === 'footer' && data.isShow  ? renderFooter() : null}
         onClose={handleClose}
         bodyStyle={data.bodyStyle}
         placement={isMobile ? 'bottom' : data.placement}
@@ -271,6 +272,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
         keyboard={data.keyboard}
         getContainer={() => env?.canvasElement || document.body}
         zIndex={data.isZIndex ? data.zIndex : void 0}
+        extra={data.position === 'extra' && data.isShow ? renderFooter() : null}
       >
         <div className={css.slotContainer}>
           {slots['body'].render({
@@ -295,7 +297,8 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
         visible={true}
         title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
         closable={data.closable}
-        footer={data.useFooter ? renderFooter() : null}
+        //footer={data.useFooter ? renderFooter() : null}
+        footer={data.position === 'footer' && data.isShow ? renderFooter() : null}
         onClose={handleClose}
         mask={false}
         bodyStyle={data.bodyStyle}
@@ -309,6 +312,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
             : width === '100%' ? 1024 : width,
         }}
         getContainer={false}
+        extra={data.position === 'extra' && data.isShow ? renderFooter() : null}
       >
         <div className={css.slotContainer}>
           {slots['body'].render({
