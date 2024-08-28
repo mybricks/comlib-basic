@@ -66,7 +66,6 @@ export default {
           },
           set({data, style}: EditorResult<LineProps>, value: number[]) {
             data.lineWidth = value[0];
-            style.height = value[0];
           },
         },
       },

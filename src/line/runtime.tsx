@@ -1,8 +1,10 @@
-import React, {useMemo} from 'react'
-import {LineProps} from './constants'
+import React, { useMemo, useRef } from 'react'
+import { LineProps } from './constants'
 import Style from './runtime.less'
 
-export default function ({data, style, env}: RuntimeParams<LineProps>) {
+export default function ({ data, style, env }: RuntimeParams<LineProps>) {
+  const nodeRef = useRef(null)
+
   
   const lineWidth = useMemo(() => {
     return data.lineWidth ?? 1;
@@ -64,7 +66,7 @@ export default function ({data, style, env}: RuntimeParams<LineProps>) {
   }, [position, lineWidth])
   
   return (
-    <div className={Style.warrper}>
+    <div className={Style.warrper} ref={nodeRef}>
       <Line
         width={style.width}
         height={style.height}
@@ -72,7 +74,7 @@ export default function ({data, style, env}: RuntimeParams<LineProps>) {
         type={data.type}
         strokeWidth={lineWidth}
         stroke={data.color}
-        supportHover={env.edit.hovered}
+        supportHover={env.edit}
       />
     </div>
   )
@@ -129,6 +131,7 @@ const Line = ({
           stroke={'transparent'}
           strokeWidth={strokeWidth + 20}
         />
+        <div className={Style.hoverLine} style={{ top: -(strokeWidth / 2 + 20), bottom: -(strokeWidth / 2 + 20), left: -20, right: -20 }}></div>
       </svg>
     </div>
   )
