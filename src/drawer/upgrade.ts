@@ -165,5 +165,25 @@ export default function ({
       input.get("title").setRels(["setTitleDone"]);
     }
 
+    /**
+   * @description 1.0.32->1.0.33  增加额外操作区
+  */
+   if (data.useFooter === true) {
+      data.isShow = true;
+      data.position = 'footer';
+      data.useFooter = '';
+    }else if(!data.useFooter){
+      data.isShow = false;
+      data.position = 'footer';
+      data.useFooter = '';
+    }
+    
+    if(typeof data.isShow === "undefined"){
+      data.isShow = true
+    }
+    if(typeof data.position === "undefined"){
+      data.position = 'footer'
+    }
+
   return true;
 }

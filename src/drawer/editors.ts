@@ -362,16 +362,50 @@ export default {
           type: 'switch',
           value: {
             get({ data }) {
-              return data.useFooter;
+              return data.isShow;
             },
             set({ data }, value: boolean) {
-              data.useFooter = value;
+              data.isShow = value;
             }
           }
         },
         {
+          title: '操作区',
+          type: 'select',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.isShow;
+          },
+          options: [
+            { value: 'extra', label: '额外操作区' },
+            { value: 'footer', label: '底部操作区' },
+          ],
+          value: {
+            get({ data }) {
+              return data.position;
+            },
+            set({ data }, value: boolean) {
+              data.position = value;
+            }
+          }
+        },
+        // {
+        //   title: '显示',
+        //   type: 'switch',
+        //   value: {
+        //     get({ data }) {
+        //       return data.useFooter;
+        //     },
+        //     set({ data }, value: boolean) {
+        //       data.useFooter = value;
+        //     }
+        //   }
+        // },
+        {
           title: '对齐方式',
           type: 'Radio',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.isShow && data.position === 'footer';
+          },
           options: [
             { value: AlignEnum.FlexStart, label: '居左' },
             { value: AlignEnum.Center, label: '居中' },
@@ -390,6 +424,9 @@ export default {
           title: '操作列表',
           description: '选中拖拽各项左侧手柄，可改变按钮的相对位置',
           type: 'array',
+          ifVisible({ data }: EditorResult<Data>) {
+            return data.isShow;
+          },
           options: {
             addText: '添加操作',
             deletable: false,
@@ -524,18 +561,18 @@ export default {
   '[data-toolbar]': ({ env }, cate1) => {
     cate1.title = '操作区',
       cate1.items = [
-        {
-          title: '显示',
-          type: 'Switch',
-          value: {
-            get({ data }) {
-              return data.useFooter;
-            },
-            set({ data }, value: boolean) {
-              data.useFooter = value;
-            }
-          }
-        },
+        // {
+        //   title: '显示',
+        //   type: 'Switch',
+        //   value: {
+        //     get({ data }) {
+        //       return data.useFooter;
+        //     },
+        //     set({ data }, value: boolean) {
+        //       data.useFooter = value;
+        //     }
+        //   }
+        // },
         {
           title: '对齐方式',
           type: 'Radio',
