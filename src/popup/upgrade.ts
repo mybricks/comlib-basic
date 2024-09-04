@@ -266,5 +266,22 @@ export default function ({
     input.get("title").setRels(["setTitleDone"]);
   }
 
+  /**
+   * @description 1.0.43->1.0.44  更改关闭按钮的target
+  */
+  const preCloseStyle = getDeclaredStyle('.{id} .anticon');
+  const preCloseHoverStyle = getDeclaredStyle('.{id} .anticon:hover');
+  
+  if (preCloseStyle) {
+    removeDeclaredStyle('.{id} .anticon');
+    setDeclaredStyle('.{id} .ant-modal-close', preCloseStyle.css);
+  }
+
+  if (preCloseHoverStyle) {
+    removeDeclaredStyle('.{id} .anticon:hover');
+    setDeclaredStyle('.{id} .ant-modal-close:hover', preCloseHoverStyle.css);
+  }
+
+
   return true;
 }

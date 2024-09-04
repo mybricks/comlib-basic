@@ -644,7 +644,7 @@ export default {
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         global: true,
         target({ id }) {
-          return `.{id} .anticon`;
+          return `.{id} .ant-modal-close`;
         }
       },
       {
@@ -652,7 +652,7 @@ export default {
         options: [{ type: 'font', config: { disableTextAlign: true } }],
         global: true,
         target({ id }) {
-          return `.{id} .anticon:hover`;
+          return `.{id} .ant-modal-close:hover`;
         }
       }
     ],
