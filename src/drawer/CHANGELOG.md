@@ -2,7 +2,7 @@
 
 ### fix
 
-- fix抽屉body背景色 (commit: )
+- fix抽屉body背景色 (commit: 06cec97ff4e67159f5c964f3c8ef8903ff10e6ca)
 
 ## [1.0.33] - 2024-8-28
 
