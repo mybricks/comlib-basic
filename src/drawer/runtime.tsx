@@ -5,7 +5,7 @@ import * as Icons from '@ant-design/icons';
 
 import css from './runtime.less'
 
-export default function ({ env, _env, data, slots, outputs, inputs, logger, style }) {
+export default function ({ id, env, _env, data, slots, outputs, inputs, logger, style }) {
   const ref = useRef<any>();
   const isMobile = env?.canvas?.type === 'mobile';
   const paddingMap = {
@@ -260,6 +260,7 @@ export default function ({ env, _env, data, slots, outputs, inputs, logger, styl
       ref={ref}>
       <Drawer
         visible={true}
+        className={id}
         title={data.hideTitle ? undefined : (data.isTitleCustom ? slots['title']?.render() : env.i18n(data.title))}
         width={width || 520}
         height={isMobile ? '100%' : height || 800}
