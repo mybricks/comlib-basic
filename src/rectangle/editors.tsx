@@ -74,6 +74,12 @@ export default {
           {
             type: 'border',
           },
+          {
+            type: 'background',
+          },
+          {
+            type: 'boxShadow',
+          },
         ],
       },
       value: {

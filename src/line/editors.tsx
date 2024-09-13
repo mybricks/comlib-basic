@@ -23,25 +23,25 @@ export default {
   },
   ":root": {
     style: [
-      {
-        title: "线",
-        type: "style",
-        options: [
-          {
-            type: "border",
-            config: {
-              disableBorderStyle: true,
-              disableBorderRadius: true,
-              disableBorderWidth: true,
-              useImportant: true,
-              disableBorderRight: true,
-              disableBorderBottom: true,
-              disableBorderLeft: true,
-            },
-          },
-        ],
-        target: `.${Style.line}`,
-      },
+      // {
+      //   title: "线",
+      //   type: "style",
+      //   options: [
+      //     {
+      //       type: "border",
+      //       config: {
+      //         disableBorderStyle: true,
+      //         disableBorderRadius: true,
+      //         disableBorderWidth: true,
+      //         useImportant: true,
+      //         disableBorderRight: true,
+      //         disableBorderBottom: true,
+      //         disableBorderLeft: true,
+      //       },
+      //     },
+      //   ],
+      //   target: `.${Style.line}`,
+      // },
     ],
     items: [
       {
