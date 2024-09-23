@@ -1,0 +1,22 @@
+{
+  "title": "关闭所有弹窗",
+  "namespace": "mybricks.basic-comlib.destroy-all-popup",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "关闭所有弹窗",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "data": "./data.json",
+  "runtime": "./runtime.ts",
+  "editors": "./editors.ts",
+  "icon": "./icon.svg",
+  "inputs": [
+    {
+      "id": "destroyAllPopup",
+      "title": "关闭所有弹窗",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

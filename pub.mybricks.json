@@ -37,7 +37,8 @@
     "./src/_meta/_generate-page/com.json",
     "./src/_meta/_update-var/com.json",
     "./src/_meta/_get-com/com.json",
-    "./src/_meta/_edit-dialog/com.json"
+    "./src/_meta/_edit-dialog/com.json",
+    "./src/_destroy-all-popup/com.json"
   ],
   "externals": [],
   "componentType": "PC",
