@@ -169,10 +169,10 @@ export default {
         })
       }
 
-      catalog[0].title = '配置';
+      catalog[0].title = '常规';
       catalog[0].items = [
         {
-          title: '组件代码',
+          //title: '组件代码',
           items: [
             {
               title: 'JSX',
