@@ -3,7 +3,7 @@
   "namespace": "mybricks.basic-comlib.destroy-all-popup",
   "version": "1.0.0",
   "rtType": "js",
-  "description": "关闭所有弹窗",
+  "description": "关闭当前打开的所有弹窗，包括对话框、抽屉等",
   "author": "MyBricks",
   "author_name": "MyBricks",
   "data": "./data.json",
