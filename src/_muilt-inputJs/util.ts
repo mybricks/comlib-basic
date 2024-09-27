@@ -115,7 +115,7 @@ export function updateOutputSchema(output, code) {
         outputs: convertObject2Array(outputs),
         inputs: convertObject2Array(inputs)
       }
-      fn.run([params], () => { });
+      // fn.run([params], () => { }); // 在失去焦点时不运行 js 代码，避免在编辑器中运行死循环代码等
     } catch (error) {
       console.error(error)
     }
