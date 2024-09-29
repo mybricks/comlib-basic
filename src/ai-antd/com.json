@@ -9,5 +9,6 @@
   "runtime": "./runtime.tsx",
   "editors": "./editor.tsx",
   "data": "./data.json",
+  "slots": [],
   "docs": ""
 }

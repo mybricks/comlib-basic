@@ -3,20 +3,26 @@ import {polyfillRuntime} from './util'
 
 polyfillRuntime();
 
-const ErrorStatus = ({ title = '未知错误', children = null }: { title?: string, children?: any }) => (
-  <div style={{ color: 'red' }}>
+const ErrorStatus = ({title = '未知错误', children = null}: { title?: string, children?: any }) => (
+  <div style={{color: 'red'}}>
     {title}
-    <br />
+    <br/>
     {children}
   </div>
-);
+)
 
 interface CssApi {
   set: (id: string, content: string) => void
   remove: (id: string) => void
 }
 
-export default ({ data, inputs, env, outputs, logger, id }) => {
+export default ({env, data, inputs, outputs, slots, logger, id}) => {
+  useMemo(() => {
+    if (env.edit) {
+      data._editors = void 0
+    }
+  }, [])
+  
   const appendCssApi = useMemo<CssApi>(() => {
     let cssApi = {
       set: (id: string, content: string) => {
@@ -42,7 +48,7 @@ export default ({ data, inputs, env, outputs, logger, id }) => {
     }
     return cssApi
   }, [env])
-
+  
   // 注入 CSS 代码
   useMemo(() => {
     if (data.css) {
@@ -50,7 +56,7 @@ export default ({ data, inputs, env, outputs, logger, id }) => {
       appendCssApi.set(`mbcrcss_${id}`, decodeURIComponent(data.css))
     }
   }, [data.css, appendCssApi])
-
+  
   // 卸载 CSS 代码
   useEffect(() => {
     return () => {
@@ -78,7 +84,6 @@ export default ({ data, inputs, env, outputs, logger, id }) => {
   const ReactNode = useMemo(() => {
     //console.log(decodeURIComponent(data.code))
     
-    
     if (errorInfo) return errorInfo.tip;
     try {
       eval(decodeURIComponent(data.code))
@@ -86,17 +91,37 @@ export default ({ data, inputs, env, outputs, logger, id }) => {
       const rt = window[`mbcrjsx_${id}`]
       return rt?.default;
     } catch (error) {
-      return error?.toString();
+      return error?.toString()
     }
-  }, [data.code, errorInfo]);
-
+  }, [data.code, errorInfo])
+  
+  
   const scope = useMemo(() => {
     return {
+      data: new Proxy({}, {
+        get(obj, key) {
+          //debugger
+          
+          if (!data['_defined']) {
+            data['_defined'] = {}
+          }
+          
+          return data['_defined'][key]
+        },
+        set(obj, key, value) {
+          if (!data['_defined']) {
+            data['_defined'] = {}
+          }
+          
+          data['_defined'][key] = value
+          return true
+        }
+      }),
       inputs: new Proxy({}, {
-        get(_, key) {
+        get(_, id) {
           if (env.runtime) {
-            const inputId = data.inputs.find((input) => input.id === key)?.key
-
+            const inputId = data.inputs.find((input) => input.id === id)?.id
+            
             if (inputId) {
               return (fn) => {
                 inputs[inputId]((value, relOutputs) => {
@@ -109,26 +134,44 @@ export default ({ data, inputs, env, outputs, logger, id }) => {
                 })
               }
             }
-
-            return () => {}
+            
+            return () => {
+            }
           }
-          return () => {}
+          return () => {
+          }
         }
       }),
       outputs: new Proxy({}, {
-        get(_, key) {
+        get(obj, id) {
           if (env.runtime) {
-            const outputId = data.outputs.find((input) => input.id === key)?.key
-            return outputId ? (outputs[outputId] || (() => {})) : () => {}
+            const outputId = data.outputs.find((input) => input.id === id)?.id
+            if (outputId) {
+              const rtn = outputs[outputId]
+              
+              if (rtn) {
+                return rtn
+              }
+            }
           }
-          return () => {}
+          
+          return () => {
+          }
+        }
+      }),
+      slots: new Proxy({}, {
+        get(obj, id) {
+          const slotId = data.slots.find((slot) => slot.id === id)?.id
+          if (slotId) {
+            return slots[slotId]
+          }
         }
       }),
       env,
-      context: { React }
+      context: {React}
     }
-  }, [])
-
+  }, [slots])
+  
   return (
     <>
       {typeof ReactNode === 'function' ? (
