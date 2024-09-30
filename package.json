@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/mybricks/comlib-basic#readme",
   "dependencies": {
+    "@ant-design/charts": "^2.2.1",
     "antd": "^4.18.5",
     "copy-to-clipboard": "^3.3.3",
     "gm-crypto": "^0.1.12",
