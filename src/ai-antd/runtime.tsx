@@ -125,20 +125,31 @@ export default ({env, data, inputs, outputs, slots, logger, id}) => {
       inputs: new Proxy({}, {
         get(_, id) {
           if (env.runtime) {
-            const inputId = data.inputs.find((input) => input.id === id)?.id
 
-            if (inputId) {
-              return (fn) => {
-                inputs[inputId]((value, relOutputs) => {
-                  fn(value, new Proxy({}, {
-                    get(_, key) {
-                      const outputId = data.outputs.find((input) => input.id === key)?.key || ""
-                      return relOutputs[outputId]
-                    }
-                  }))
-                })
-              }
+            return (fn) => {
+              inputs[id]((value, relOutputs) => {
+                fn(value, new Proxy({}, {
+                  get(_, key) {
+                    ///TODO
+                  }
+                }))
+              })
             }
+
+            // const inputId = data.inputs.find((input) => input.id === id)?.id
+            //
+            // if (inputId) {
+            //   return (fn) => {
+            //     inputs[inputId]((value, relOutputs) => {
+            //       fn(value, new Proxy({}, {
+            //         get(_, key) {
+            //           const outputId = data.outputs.find((input) => input.id === key)?.key || ""
+            //           return relOutputs[outputId]
+            //         }
+            //       }))
+            //     })
+            //   }
+            // }
 
             return () => {
             }
