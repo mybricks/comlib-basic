@@ -9,6 +9,7 @@ export default [
   {
     title: '@ant-design/icons',
     desc: `ant design图标库`,
+    moduleDef: `window['icons']`,
   },
   {
     title: '@ant-design/charts',
