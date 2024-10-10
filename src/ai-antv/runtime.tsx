@@ -1,19 +1,29 @@
-import React, {useEffect, useMemo} from 'react';
-import * as charts from '@ant-design/charts';
-import {polyfillRuntime} from './util'
-
-window.charts = charts
-
-
-polyfillRuntime();
+import React, {useEffect, useMemo, useState} from 'react';
+import { polyfillChartsRuntime } from './util'
 
 const ErrorStatus = ({title = '未知错误', children = null}: { title?: string, children?: any }) => (
-  <div style={{color: 'red'}}>
+  <div style={{ padding: '8px 12px', background: '#EBECEE', fontSize: 13, color: 'red' }}>
     {title}
     <br/>
     {children}
   </div>
 )
+
+const LoadingStatus = ({ title = '加载中...' }) => {
+  return (
+    <div style={{ padding: '8px 12px', background: '#EBECEE', fontSize: 13 }}>
+      {title}
+    </div>
+  )
+}
+
+const FallbackStatus = () => {
+  return (
+    <div style={{ padding: '8px 12px', background: '#EBECEE', fontSize: 13 }}>
+      欢迎使用 MyBricks AI 图表组件
+    </div>
+  )
+}
 
 interface CssApi {
   set: (id: string, content: string) => void
@@ -21,12 +31,21 @@ interface CssApi {
 }
 
 export default ({env, data, inputs, outputs, slots, logger, id}) => {
+  const [loading, setLoading] = useState<string | undefined>('资源加载中...')
+  useMemo(() => {
+    polyfillChartsRuntime().catch(() => {
+      setLoading('图表资源加载失败，当前环境暂不支持此组件')
+    }).finally(() => {
+      setLoading(void 0)
+    })
+  }, [])
+
   useMemo(() => {
     if (env.edit) {
       data._editors = void 0
     }
   }, [])
-  
+
   const appendCssApi = useMemo<CssApi>(() => {
     let cssApi = {
       set: (id: string, content: string) => {
@@ -52,15 +71,14 @@ export default ({env, data, inputs, outputs, slots, logger, id}) => {
     }
     return cssApi
   }, [env])
-  
+
   // 注入 CSS 代码
   useMemo(() => {
-    if (data.css) {
-      // mbcrcss = mybricks_custom_render_css缩写
-      appendCssApi.set(`mbcrcss_${id}`, decodeURIComponent(data.css))
+    if (data._styleCode) {
+      appendCssApi.set(`mbcrcss_${id}`, decodeURIComponent(data._styleCode))
     }
-  }, [data.css, appendCssApi])
-  
+  }, [data._styleCode, appendCssApi])
+
   // 卸载 CSS 代码
   useEffect(() => {
     return () => {
@@ -68,7 +86,7 @@ export default ({env, data, inputs, outputs, slots, logger, id}) => {
       appendCssApi.remove(`mbcrcss_${id}`)
     }
   }, [])
-  
+
   const errorInfo = useMemo(() => {
     if (!!data._jsxErr) {
       return {
@@ -76,7 +94,7 @@ export default ({env, data, inputs, outputs, slots, logger, id}) => {
         tip: data._jsxErr
       }
     }
-    
+
     if (!!data._cssErr) {
       return {
         title: 'Less 编译失败',
@@ -84,61 +102,74 @@ export default ({env, data, inputs, outputs, slots, logger, id}) => {
       }
     }
   }, [data._jsxErr, data._cssErr])
-  
+
   const ReactNode = useMemo(() => {
-    //console.log(decodeURIComponent(data.code))
-    
     if (errorInfo) return errorInfo.tip;
-    try {
-      eval(decodeURIComponent(data.code))
-      
-      const rt = window[`mbcrjsx_${id}`]
-      return rt?.default;
-    } catch (error) {
-      return error?.toString()
+    if (data._renderCode) {
+      try {
+        eval(decodeURIComponent(data._renderCode))
+
+        const rt = window[`mbcrjsx_${id}`]
+        return rt?.default;
+      } catch (error) {
+        return error?.toString()
+      }
+    } else {
+      return () => <FallbackStatus />
     }
-  }, [data.code, errorInfo])
-  
-  
+  }, [data._renderCode, errorInfo])
+
   const scope = useMemo(() => {
     return {
-      data: new Proxy({}, {
-        get(obj, key) {
-          //debugger
-          
-          if (!data['_defined']) {
-            data['_defined'] = {}
-          }
-          
-          return data['_defined'][key]
-        },
-        set(obj, key, value) {
-          if (!data['_defined']) {
-            data['_defined'] = {}
-          }
-          
-          data['_defined'][key] = value
-          return true
-        }
-      }),
+      data,
+      // data: new Proxy({}, {
+      //   get(obj, key) {
+      //     //debugger
+      //
+      //     if (!data['_defined']) {
+      //       data['_defined'] = {}
+      //     }
+      //
+      //     return data['_defined'][key]
+      //   },
+      //   set(obj, key, value) {
+      //     if (!data['_defined']) {
+      //       data['_defined'] = {}
+      //     }
+      //
+      //     data['_defined'][key] = value
+      //     return true
+      //   }
+      // }),
       inputs: new Proxy({}, {
         get(_, id) {
           if (env.runtime) {
-            const inputId = data.inputs.find((input) => input.id === id)?.id
-            
-            if (inputId) {
-              return (fn) => {
-                inputs[inputId]((value, relOutputs) => {
-                  fn(value, new Proxy({}, {
-                    get(_, key) {
-                      const outputId = data.outputs.find((input) => input.id === key)?.key || ""
-                      return relOutputs[outputId]
-                    }
-                  }))
-                })
-              }
+
+            return (fn) => {
+              inputs[id]((value, relOutputs) => {
+                fn(value, new Proxy({}, {
+                  get(_, key) {
+                    ///TODO
+                  }
+                }))
+              })
             }
-            
+
+            // const inputId = data.inputs.find((input) => input.id === id)?.id
+            //
+            // if (inputId) {
+            //   return (fn) => {
+            //     inputs[inputId]((value, relOutputs) => {
+            //       fn(value, new Proxy({}, {
+            //         get(_, key) {
+            //           const outputId = data.outputs.find((input) => input.id === key)?.key || ""
+            //           return relOutputs[outputId]
+            //         }
+            //       }))
+            //     })
+            //   }
+            // }
+
             return () => {
             }
           }
@@ -148,17 +179,14 @@ export default ({env, data, inputs, outputs, slots, logger, id}) => {
       }),
       outputs: new Proxy({}, {
         get(obj, id) {
-          if (env.runtime) {
-            const outputId = data.outputs.find((input) => input.id === id)?.id
-            if (outputId) {
-              const rtn = outputs[outputId]
-              
-              if (rtn) {
-                return rtn
-              }
+          if (env.runtime) {/////TODO 继续完成其他部分
+            const rtn = outputs[id]
+
+            if (rtn) {
+              return rtn
             }
           }
-          
+
           return () => {
           }
         }
@@ -176,8 +204,10 @@ export default ({env, data, inputs, outputs, slots, logger, id}) => {
     }
   }, [slots])
 
-  console.log('render data ===>', scope.data)
-  
+  if (!!loading) {
+    return <LoadingStatus title={loading} />
+  }
+
   return (
     <>
       {typeof ReactNode === 'function' ? (

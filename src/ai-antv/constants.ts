@@ -57,13 +57,3 @@ export const DefaultJSONCode = `{
 `
 
 const ReactType =  `\/\/\/ <reference types="https://unpkg.com/browse/@types/react@17.0.73/index.d.ts" />`
-
-export const getParamsType = (propsTypeName: string = 'any') =>  `
-declare interface Params {
-  inputs: Record<string, Function>;
-  outputs: Record<string, Function>;
-  context: {
-    React: typeof React;
-  };
-}
-`

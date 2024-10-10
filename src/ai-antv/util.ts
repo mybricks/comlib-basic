@@ -1,3 +1,5 @@
+import { loadExternalAssetsDeps } from './../utils/ai-code/helper'
+
 export function uuid(pre = 'u_', len = 6) {
   const seed = 'abcdefhijkmnprstwxyz0123456789', maxPos = seed.length;
   let rtn = '';
@@ -8,9 +10,29 @@ export function uuid(pre = 'u_', len = 6) {
 }
 
 
-export function polyfillRuntime () {
+export async function polyfillChartsRuntime () {
   if (!window?.['react']) {
     window['react'] = window['React']
+  }
+
+  await loadExternalAssetsDeps([
+    {
+      name: 'Charts',
+      deps: [
+        {
+          tag: 'script',
+          url: 'https://assets.mybricks.world/mybricks_material_externals/ant-design-charts@1.3.5.min.js',
+          library: 'Charts',
+          fallbackUrls: [
+            '/mfs/mybricks_material_externals/ant-design-charts@1.3.5.min.js'
+          ]
+        }
+      ]
+    }
+  ]);
+
+  if (!window?.['charts']) {
+    window['charts'] = window['Charts']
   }
 }
 
@@ -22,29 +44,3 @@ export function safeDecodeParseJsonCode(jsonCode: string) {
     return null;
   }
 }
-
-// export function compareIO(previousValue, currentValue): any {
-//   // const previousIdSet = new Set(previousValue.map(item => item.id));
-//   // const currentIdSet = new Set(currentValue.map(item => item.id));
-//
-//   // const deleteIds = [...previousIdSet].filter(id => !currentIdSet.has(id));
-//   // const addIdsMap = [...currentIdSet].reduce((acc: any, id: any) => {
-//   //     if (!previousIdSet.has(id)) {
-//   //       acc[id] = true
-//   //     };
-//   //     return acc;
-//   // }, {});
-//
-//   const previousIdSet = new Set(previousValue.map(item => item.id));
-//   const currentIdSet = new Set(currentValue.map(item => item.id));
-//
-//   const deleteIds = [...previousIdSet].filter(id => !currentIdSet.has(id));
-//   const addIdsMap = [...currentIdSet].reduce((acc: any, key: any) => {
-//       if (!previousIdSet.has(key)) {
-//         acc[key] = true
-//       };
-//       return acc;
-//   }, {});
-//
-//   return { deleteIds, addIdsMap };
-// }

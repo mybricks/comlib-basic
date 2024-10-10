@@ -1,5 +1,5 @@
-import {CSS_LANGUAGE} from './types'
-import {getParamsType} from './constants';
+import { CSS_LANGUAGE } from './types'
+import { getParamsType, requireScriptFromUrl } from './helper';
 
 function supportLessCssModules(code) {
   let res
@@ -24,7 +24,7 @@ const transformTsx = async (code, context: { id: string }) => {
         ],
         moduleId: `mbcrjsx_${context.id}`,
         plugins: [
-          ['proposal-decorators', {legacy: true}],
+          ['proposal-decorators', { legacy: true }],
           'proposal-class-properties',
           [
             'transform-typescript',
@@ -34,18 +34,18 @@ const transformTsx = async (code, context: { id: string }) => {
           ]
         ]
       }
-      
+
       if (!window.Babel) {
         loadBabel()
         throw Error('当前环境 BaBel编译器 未准备好')
       } else {
         transformCode = window.Babel.transform(supportLessCssModules(code), options).code
       }
-      
+
     } catch (error) {
       reject(error)
     }
-    
+
     return resolve(encodeURIComponent(transformCode))
   })
 }
@@ -71,7 +71,7 @@ const transformCss = async (code, type: CSS_LANGUAGE = CSS_LANGUAGE.Css, context
   if (type === CSS_LANGUAGE.Css) {
     return Promise.resolve(encodeURIComponent(addIdScopeToCssRules(code.replace(/\s+/g, ' ').trim(), context.id)));
   }
-  
+
   if (type === CSS_LANGUAGE.Less) {
     return new Promise((resolve, reject) => {
       let res = ''
@@ -96,13 +96,13 @@ const transformCss = async (code, type: CSS_LANGUAGE = CSS_LANGUAGE.Css, context
       return resolve(encodeURIComponent(addIdScopeToCssRules(res.replace(/\s+/g, ' ').trim(), context.id)));
     })
   }
-  
+
   return Promise.reject(new Error(`不支持的样式代码语言 ${type}`))
 }
 
 function addIdScopeToCssRules(cssText, id) {
   const regex = /([^{]*)(\{[^}]*\})/g;
-  
+
   const prefixedCssText = cssText.replace(regex, (match, selectorGroup, ruleBody) => {
     const selectors = selectorGroup.split(',').map(selector => {
       selector = selector.trim();
@@ -111,39 +111,25 @@ function addIdScopeToCssRules(cssText, id) {
       }
       return selector;
     });
-    
+
     return `${selectors.join(', ')}${ruleBody}`;
   });
-  
-  return prefixedCssText;
-}
 
-async function requireFromCdn(cdnUrl) {
-  return new Promise((resolve, reject) => {
-    const el = document.createElement('script');
-    el.src = cdnUrl
-    document.body.appendChild(el)
-    el.onload = () => {
-      resolve(true)
-    }
-    el.onerror = () => {
-      reject(new Error(`加载${cdnUrl}失败`))
-    }
-  })
+  return prefixedCssText;
 }
 
 async function loadLess() {
   if (window?.less) {
     return
   }
-  await requireFromCdn('https://f2.beckwai.com/udata/pkg/eshop/fangzhou/asset/less/4.2.0/less.js')
+  await requireScriptFromUrl('https://f2.beckwai.com/udata/pkg/eshop/fangzhou/asset/less/4.2.0/less.js')
 }
 
 async function loadBabel() {
   if (window?.Babel) {
     return
   }
-  await requireFromCdn('https://f2.beckwai.com/udata/pkg/eshop/fangzhou/asset/babel/standalone/7.24.7/babel.min.js')
+  await requireScriptFromUrl('https://f2.beckwai.com/udata/pkg/eshop/fangzhou/asset/babel/standalone/7.24.7/babel.min.js')
 }
 
-export {genLibTypes, transformCss, transformTsx, loadLess, loadBabel};
+export { genLibTypes, transformCss, transformTsx, loadLess, loadBabel };
