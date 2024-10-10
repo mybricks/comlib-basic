@@ -21,25 +21,40 @@ export default ({ data, inputs, env, outputs, logger, id }: RuntimeParams<Data>)
   const appendCssApi = useMemo<CssApi>(() => {
     let cssApi = {
       set: (id: string, content: string) => {
+        // const el = document.getElementById(id);
+        // if (el) {
+        //   el.innerText = content
+        //   return
+        // }
+        // const styleEle = document.createElement('style')
+        // styleEle.id = id;
+        // styleEle.innerText = content
+        // document.head.appendChild(styleEle);
+      },
+      remove: (id: string) => {
+        // const el = document.getElementById(id);
+        // if (el && el.parentElement) {
+        //   console.log("el.parentElement: ", el.parentElement)
+        //   el.parentElement.removeChild(el)
+        // }
+      }
+    }
+    if ((env.edit || env.runtime?.debug) && env.canvas?.css) {
+      // 编辑态依赖引擎注入的api
+      cssApi = env.canvas.css
+    } else if (!env.edit && env.runtime && !env.runtime.debug) {
+      // 非引擎环境才需要set，引擎环境下在编辑时就已经通过引擎api注入了样式
+      cssApi.set = (id: string, content: string) => {
         const el = document.getElementById(id);
         if (el) {
-          el.innerText = content
+          // 只需注入一次，不会有变更（搭建时编写的less）
           return
         }
         const styleEle = document.createElement('style')
         styleEle.id = id;
         styleEle.innerText = content
         document.head.appendChild(styleEle);
-      },
-      remove: (id: string) => {
-        const el = document.getElementById(id);
-        if (el && el.parentElement) {
-          el.parentElement.removeChild(el)
-        }
       }
-    }
-    if ((env.edit || env.runtime?.debug) && env.canvas?.css) {
-      cssApi = env.canvas.css
     }
     return cssApi
   }, [env])

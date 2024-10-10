@@ -3,7 +3,7 @@
   "namespace": "mybricks.basic-comlib.custom-render",
   "author": "mybricks-team",
   "author_name": "mybricks-team",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "自定义渲染 --- tsx",
   "icon": "./icon.svg",
   "runtime": "./runtime.tsx",
