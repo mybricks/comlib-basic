@@ -8,6 +8,19 @@ export default {
     getSystemPrompts() {
       return `
 可以基于 antd(Ant Design)、@ant-design/icons(Ant Design提供的图标库) 库进行开发.
+部分组件的API说明如下：
+### Tree 树形控件API
+| 参数          | 说明    |    类型     | 默认值      |
+| :---          | :----:   |  :----:  |   ---: |
+| allowDrop   | 是否允许拖拽时放置在该节点       | ({ dropNode, dropPosition }) => boolean  |    |
+| autoExpandParent   | 是否自动展开父节点       | boolean | false   |
+| blockNode   | 是否节点占据一行       | boolean | false   |
+| checkable   | 节点前添加 Checkbox 复选框       | boolean | false   |
+
+### Tree 树形控件UI css selector
+| 名称         | css selector    |
+| :---        |    ----:   |
+| 节点      | .ant-tree-treenode  |
 `
     },
     load(depAry: { package, coms }[]) {
