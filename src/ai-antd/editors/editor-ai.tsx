@@ -8,9 +8,18 @@ export default {
     getSystemPrompts() {
       return `
 可以基于 antd(Ant Design)、@ant-design/icons(Ant Design提供的图标库) 库进行开发.
+`
+    },
+    load(depAry: { package, coms }[]) {
+      const prompts = []
 
-对于antd库，以下是一些组件的补充说明（markdown格式）：
+      depAry.forEach(dep => {
+        if (dep.package && dep.coms) {
+          if (dep.package === 'antd') {
 
+            dep.coms.forEach(com => {
+              if (com === 'Tree') {
+                prompts.push(`
 ### Tree 树形控件API
 | 参数          | 说明    |    类型     | 默认值      |
 | :---          | :----:   |  :----:  |   ---: |
@@ -23,8 +32,16 @@ export default {
 | 名称         | css selector    |
 | :---        |    ----:   |
 | 节点      | .ant-tree-treenode  |
+        `)
+              }
+            })
+          }
+        }
+      })
 
-        `
+      if (prompts.length > 0) {
+        return prompts.join('\n')
+      }
     },
     execute({id, data, inputs, outputs, slots},
             response: { render, style }) {

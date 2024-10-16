@@ -1,5 +1,6 @@
 import React, {useEffect, useMemo} from 'react';
 import {polyfillRuntime} from './util'
+import css from './css.less'
 
 polyfillRuntime();
 
@@ -94,7 +95,9 @@ export default ({env, data, inputs, outputs, slots, logger, id}) => {
     } else {
       return function () {
         return (
-          <div>欢迎使用MyBricks AI组件</div>
+          <div className={css.default}>
+            欢迎使用MyBricks AI组件
+          </div>
         )
       }
     }
@@ -174,10 +177,7 @@ export default ({env, data, inputs, outputs, slots, logger, id}) => {
       }),
       slots: new Proxy({}, {
         get(obj, id) {
-          const slotId = data.slots.find((slot) => slot.id === id)?.id
-          if (slotId) {
-            return slots[slotId]
-          }
+          return slots[id]
         }
       }),
       env,
