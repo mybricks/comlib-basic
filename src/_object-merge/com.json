@@ -1,7 +1,7 @@
 {
   "title": "对象合并",
   "namespace": "mybricks.normal-pc.object-merge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "rtType": "js",
   "description": "对象合并",
   "author": "Mybricks",
