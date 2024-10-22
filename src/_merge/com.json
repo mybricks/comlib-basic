@@ -1,7 +1,7 @@
 {
   "title": "数据合并",
   "namespace": "mybricks.normal-pc.data.merge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "rtType": "js",
   "description": "异步数据组合",
   "author": "MyBricks",

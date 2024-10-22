@@ -59,16 +59,16 @@ export default {
       data: {
         code,
         css,
-        inputs: inputs.map(({ id, key }) => {
+        inputs: inputs ? inputs.map(({ id, key }) => {
           return {
             id, key
           }
-        }),
-        outputs: outputs.map(({ id, key }) => {
+        }) : [],
+        outputs: outputs ? outputs.map(({ id, key }) => {
           return {
             id, key
           }
-        }),
+        }) : [],
         _cssErr,
         _jsxErr
       }
