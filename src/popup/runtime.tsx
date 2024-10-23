@@ -184,6 +184,9 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
 
 
   useEffect(()=>{
+    // 后面的骚操作是干嘛的？
+    return;
+
     if(typeof width === 'number' && env?.canvasElement && width > env?.canvasElement.clientWidth){
       setContainer(env?.creatPortalElement || document.body)
       return
