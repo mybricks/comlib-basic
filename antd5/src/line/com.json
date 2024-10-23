@@ -1,0 +1,14 @@
+{
+  "namespace": "mybricks.basic-comlib.antd5.line",
+  "title": "线",
+  "version": "1.0.1",
+  "description": "线",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/line/icon.svg",
+  "data": "../../../src/line/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/line/editors.tsx",
+  "inputs": [],
+  "outputs": []
+}

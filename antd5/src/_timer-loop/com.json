@@ -1,0 +1,31 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.timer-loop",
+  "title": "循环执行",
+  "version": "1.0.2",
+  "rtType": "js",
+  "description": "循环执行",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/_timer-loop/icon.svg",
+  "data": "../../../src/_timer-loop/data.json",
+  "runtime": "../../../src/_timer-loop/runtime.ts",
+  "editors": "../../../src/_timer-loop/editors.tsx",
+  "inputs": [
+    {
+      "id": "trigger",
+      "title": "触发",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "trigger",
+      "title": "执行",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

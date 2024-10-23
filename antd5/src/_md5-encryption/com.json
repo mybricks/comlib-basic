@@ -1,0 +1,37 @@
+{
+  "namespace": "mybricks.basic-comlib.antd5._md5-encryption",
+  "title": "MD5加密",
+  "version": "1.0.0",
+  "description": "MD5加密",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/_md5-encryption/icon.svg",
+  "data": "../../../src/_md5-encryption/data.json",
+  "runtime": "../../../src/_md5-encryption/runtime.ts",
+  "editors": "../../../src/_md5-encryption/editors.ts",
+  "rtType": "js",
+  "inputs": [
+    {
+      "id": "input",
+      "title": "输入项",
+      "schema": [
+        {
+          "name": "value",
+          "title": "加密内容",
+          "type": "string",
+          "editable": true
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "encryptionValue",
+      "title": "输出加密结果",
+      "schema": {
+        "type": "string"
+      },
+      "editable": true
+    }
+  ]
+}

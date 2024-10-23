@@ -1,0 +1,16 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.line",
+  "title": "线",
+  "visibility": false,
+  "version": "1.0.4",
+  "description": "线",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../../src/deprecated/line/icon.svg",
+  "data": "../../../../src/deprecated/line/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../../src/deprecated/line/editors.tsx",
+  "upgrade": "../../../../src/deprecated/line/upgrade.ts",
+  "inputs": [],
+  "outputs": []
+}

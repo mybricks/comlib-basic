@@ -1,0 +1,32 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.timer-throttle",
+  "title": "节流",
+  "version": "1.0.1",
+  "rtType": "js",
+  "description": "节流",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "icon": "../../../src/_timer-throttle/icon.svg",
+  "data": "../../../src/_timer-throttle/data.json",
+  "runtime": "../../../src/_timer-throttle/runtime.ts",
+  "editors": "../../../src/_timer-throttle/editors.tsx",
+  "upgrade": "../../../src/_timer-throttle/upgrade.ts",
+  "inputs": [
+    {
+      "id": "trigger",
+      "title": "触发",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "trigger",
+      "title": "执行",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

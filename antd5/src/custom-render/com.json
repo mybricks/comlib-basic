@@ -1,0 +1,13 @@
+{
+  "namespace": "mybricks.basic-comlib.antd5.custom-render",
+  "title": "JSX",
+  "author": "mybricks-team",
+  "author_name": "mybricks-team",
+  "version": "1.0.5",
+  "description": "自定义渲染 --- tsx",
+  "icon": "../../../src/custom-render/icon.svg",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/custom-render/editor.tsx",
+  "data": "../../../src/custom-render/data.json",
+  "docs": "../../../src/custom-render"
+}

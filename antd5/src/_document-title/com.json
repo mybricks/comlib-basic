@@ -1,0 +1,31 @@
+{
+  "namespace": "mybricks.basic-comlib.antd5.document-title",
+  "title": "设置页面标题",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "动态设置HTML页面的Title标题",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "data": "../../../src/_document-title/data.json",
+  "runtime": "../../../src/_document-title/runtime.ts",
+  "editors": "../../../src/_document-title/editors.ts",
+  "icon": "../../../src/_document-title/icon.svg",
+  "inputs": [
+    {
+      "id": "setTitle",
+      "title": "设置标题",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setTitleDone",
+      "title": "设置标题完成",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "namespace": "mybricks.basic-comlib.antd5.destroy-all-popup",
+  "title": "关闭所有弹窗",
+  "version": "1.0.0",
+  "rtType": "js",
+  "description": "关闭当前打开的所有弹窗，包括对话框、抽屉等",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "data": "../../../src/_destroy-all-popup/data.json",
+  "runtime": "../../../src/_destroy-all-popup/runtime.ts",
+  "editors": "../../../src/_destroy-all-popup/editors.ts",
+  "icon": "../../../src/_destroy-all-popup/icon.svg",
+  "inputs": [
+    {
+      "id": "destroyAllPopup",
+      "title": "关闭所有弹窗",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

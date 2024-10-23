@@ -1,0 +1,36 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.shape",
+  "title": "形状",
+  "version": "1.0.3",
+  "description": "形状",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/shape/icon.svg",
+  "data": "../../../src/shape/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/shape/editors.tsx",
+  "upgrade": "../../../src/shape/upgrade.ts",
+  "inputs": [
+    {
+      "id": "setStyle",
+      "title": "动态设置样式",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "background": {
+            "type": "string"
+          }
+        }
+      },
+      "rels": [
+        "setStyleComplete"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "setStyleComplete",
+      "title": "完成"
+    }
+  ]
+}

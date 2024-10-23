@@ -1,0 +1,37 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.dataSimulator",
+  "title": "数据模拟器",
+  "version": "1.0.2",
+  "rtType": "js-autorun",
+  "description": "根据schema数据生成的数据模拟器",
+  "author": "huangQiuyun",
+  "author_name": "黄秋云",
+  "icon": "../../../src/_schema-simulator/icon.svg",
+  "data": "../../../src/_schema-simulator/data.json",
+  "runtime": "../../../src/_schema-simulator/runtime.tsx",
+  "editors": "../../../src/_schema-simulator/editors.tsx",
+  "upgrade": "../../../src/_schema-simulator/upgrade.ts",
+  "inputs": [
+    {
+      "id": "mockTouch",
+      "title": "触发模拟",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "outputData"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "outputData",
+      "title": "模拟数据",
+      "schema": {
+        "type": "follow"
+      },
+      "conMax": 1,
+      "editable": true
+    }
+  ]
+}

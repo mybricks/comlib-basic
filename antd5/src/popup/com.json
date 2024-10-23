@@ -1,0 +1,59 @@
+{
+  "namespace": "mybricks.basic-comlib.antd5.popup",
+  "title": "对话框",
+  "visibility": false,
+  "author": "CheMingjun",
+  "author_name": "车明君",
+  "version": "1.0.44",
+  "description": "对话框",
+  "data": "../../../src/popup/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/popup/editors.ts",
+  "upgrade": "../../../src/popup/upgrade.ts",
+  "slots": [
+    {
+      "id": "body",
+      "title": "内容"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "title",
+      "title": "修改标题",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setTitleDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "ok",
+      "title": "确定"
+    },
+    {
+      "id": "cancel",
+      "title": "取消"
+    },
+    {
+      "id": "apply",
+      "title": "应用",
+      "schema": {
+        "type": "follow"
+      }
+    },
+    {
+      "id": "close",
+      "title": "关闭"
+    },
+    {
+      "id": "setTitleDone",
+      "title": "修改标题完成",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

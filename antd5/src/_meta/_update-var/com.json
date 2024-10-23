@@ -1,0 +1,27 @@
+{
+  "namespace": "mybricks.comlib-meta.antd5.updateVar",
+  "title": "修改变量",
+  "version": "1.0.1",
+  "description": "修改变量",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "../../../../src/_meta/_update-var/data.json",
+  "runtime": "../../../../src/_meta/_update-var/runtime.ts",
+  "editors": "../../../../src/_meta/_update-var/editors.ts",
+  "rtType": "js",
+  "type": "meta",
+  "inputs": [
+    {
+      "id": "setVal",
+      "title": "赋值",
+      "type": "object"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "finish",
+      "title": "完成"
+    }
+  ]
+}

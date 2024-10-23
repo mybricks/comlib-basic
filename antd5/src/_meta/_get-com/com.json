@@ -1,0 +1,49 @@
+{
+  "namespace": "mybricks.comlib-meta.antd5.getCom",
+  "title": "读取组件信息",
+  "version": "1.0.4",
+  "description": "读取组件信息",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "../../../../src/_meta/_get-com/data.json",
+  "runtime": "../../../../src/_meta/_get-com/runtime.ts",
+  "editors": "../../../../src/_meta/_get-com/editors.ts",
+  "rtType": "js",
+  "type": "meta",
+  "inputs": [
+    {
+      "id": "get",
+      "title": "读取",
+      "rels": [
+        "finish"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "finish",
+      "title": "完成",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "description": "组件数据源"
+          },
+          "id": {
+            "type": "string",
+            "description": "组件ID"
+          },
+          "title": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          }
+        },
+        "description": "组件信息"
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "namespace": "mybricks.basic-comlib.antd5._get-data",
+  "title": "构造数据",
+  "version": "1.0.1",
+  "description": "生成数据",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/_get-data/icon.svg",
+  "data": "../../../src/_get-data/data.json",
+  "runtime": "../../../src/_get-data/runtime.ts",
+  "editors": "../../../src/_get-data/editors.ts",
+  "rtType": "js-autorun",
+  "inputs": [
+    {
+      "id": "input",
+      "title": "获取",
+      "schema": {
+        "type": "any"
+      },
+      "rels": [
+        "result"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "result",
+      "title": "输出",
+      "schema": {
+        "type": "object"
+      },
+      "editable": true
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.download",
+  "title": "资源下载",
+  "version": "1.0.7",
+  "rtType": "js",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "data": "../../../src/_download/data.json",
+  "runtime": "../../../src/_download/runtime.ts",
+  "editors": "../../../src/_download/editors.ts",
+  "icon": "../../../src/_download/icon.svg",
+  "upgrade": "../../../src/_download/upgrade.ts",
+  "inputs": [
+    {
+      "id": "url",
+      "title": "资源地址",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "title": "资源链接/数据",
+            "type": "any"
+          },
+          "filename": {
+            "title": "资源文件名",
+            "type": "string"
+          }
+        }
+      },
+      "rels": [
+        "complete"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "complete",
+      "title": "完成"
+    }
+  ],
+  "slots": []
+}

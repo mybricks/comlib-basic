@@ -1,0 +1,59 @@
+{
+  "namespace": "mybricks.basic-comlib.antd5.drawer",
+  "title": "抽屉",
+  "visibility": false,
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "version": "1.0.34",
+  "description": "抽屉",
+  "data": "../../../src/drawer/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/drawer/editors.ts",
+  "upgrade": "../../../src/drawer/upgrade.ts",
+  "slots": [
+    {
+      "id": "body",
+      "title": "内容"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "title",
+      "title": "修改标题",
+      "schema": {
+        "type": "string"
+      },
+      "rels": [
+        "setTitleDone"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "ok",
+      "title": "确定"
+    },
+    {
+      "id": "cancel",
+      "title": "取消"
+    },
+    {
+      "id": "apply",
+      "title": "应用",
+      "schema": {
+        "type": "follow"
+      }
+    },
+    {
+      "id": "close",
+      "title": "关闭"
+    },
+    {
+      "id": "setTitleDone",
+      "title": "修改标题完成",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

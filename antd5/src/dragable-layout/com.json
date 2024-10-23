@@ -1,0 +1,62 @@
+{
+  "namespace": "mybricks.basic-comlib.antd5.dragable-layout",
+  "title": "布局",
+  "visibility": false,
+  "author": "tangxiaoxin",
+  "author_name": "tangxiaoxin",
+  "version": "1.0.8",
+  "description": "布局",
+  "icon": "../../../src/dragable-layout/icon.svg",
+  "runtime": "./runtime.tsx",
+  "runtime.edit": "../../../src/dragable-layout/edit/runtime.tsx",
+  "data": "../../../src/dragable-layout/data.json",
+  "editors": "../../../src/dragable-layout/edit/index.ts",
+  "inputs": [
+    {
+      "id": "setWidth",
+      "title": "设置列宽",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "coordinate": {
+            "title": "列坐标",
+            "type": "enum",
+            "items": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "width": {
+            "title": "宽度",
+            "type": "string"
+          }
+        }
+      },
+      "desc": "设置布局列宽度，如[1,2]表示第一行第二列"
+    }
+  ],
+  "slots": [
+    {
+      "id": "col0",
+      "title": "列（竖向排列）"
+    },
+    {
+      "id": "col1",
+      "title": "列（竖向排列）"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "col0",
+      "title": "列点击"
+    },
+    {
+      "id": "col1",
+      "title": "列点击"
+    }
+  ]
+}

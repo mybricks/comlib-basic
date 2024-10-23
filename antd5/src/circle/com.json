@@ -1,0 +1,22 @@
+{
+  "namespace": "mybricks.basic-comlib.antd5.circle",
+  "title": "圆形",
+  "author": "CheMingjun",
+  "author_name": "CheMingjun",
+  "version": "1.0.0",
+  "description": "圆形",
+  "data": "../../../src/circle/data.json",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/circle/editors.tsx",
+  "icon": "../../../src/circle/icon.svg",
+  "inputs": [],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "string"
+      }
+    }
+  ]
+}

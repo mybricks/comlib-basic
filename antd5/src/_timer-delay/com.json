@@ -1,0 +1,31 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.timer-delay",
+  "title": "延迟执行",
+  "version": "1.0.2",
+  "rtType": "js",
+  "description": "延迟执行",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/_timer-delay/icon.svg",
+  "data": "../../../src/_timer-delay/data.json",
+  "runtime": "../../../src/_timer-delay/runtime.ts",
+  "editors": "../../../src/_timer-delay/editors.tsx",
+  "inputs": [
+    {
+      "id": "trigger",
+      "title": "触发",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "trigger",
+      "title": "执行",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

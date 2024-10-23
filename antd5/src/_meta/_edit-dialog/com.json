@@ -1,0 +1,50 @@
+{
+  "namespace": "mybricks.comlib-template-compute.antd5.editDialogCom",
+  "title": "配置对话框",
+  "version": "1.0.1",
+  "description": "配置对话框",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "data": "../../../../src/_meta/_edit-dialog/data.json",
+  "runtime": "../../../../src/_meta/_edit-dialog/runtime.ts",
+  "editors": "../../../../src/_meta/_edit-dialog/editors.ts",
+  "rtType": "js",
+  "type": "meta",
+  "inputs": [
+    {
+      "id": "store",
+      "title": "状态/行为",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "formData": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "字段"
+                },
+                "namespace": {
+                  "type": "string",
+                  "description": "组件namespace"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "finish",
+      "title": "完成",
+      "schema": {
+        "type": "string",
+        "description": "场景ID"
+      }
+    }
+  ]
+}

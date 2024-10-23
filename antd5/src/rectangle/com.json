@@ -1,0 +1,48 @@
+{
+  "namespace": "mybricks.basic-comlib.antd5.rectangle",
+  "title": "矩形",
+  "author": "CheMingjun",
+  "author_name": "CheMingjun",
+  "version": "1.0.1",
+  "description": "矩形",
+  "icon": "../../../src/rectangle/icon.svg",
+  "data": "../../../src/rectangle/data.json",
+  "runtime.edit": "../../../src/rectangle/edit/runtime.tsx",
+  "runtime": "./runtime.tsx",
+  "editors": "../../../src/rectangle/editors.tsx",
+  "inputs": [
+    {
+      "id": "setStyle",
+      "title": "设置样式",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "rotate",
+      "title": "旋转",
+      "schema": {
+        "type": "number"
+      },
+      "rels": [
+        "rotateCompleted"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "click",
+      "title": "点击",
+      "schema": {
+        "type": "string"
+      }
+    },
+    {
+      "id": "rotateCompleted",
+      "title": "旋转完成",
+      "schema": {
+        "type": "boolean"
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "namespace": "mybricks.normal-pc.antd5.timer-debounce",
+  "title": "防抖",
+  "version": "1.0.1",
+  "rtType": "js",
+  "description": "防抖",
+  "author": "HuangQiuyun",
+  "author_name": "黄秋云",
+  "icon": "../../../src/_timer-debounce/icon.svg",
+  "data": "../../../src/_timer-debounce/data.json",
+  "runtime": "../../../src/_timer-debounce/runtime.ts",
+  "editors": "../../../src/_timer-debounce/editors.tsx",
+  "upgrade": "../../../src/_timer-debounce/upgrade.ts",
+  "inputs": [
+    {
+      "id": "trigger",
+      "title": "触发",
+      "schema": {
+        "type": "follow"
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "trigger",
+      "title": "执行",
+      "schema": {
+        "type": "any"
+      }
+    }
+  ]
+}

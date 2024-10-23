@@ -1,0 +1,43 @@
+{
+  "namespace": "mybricks.basic-comlib.antd5._encryption",
+  "title": "SM国密加密",
+  "version": "1.0.1",
+  "description": "加密",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "../../../src/_encryption/icon.svg",
+  "data": "../../../src/_encryption/data.json",
+  "runtime": "../../../src/_encryption/runtime.ts",
+  "editors": "../../../src/_encryption/editors.ts",
+  "rtType": "js",
+  "inputs": [
+    {
+      "id": "input",
+      "title": "输入项",
+      "schema": [
+        {
+          "name": "key",
+          "id": "key",
+          "title": "密钥",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "id": "value",
+          "title": "明文",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "id": "encryptionValue",
+      "title": "密文",
+      "schema": {
+        "type": "string"
+      },
+      "editable": true
+    }
+  ]
+}
