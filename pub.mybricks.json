@@ -35,6 +35,7 @@
     "./src/custom-render/com.json",
     "./src/_document-title/com.json",
     "./src/_meta/_generate-page/com.json",
+    "./src/_meta/_update-com/com.json",
     "./src/_meta/_update-var/com.json",
     "./src/_meta/_get-com/com.json",
     "./src/_meta/_edit-dialog/com.json",
