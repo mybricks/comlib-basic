@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.basic-comlib.antd5._md5-encryption",
+  "namespace": "mybricks.basic-comlib._md5-encryption",
   "title": "MD5加密",
   "version": "1.0.0",
   "description": "MD5加密",

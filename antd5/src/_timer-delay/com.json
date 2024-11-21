@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.antd5.timer-delay",
+  "namespace": "mybricks.normal-pc.timer-delay",
   "title": "延迟执行",
   "version": "1.0.2",
   "rtType": "js",

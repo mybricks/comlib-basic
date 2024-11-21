@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.antd5.timer-debounce",
+  "namespace": "mybricks.normal-pc.timer-debounce",
   "title": "防抖",
   "version": "1.0.1",
   "rtType": "js",

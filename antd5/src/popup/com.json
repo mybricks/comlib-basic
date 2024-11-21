@@ -1,10 +1,10 @@
 {
-  "namespace": "mybricks.basic-comlib.antd5.popup",
+  "namespace": "mybricks.basic-comlib.popup",
   "title": "对话框",
   "visibility": false,
   "author": "CheMingjun",
   "author_name": "车明君",
-  "version": "1.0.44",
+  "version": "1.0.46",
   "description": "对话框",
   "data": "../../../src/popup/data.json",
   "runtime": "./runtime.tsx",

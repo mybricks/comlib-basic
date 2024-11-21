@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.comlib-meta.antd5.getCom",
+  "namespace": "mybricks.comlib-meta.getCom",
   "title": "读取组件信息",
   "version": "1.0.4",
   "description": "读取组件信息",

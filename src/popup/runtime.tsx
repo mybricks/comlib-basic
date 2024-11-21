@@ -232,6 +232,12 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
           //height: 400,
           top: height=== '100%' ? 0 : void 0
         }}
+        styles={{
+          content: {
+            height: height,
+            top: height=== '100%' ? 0 : void 0
+          }
+        }}
         zIndex={data.isZIndex ? data.zIndex: void 0}
       >
         {slots['body'].render()}
@@ -268,6 +274,12 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
           height: height,
           top: height === '100%' ? 0 : void 0
         }}
+        styles={{
+          content: {
+            height: height,
+            top: height === '100%' ? 0 : void 0
+          }
+        }}
         mask={data.isMask}
         zIndex={data.isZIndex ? data.zIndex: void 0}
       >
@@ -290,6 +302,11 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
         //bodyStyle={data.bodyStyle}
         style={{
           height: height !== '100%' ? height : 800
+        }}
+        styles={{
+          content: {
+            height: height !== '100%' ? height : 800
+          }
         }}
         wrapClassName={css.editContainer}
         closable={data.closable}

@@ -312,6 +312,16 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
             ? (typeof width !== 'number' ? 1024 : width) 
             : width === '100%' ? 1024 : width,
         }}
+        styles={{
+          content: {
+            height: ['left', 'right'].includes(data.placement) 
+            ? typeof height !== 'number' ? 800 : height
+            : height === '100%' ? 800 : height, 
+          width: ['top', 'bottom'].includes(data.placement) 
+            ? (typeof width !== 'number' ? 1024 : width) 
+            : width === '100%' ? 1024 : width,
+          }
+        }}
         getContainer={false}
         extra={data.position === 'extra' && data.isShow ? renderFooter() : null}
       >

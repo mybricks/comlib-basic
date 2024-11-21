@@ -1,0 +1,75 @@
+{
+  "namespace": "mybricks.comlib-meta.updateCom",
+  "title": "修改组件",
+  "version": "1.0.1",
+  "description": "修改组件",
+  "author": "MyBricks",
+  "author_name": "MyBricks",
+  "icon": "./icon.svg",
+  "data": "../../../../src/_meta/_update-com/data.json",
+  "runtime": "../../../../src/_meta/_update-com/runtime.ts",
+  "editors": "../../../../src/_meta/_update-com/editors.ts",
+  "rtType": "js",
+  "type": "meta",
+  "inputs": [
+    {
+      "id": "store",
+      "title": "状态/行为",
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object",
+          "description": "组件数据源"
+        },
+        "delete": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "slotId": {
+                "type": "string",
+                "description": "插槽ID"
+              },
+              "comId": {
+                "type": "string",
+                "description": "组件ID"
+              }
+            }
+          },
+          "description": "删除组件"
+        },
+        "append": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "slotId": {
+                "type": "string",
+                "description": "插槽ID"
+              },
+              "namesapce": {
+                "type": "string",
+                "description": "组件namesapce"
+              },
+              "data": {
+                "type": "object",
+                "description": "组件数据源"
+              }
+            }
+          },
+          "description": "添加组件"
+        }
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "finish",
+      "title": "完成",
+      "schema": {
+        "type": "string",
+        "description": "场景ID"
+      }
+    }
+  ]
+}
