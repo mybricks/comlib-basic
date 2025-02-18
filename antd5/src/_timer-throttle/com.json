@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.timer-throttle",
+  "namespace": "mybricks.normal-pc.antd5.timer-throttle",
   "title": "节流",
   "version": "1.0.1",
   "rtType": "js",

@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.comlib-template-compute.editDialogCom",
+  "namespace": "mybricks.comlib-template-compute.antd5.editDialogCom",
   "title": "配置对话框",
   "version": "1.0.1",
   "description": "配置对话框",

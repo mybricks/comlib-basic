@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.basic-comlib.destroy-all-popup",
+  "namespace": "mybricks.basic-comlib.antd5.destroy-all-popup",
   "title": "关闭所有弹窗",
   "version": "1.0.0",
   "rtType": "js",

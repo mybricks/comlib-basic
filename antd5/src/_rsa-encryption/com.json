@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.basic-comlib._rsa-encryption",
+  "namespace": "mybricks.basic-comlib.antd5._rsa-encryption",
   "title": "RSA加密",
   "version": "1.0.0",
   "description": "RSA加密",
