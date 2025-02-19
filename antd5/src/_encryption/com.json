@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.basic-comlib._encryption",
+  "namespace": "mybricks.basic-comlib.antd5._encryption",
   "title": "SM国密加密",
   "version": "1.0.1",
   "description": "加密",

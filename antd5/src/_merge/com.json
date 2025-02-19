@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.data.merge",
+  "namespace": "mybricks.normal-pc.data.antd5.merge",
   "title": "数据合并",
   "version": "1.0.1",
   "rtType": "js",

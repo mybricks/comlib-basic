@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.basic-comlib.document-title",
+  "namespace": "mybricks.basic-comlib.antd5.document-title",
   "title": "设置页面标题",
   "version": "1.0.0",
   "rtType": "js",

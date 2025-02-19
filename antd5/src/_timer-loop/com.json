@@ -1,5 +1,5 @@
 {
-  "namespace": "mybricks.normal-pc.timer-loop",
+  "namespace": "mybricks.normal-pc.antd5.timer-loop",
   "title": "循环执行",
   "version": "1.0.2",
   "rtType": "js",

@@ -3,10 +3,10 @@
     "name": "基础组件库(antd5)",
     "namespace": "mybricks.basic-comlib.antd5"
   },
-  "name": "基础组件库",
-  "namespace": "@mybricks/comlib-basic",
+  "name": "基础组件库(antd5)",
+  "namespace": "mybricks.basic-comlib.antd5",
   "commitInfo": "update",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "comAry": [
     "antd5/src/rectangle/com.json",
     "antd5/src/circle/com.json",
