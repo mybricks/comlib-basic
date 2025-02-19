@@ -283,5 +283,13 @@ export default function ({
   }
 
 
+  /**
+   * @description 1.0.46->1.0.47  新增是否支持键盘 enter 触发确定操作
+  */
+  if(typeof data.enterkeyboard === "undefined"){
+    data.enterkeyboard = false
+  }
+
+
   return true;
 }

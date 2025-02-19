@@ -7,7 +7,7 @@ import * as Icons from '@ant-design/icons';
 import css from './runtime.less'
 
 export default function ({ id, env, _env, data, slots, outputs, inputs, logger, style }) {
-  const ref = useRef<any>();
+  const modalRef = useRef<any>(null);
   const isMobile = env?.canvas?.type === 'mobile';
   
   const [width, setWidth] = useState();
@@ -196,6 +196,26 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
       return
     }
   },[width, height])
+
+
+  // 添加enter键盘事件监听
+  useEffect(() => {
+    const handleEnterKeyDown = (event) => {
+      if (event.key === 'Enter') {
+        if (event.target.tagName === 'TEXTAREA') return;
+        event.preventDefault(); // 阻止默认行为
+        handleOk();
+      }
+    };
+
+    if (modalRef?.current && data.enterkeyboard ) {
+      document.addEventListener('keydown', handleEnterKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEnterKeyDown);
+    };
+  }, [modalRef, data.enterkeyboard]); // 依赖项：弹窗状态和控制状态
   
 
   //调试态
@@ -346,6 +366,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
     if (env.runtime && env.runtime.debug) {
       return (
         <div
+          ref={modalRef}
           className={`${css.debugMask} ${!data.centered && style.height!=='100%' ? css.debugMargin : ''}`}
         >
           <div className={`${css.mask} ${data.isMask ? '' : css.hideMask}`}>
@@ -357,13 +378,14 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
     } else if (env.edit) {
       return <div
         className={css.antdMask}
+        ref={modalRef}
         style={paddingCalc(style.height, style.width)}
       >
         {editPopup}
       </div>
     }
     //预览态 (发布态)
-    return publishPopup
+    return <div  ref={modalRef}>{publishPopup}</div>
   }
 
   return getContent()

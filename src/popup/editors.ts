@@ -433,6 +433,18 @@ export default {
           }
         },
         {
+          title: '键盘enter触发确定',
+          type: 'switch',
+          value: {
+            get({ data }) {
+              return !!data.enterkeyboard;
+            },
+            set({ data }, val: boolean) {
+              data.enterkeyboard = val;
+            }
+          }
+        },
+        {
           items: [
             {
               title: '关闭按钮或蒙层点击',

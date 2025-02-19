@@ -11,6 +11,7 @@
  * @param footerBtns 操作项
  * @param maskClosable 点击蒙层关闭
  * @param keyboard 键盘 esc 关闭
+ * @param enterkeyboard 键盘 enter 确认
  */
 
 export enum Location {
@@ -64,6 +65,7 @@ export interface Data {
   maskClosable?: boolean;
   isTitleCustom?: boolean;
   keyboard?: boolean;
+  enterkeyboard?: boolean;
 
   //自定义弹出位置
   isCustomPosition?: boolean;
