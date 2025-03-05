@@ -51,7 +51,7 @@ export function runJs(scriptText: string | any, model?: any[], props?: Props) {
     fn = sandbox.compile(`${safeDecoder(scriptText)}`);
   }
   fn.run(model, callback)
-  return sandbox;
+  return { sandbox, fn };
 }
 
 export const transform = (scriptText: string): string => {
