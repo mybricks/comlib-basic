@@ -62,7 +62,6 @@ export default function ({ id, env, data, inputs, outputs, logger, onError, ...o
           if (result) {
             sandbox = result.sandbox;
             if (isRuntime) {
-              console.log("result => ", result)
               window[WindowKey][id] = result.fn;
             }
           }
