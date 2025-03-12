@@ -23,9 +23,15 @@ export default function ({ id, env, data, inputs, outputs, logger, onError, ...o
       if (env.runtime) {
         // sandbox = runJs(fns, [runJSParams], { env });
         if (isRuntime && window[WindowKey][id]) {
-          window[WindowKey][id].run([runJSParams])
+          window[WindowKey][id].run([{
+            ...runJSParams,
+            logger
+          }])
         } else {
-          const result = runJs(fns, [runJSParams], { env });
+          const result = runJs(fns, [{
+            ...runJSParams,
+            logger
+          }], { env });
           if (result) {
             sandbox = result.sandbox;
             if (isRuntime) {
@@ -48,14 +54,16 @@ export default function ({ id, env, data, inputs, outputs, logger, onError, ...o
           window[WindowKey][id].run([
             {
               ...runJSParams,
-              inputs: convertObject2Array(val)
+              inputs: convertObject2Array(val),
+              logger
             }
           ])
         } else {
           const result = runJs(fns, [
             {
               ...runJSParams,
-              inputs: convertObject2Array(val)
+              inputs: convertObject2Array(val),
+              logger
             }
           ], { env });
   
