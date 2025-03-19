@@ -1,0 +1,91 @@
+{
+  "previous": {
+    "name": "基础组件库",
+    "namespace": "mybricks.basic-comlib.antd5",
+    "description": "PC应用临时组件库编译"
+  },
+  "name": "基础组件库",
+  "namespace": "mybricks.basic-comlib.antd5",
+  "commitInfo": "update",
+  "version": "1.0.3",
+  "comAry": [
+    "./src/rectangle/com.json",
+    "./src/circle/com.json",
+    "./src/shape/com.json",
+    "./src/popup/com.json",
+    "./src/drawer/com.json",
+    "./src/dragable-layout/com.json",
+    "./src/_type-change/com.json",
+    "./src/_get-data/com.json",
+    "./src/_muilt-inputJs/com.json",
+    "./src/_timer-delay/com.json",
+    "./src/_timer-loop/com.json",
+    "./src/_timer-debounce/com.json",
+    "./src/_timer-throttle/com.json",
+    "./src/_merge/com.json",
+    "./src/_object-merge/com.json",
+    "./src/_download/com.json",
+    "./src/_schema-simulator/com.json",
+    "./src/_copy/com.json",
+    "./src/_rsa-encryption/com.json",
+    "./src/_md5-encryption/com.json",
+    "./src/_encryption/com.json",
+    "./src/grid/com.json",
+    "./src/line/com.json",
+    "./src/deprecated/line/com.json",
+    "./src/arrow/com.json",
+    "./src/custom-render/com.json",
+    "./src/_document-title/com.json",
+    "./src/_meta/_generate-page/com.json",
+    "./src/_meta/_update-com/com.json",
+    "./src/_meta/_update-var/com.json",
+    "./src/_meta/_get-com/com.json",
+    "./src/_meta/_edit-dialog/com.json",
+    "./src/_destroy-all-popup/com.json"
+  ],
+  "externals": [
+    {
+      "name": "@ant-design/cssinjs",
+      "library": "antdCssinjs",
+      "urls": [
+        "public/antd/cssinjs.min.js"
+      ]
+    },
+    {
+      "name": "moment",
+      "library": "dayjs",
+      "version": "1.11.13",
+      "urls": [
+        "public/dayjs/dayjs@1.11.13.min.js",
+        "public/dayjs/locale/zh-cn.min.js"
+      ]
+    },
+    {
+      "name": "dayjs",
+      "library": "dayjs",
+      "version": "1.11.13",
+      "urls": [
+        "public/dayjs/dayjs@1.11.13.min.js",
+        "public/dayjs/locale/zh-cn.min.js"
+      ]
+    },
+    {
+      "name": "@ant-design/icons",
+      "library": "icons",
+      "urls": [
+        "public/ant-design-icons@4.7.0.min.js"
+      ]
+    },
+    {
+      "name": "antd",
+      "library": "antd_5_21_4",
+      "version": "5.21.4",
+      "urls": [
+        "public/antd/antd@5.21.4.min.js",
+        "public/antd/locale/zh_CN.js"
+      ]
+    }
+  ],
+  "tags": "react",
+  "webpackConfig": "./webpack.config.antd5.js"
+}
