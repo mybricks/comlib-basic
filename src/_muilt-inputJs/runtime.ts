@@ -2,14 +2,14 @@ import { runJs } from './com-utils';
 import { Data } from './constants';
 import { convertObject2Array } from './util';
 
-// const WindowKey = '_muilt-inputJs';
+const WindowKey = '_muilt-inputJs';
 
-// if (!window[WindowKey]) {
-//   window[WindowKey] = {};
-// }
-// [TODO] 需要_id，作用域id，云组件需要注入rootId
-export default function ({ id, env, data, inputs, outputs, logger, onError, ...other }: RuntimeParams<Data>) {
-  // const isRuntime = id && env.runtime && !env.runtime.debug;
+if (!window[WindowKey]) {
+  window[WindowKey] = {};
+}
+
+export default function ({ id, _id, env, data, inputs, outputs, logger, onError, ...other }: RuntimeParams<Data>) {
+  const isRuntime = _id && env.runtime && !env.runtime.debug;
   const { fns, runImmediate } = data;
 
   const runJSParams = {
@@ -22,30 +22,23 @@ export default function ({ id, env, data, inputs, outputs, logger, onError, ...o
     if (runImmediate) {
       if (env.runtime) {
         // sandbox = runJs(fns, [runJSParams], { env });
-        const result = runJs(fns, [{
-          ...runJSParams,
-          logger
-        }], { env });
-        if (result) {
-          sandbox = result.sandbox;
+        if (isRuntime && window[WindowKey][_id]) {
+          window[WindowKey][_id].run([{
+            ...runJSParams,
+            logger
+          }])
+        } else {
+          const result = runJs(fns, [{
+            ...runJSParams,
+            logger
+          }], { env });
+          if (result) {
+            sandbox = result.sandbox;
+            if (isRuntime) {
+              window[WindowKey][_id] = result.fn;
+            }
+          }
         }
-        // if (isRuntime && window[WindowKey][id]) {
-        //   window[WindowKey][id].run([{
-        //     ...runJSParams,
-        //     logger
-        //   }])
-        // } else {
-        //   const result = runJs(fns, [{
-        //     ...runJSParams,
-        //     logger
-        //   }], { env });
-        //   if (result) {
-        //     sandbox = result.sandbox;
-        //     if (isRuntime) {
-        //       window[WindowKey][id] = result.fn;
-        //     }
-        //   }
-        // }
       }
     }
     inputs['input']((val) => {
@@ -57,42 +50,30 @@ export default function ({ id, env, data, inputs, outputs, logger, onError, ...o
         //   }
         // ], { env });
 
-        const result = runJs(fns, [
-          {
-            ...runJSParams,
-            inputs: convertObject2Array(val),
-            logger
-          }
-        ], { env });
-
-        if (result) {
-          sandbox = result.sandbox;
-        }
-
-        // if (isRuntime && window[WindowKey][id]) {
-        //   window[WindowKey][id].run([
-        //     {
-        //       ...runJSParams,
-        //       inputs: convertObject2Array(val),
-        //       logger
-        //     }
-        //   ])
-        // } else {
-        //   const result = runJs(fns, [
-        //     {
-        //       ...runJSParams,
-        //       inputs: convertObject2Array(val),
-        //       logger
-        //     }
-        //   ], { env });
+        if (isRuntime && window[WindowKey][_id]) {
+          window[WindowKey][_id].run([
+            {
+              ...runJSParams,
+              inputs: convertObject2Array(val),
+              logger
+            }
+          ])
+        } else {
+          const result = runJs(fns, [
+            {
+              ...runJSParams,
+              inputs: convertObject2Array(val),
+              logger
+            }
+          ], { env });
   
-        //   if (result) {
-        //     sandbox = result.sandbox;
-        //     if (isRuntime) {
-        //       window[WindowKey][id] = result.fn;
-        //     }
-        //   }
-        // }
+          if (result) {
+            sandbox = result.sandbox;
+            if (isRuntime) {
+              window[WindowKey][_id] = result.fn;
+            }
+          }
+        }
       } catch (ex: any) {
         onError?.(ex);
         console.error('js计算组件运行错误.', ex);
@@ -102,9 +83,9 @@ export default function ({ id, env, data, inputs, outputs, logger, onError, ...o
     if (typeof env?.runtime?.onComplete === 'function') {
       env.runtime.onComplete(() => {
         sandbox?.dispose()
-        // if (isRuntime) {
-        //   window[WindowKey][id] = null;
-        // }
+        if (isRuntime) {
+          window[WindowKey][_id] = null;
+        }
       })
     }
   } catch (ex: any) {
