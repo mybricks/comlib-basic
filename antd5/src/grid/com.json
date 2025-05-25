@@ -1,7 +1,7 @@
 {
   "namespace": "mybricks.basic-comlib.antd5.grid",
   "title": "布局",
-  "visibility": true,
+  "visibility": false,
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
   "version": "1.0.19",
