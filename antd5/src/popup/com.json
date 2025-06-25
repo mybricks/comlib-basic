@@ -4,12 +4,13 @@
   "visibility": false,
   "author": "CheMingjun",
   "author_name": "车明君",
-  "version": "1.0.47",
+  "version": "1.0.48",
   "description": "对话框",
   "data": "../../../src/popup/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../src/popup/editors.ts",
   "upgrade": "../../../src/popup/upgrade.ts",
+  "ai": "../../../src/popup/ai.ts",
   "slots": [
     {
       "id": "body",
