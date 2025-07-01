@@ -228,6 +228,18 @@ export default {
         options: [{ type: 'background', config: { disableBackgroundImage: true } }],
         global: true,
         target: '.{id} .ant-drawer-body'
+      },
+      {
+        title: '头部分割线',
+        options: ['border'],
+        global: true,
+        target: '.{id} .ant-drawer-content-wrapper .ant-drawer-header'
+      
+      },  {
+        title: '底部分割线',
+        options: ['border'],
+        global: true,
+        target: '.{id} .ant-drawer-content-wrapper .ant-drawer-footer'
       }
     ],
     items: ({ env }, cate1, cate2) => {
@@ -560,7 +572,7 @@ export default {
   },
   '[data-toolbar]': ({ env }, cate1) => {
     cate1.title = '操作区',
-      cate1.items = [
+    cate1.items = [
         // {
         //   title: '显示',
         //   type: 'Switch',
@@ -929,6 +941,16 @@ export default {
           findConfig({ data, focusArea }).title = value;
         }
       }
+    },
+    style: [{
+      title: '按钮样式',
+      catelog: '默认',
+      options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+      global: true,
+      target({focusArea }) {
+        return `.ant-drawer-footer  button[data-handler-button="${focusArea.dataset.handlerButton}"]`;
+      }
     }
+    ],
   }
 }
