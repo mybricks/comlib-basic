@@ -950,6 +950,14 @@ export default {
       target({focusArea }) {
         return `.ant-drawer-footer  button[data-handler-button="${focusArea.dataset.handlerButton}"]`;
       }
+    },{
+      title: '按钮样式',
+      catelog: 'hover',
+      options: ['border', { type: 'font', config: { disableTextAlign: true } }, 'background'],
+      global: true,
+      target({focusArea }) {
+        return `.ant-drawer-footer  button[data-handler-button="${focusArea.dataset.handlerButton}"]:hover`;
+      }
     }
     ],
   }
