@@ -232,8 +232,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
 
         maskClosable={data.maskClosable}
         keyboard={data.keyboard}
-        //wrapClassName={css.container}
-        wrapClassName={`${css.editContainer} ${style.height === '100%' ? css.publishHeightContainer : ''}`}
+        wrapClassName={`${css.editContainer} ${style.height === '100%' ? css.publishHeightContainer : ''} ${ANTD_VERSION === 5 ? css.antdV5 : ""}`}
         closable={data.closable}
         getContainer={container}
         //getContainer={() => env?.canvasElement || document.body}
@@ -278,8 +277,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
 
         maskClosable={data.maskClosable}
         keyboard={data.keyboard}
-        //wrapClassName={`${css.container} ${id}`}
-        wrapClassName={`${css.publishContainer} ${id} ${style.height === '100%' ? css.publishHeightContainer : ''}`}
+        wrapClassName={`${css.publishContainer} ${id} ${style.height === '100%' ? css.publishHeightContainer : ''} ${ANTD_VERSION === 5 ? css.antdV5 : ""}`}
         closable={data.closable}
         getContainer={() => env?.canvasElement || document.body}
         style={data.isCustomPosition ? {
@@ -328,7 +326,7 @@ export default function ({ id, env, _env, data, slots, outputs, inputs, logger, 
             height: height !== '100%' ? height : 800
           }
         }}
-        wrapClassName={css.editContainer}
+        wrapClassName={`${css.editContainer} ${ANTD_VERSION === 5 ? css.antdV5 : ""}`}
         closable={data.closable}
         getContainer={false}
       >

@@ -3,6 +3,8 @@ declare module '*.less' {
   export default classes;
 }
 
+declare const ANTD_VERSION: number;
+
 interface T_Props {
   outputs: {
     [keyname: string]: (...param: any) => void

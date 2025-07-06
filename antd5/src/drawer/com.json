@@ -4,7 +4,7 @@
   "visibility": false,
   "author": "HuangQiuyun",
   "author_name": "黄秋云",
-  "version": "1.0.34",
+  "version": "1.0.36",
   "description": "抽屉",
   "data": "../../../src/drawer/data.json",
   "runtime": "./runtime.tsx",
