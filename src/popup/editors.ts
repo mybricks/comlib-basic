@@ -462,7 +462,7 @@ export default {
               title: '弹窗宽度',
               description: '拖拽改变弹窗宽度, 实际宽度',
               type: 'Text',
-              options: { readOnly: true },
+              options: { readOnly: false },
               value: {
                 get: ({ data, style }) => {
                   if(typeof style.width === 'number'  ){
@@ -471,18 +471,22 @@ export default {
                     return style.width;
                   }
                 },
-                // set: ({ data, style }) => {
-                //   if (v !== ctx.absoluteNamePath) {
-                //     ctx.absoluteNamePath = v
-                //   }
-                // },
-              },
+                set: ({ data, style }, value) => { 
+                  if (!isNaN(value)) {
+                    style.width = Number(value) + 100;
+                    data.styleWidth = style.width;
+                  } else {
+                    style.width = value;
+                    data.styleWidth = style.width;
+                  }
+                }
+              }
             },
             {
               title: '弹窗高度',
               description: '拖拽改变弹窗宽度, 实际宽度',
               type: 'Text',
-              options: { readOnly: true },
+              options: { readOnly: false },
               value: {
                 get: ({ data, style }) => {
                   if(typeof style.height === 'number'  ){
@@ -491,11 +495,15 @@ export default {
                     return style.height;
                   }
                 },
-                // set: ({ data, style }) => {
-                //   if (v !== ctx.absoluteNamePath) {
-                //     ctx.absoluteNamePath = v
-                //   }
-                // },
+                set: ({ data, style }, value) => { 
+                  if (!isNaN(value)) {
+                    style.height = Number(value) + 100
+                    data.styleHeight = Number(value) + 100
+                  } else {
+                    style.height = value;
+                    data.styleHeight = style.height;
+                  }
+                }
               },
             }
           ]
