@@ -169,13 +169,13 @@ export default ({ data, inputs, env, outputs, logger, id }: RuntimeParams<Data>)
   //   }
   // }, [])
 
-  return (
-    <>
-      {typeof ReactNode === 'function' ? (
+  const render = useMemo(() => {
+    return typeof ReactNode === 'function' ? (
         <ReactNode {...scope} />
       ) : (
         <ErrorStatus title={errorInfo?.title}>{ReactNode}</ErrorStatus>
-      )}
-    </>
-  )
+      )
+  }, [ReactNode])
+
+  return render
 };
