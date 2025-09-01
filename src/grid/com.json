@@ -1,10 +1,9 @@
 {
     "title": "布局",
-    "visibility": false,
     "namespace": "mybricks.basic-comlib.grid",
     "author": "tangxiaoxin",
     "author_name": "tangxiaoxin",
-    "version": "1.0.19",
+    "version": "1.0.20",
     "description": "布局",
     "icon": "./icon.svg",
     "runtime": "./runtime.tsx",
