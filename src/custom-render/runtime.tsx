@@ -94,10 +94,15 @@ export default ({ data, inputs, env, outputs, logger, id }: RuntimeParams<Data>)
     if (errorInfo) return errorInfo.tip;
 
     try {
+      const componentId = `mbcrjsx_${id}`
+      let rt = window[componentId]
+      if (env.runtime && rt) {
+        return rt.default;
+      }
       eval(decodeURIComponent(data.code))
-      const rt = window[`mbcrjsx_${id}`]
-      return rt?.default;
+      return window[componentId]?.default;
     } catch (error) {
+      console.error("[JSX - 解析错误]", error);
       return error?.toString();
     }
   }, [data.code, errorInfo]);
