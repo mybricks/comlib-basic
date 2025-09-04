@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Data } from './types';
 import { polyfillRuntime } from './util'
 
-polyfillRuntime();
-
 const ErrorStatus = ({ title = '未知错误', children = null }: { title?: string, children?: any }) => (
   <div style={{ color: 'red' }}>
     {title}
@@ -18,6 +16,9 @@ interface CssApi {
 }
 
 export default ({ data, inputs, env, outputs, logger, id }: RuntimeParams<Data>) => {
+
+  polyfillRuntime();
+  
   const appendCssApi = useMemo<CssApi>(() => {
     let cssApi = {
       set: (id: string, content: string) => {
