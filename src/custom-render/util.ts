@@ -10,6 +10,7 @@ export function uuid(pre = 'u_', len = 6) {
 
 export function polyfillRuntime () {
   if (!window?.['react']) {
+    console.log(window.React.version, 'polyfillRuntime for react')
     window['react'] = window['React']
   }
 }
