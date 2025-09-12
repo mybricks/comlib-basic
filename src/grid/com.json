@@ -10,6 +10,7 @@
     "runtime.edit": "./editor/runtime.edit.tsx",
     "data": "./data.json",
     "editors": "./editor/edit.ts",
+    "ai": "./ai.ts",
     "upgrade": "./upgrade.ts",
     "inputs": [
       {

@@ -10,6 +10,7 @@
   "runtime.edit": "./edit/runtime.tsx",
   "runtime": "./runtime.tsx",
   "editors": "./editors.tsx",
+  "ai": "./ai.tsx",
   "inputs": [
     {
       "id": "setStyle",

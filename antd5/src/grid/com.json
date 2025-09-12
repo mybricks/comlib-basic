@@ -1,7 +1,6 @@
 {
   "namespace": "mybricks.basic-comlib.antd5.grid",
   "title": "布局",
-  "visibility": false,
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
   "version": "1.0.19",
@@ -11,6 +10,7 @@
   "runtime.edit": "../../../src/grid/editor/runtime.edit.tsx",
   "data": "../../../src/grid/data.json",
   "editors": "../../../src/grid/editor/edit.ts",
+  "ai": "../../../src/grid/ai.ts",
   "upgrade": "../../../src/grid/upgrade.ts",
   "inputs": [
     {

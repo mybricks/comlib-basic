@@ -8,6 +8,7 @@
   "icon": "../../../src/custom-render/icon.svg",
   "runtime": "./runtime.tsx",
   "editors": "../../../src/custom-render/editor.tsx",
+  "ai": "../../../src/custom-render/ai.ts",
   "data": "../../../src/custom-render/data.json",
   "docs": "../../../src/custom-render"
 }

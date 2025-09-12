@@ -10,6 +10,7 @@
   "runtime.edit": "../../../src/rectangle/edit/runtime.tsx",
   "runtime": "./runtime.tsx",
   "editors": "../../../src/rectangle/editors.tsx",
+  "ai": "../../../src/rectangle/ai.ts",
   "inputs": [
     {
       "id": "setStyle",

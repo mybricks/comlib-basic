@@ -9,6 +9,7 @@
   "data": "../../../src/shape/data.json",
   "runtime": "./runtime.tsx",
   "editors": "../../../src/shape/editors.tsx",
+  "ai": "../../../src/shape/ai.ts",
   "upgrade": "../../../src/shape/upgrade.ts",
   "inputs": [
     {
