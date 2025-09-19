@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import * as antd from "antd";
+import * as icons from "@ant-design/icons"
 import { Data } from './types';
 import { polyfillRuntime } from './util'
 
@@ -15,10 +17,17 @@ interface CssApi {
   remove: (id: string) => void
 }
 
-export default ({ data, inputs, env, outputs, logger, id }: RuntimeParams<Data>) => {
+const WINDOW_KEY = 'mybricks.basic-comlib_mybricks.basic-comlib.custom-render'
 
-  polyfillRuntime();
-  
+const WINDOW_KEY__POWERED_BY_QIANKUN__ = `${WINDOW_KEY}__POWERED_BY_QIANKUN__`
+
+const RUNTIME_KEY = (window as any).__POWERED_BY_QIANKUN__ ? WINDOW_KEY__POWERED_BY_QIANKUN__ : WINDOW_KEY
+
+if (!window[RUNTIME_KEY]) {
+  window[RUNTIME_KEY] = {}
+}
+
+export default ({ data, inputs, env, outputs, logger, id }: RuntimeParams<Data>) => {
   const appendCssApi = useMemo<CssApi>(() => {
     let cssApi = {
       set: (id: string, content: string) => {
@@ -96,12 +105,23 @@ export default ({ data, inputs, env, outputs, logger, id }: RuntimeParams<Data>)
 
     try {
       const componentId = `mbcrjsx_${id}`
-      let rt = window[componentId]
+      let rt = window[RUNTIME_KEY][componentId]
       if (env.runtime && rt) {
-        return rt.default;
+        return rt;
       }
-      eval(decodeURIComponent(data.code))
-      return window[componentId]?.default;
+      const oriCode = decodeURIComponent(data.code);
+
+      const render = runRender(oriCode, {
+        'react': React,
+        'antd': antd,
+        '@ant-design/icons': icons,
+      })
+
+      window[RUNTIME_KEY][componentId] = render
+
+      return render
+      // eval(decodeURIComponent(data.code))
+      // return window[componentId]?.default;
     } catch (error) {
       console.error("[JSX - 解析错误]", error);
       return error?.toString();
@@ -180,3 +200,24 @@ export default ({ data, inputs, env, outputs, logger, id }: RuntimeParams<Data>)
 
   return render
 };
+
+function runRender(code, dependencies) {
+  const wrapCode = `
+    (function(exports,require){
+      ${code}
+    })
+  `
+
+  const exports = {
+    default: null
+  }
+
+  const require = (packageName) => {
+    return dependencies[packageName]
+  }
+
+  eval(wrapCode)(exports, require)
+
+  return exports.default
+}
+

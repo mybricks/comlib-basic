@@ -2,8 +2,6 @@ import React, {useEffect, useMemo} from 'react';
 import {polyfillRuntime} from './util'
 import css from './css.less'
 
-polyfillRuntime();
-
 const ErrorStatus = ({title = '未知错误', children = null}: { title?: string, children?: any }) => (
   <div style={{color: 'red'}}>
     {title}
