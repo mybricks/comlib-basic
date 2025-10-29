@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import * as antd from "antd";
 import * as icons from "@ant-design/icons"
+import * as echarts from "echarts"
 import { Data } from './types';
 import { polyfillRuntime } from './util'
 
@@ -110,11 +111,12 @@ export default ({ data, inputs, env, outputs, logger, id }: RuntimeParams<Data>)
         return rt;
       }
       const oriCode = decodeURIComponent(data.code);
-
+      
       const render = runRender(oriCode, {
         'react': React,
         'antd': antd,
         '@ant-design/icons': icons,
+        'echarts': echarts
       })
 
       window[RUNTIME_KEY][componentId] = render

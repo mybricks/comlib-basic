@@ -1,6 +1,6 @@
 {
   "name": "@mybricks/comlib-basic",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "基础组件库",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "@ant-design/charts": "^2.2.1",
     "antd": "^4.18.5",
     "copy-to-clipboard": "^3.3.3",
+    "echarts": "^6.0.0",
     "gm-crypto": "^0.1.12",
     "js-md5": "^0.8.3",
     "jsencrypt": "^3.3.2",
