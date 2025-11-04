@@ -16,6 +16,7 @@ height: 可配置，默认fit-content，不允许配置vh、vw等特殊单位
 注意事项：
   - 不论当前是否data数据有多少，都必须重新配置行列数据；
   - 在页面主布局出现了复杂的左右布局，上下布局时使用，替代antd中Header、Sider、Content、Footer这类布局；
+  - 注意列宽度的定义，考虑清楚配置固定宽度、百分比、还是占满剩余宽度；
     `
   },
   editors: [
@@ -24,7 +25,7 @@ height: 可配置，默认fit-content，不允许配置vh、vw等特殊单位
       description: `通过二维数组来配置行列信息，用于实现页面根布局。
 interface Col {
   key: string
-  width: number | 百分比宽度 ｜ 'auto' // auto为自动占满剩余宽度
+  width: number | 百分比宽度 ｜ 'auto' // 当width = 'auto' 时，代表占满剩余宽度；当width = '45%' 时，代表占据父容器的45%宽度；当width = 200 时，代表占据固定200像素的宽度。
 }
 
 interface Row {
@@ -32,7 +33,7 @@ interface Row {
   cols: Col[]
 }
 
-/** 这个配置期的value值 */
+/** 这个配置的value值 */
 type Value = Row[]
 `,
       type: 'array',
