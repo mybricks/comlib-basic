@@ -11,7 +11,7 @@ export const createStyleForRow = ({ target }: StyleModeType<Data> = {}) => ({
   target,
 });
 
-export const createStyleForCol = ({ target }: StyleModeType<Data>) => ({
+export const createStyleForCol = ({ target }: StyleModeType<Data>) => ([{
   title: "单元格",
   options: [
     "background",
@@ -21,7 +21,14 @@ export const createStyleForCol = ({ target }: StyleModeType<Data>) => ({
     "overflow",
   ],
   target,
-});
+  },
+  {
+    title: 'Hover',
+    catelog: 'Hover',
+    options: ['padding', 'border', 'background', 'BoxShadow'],
+    target: (props: EditorResult<Data>) =>`${target(props)}:hover`,
+  }
+]);
 
 export const getFilterSelector = (id: string) =>
   `:not(#${id} *[data-isslot="1"] *)`;
