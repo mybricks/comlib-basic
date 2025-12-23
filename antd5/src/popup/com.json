@@ -4,7 +4,7 @@
   "visibility": false,
   "author": "CheMingjun",
   "author_name": "车明君",
-  "version": "1.0.51",
+  "version": "1.0.53",
   "description": "对话框",
   "data": "../../../src/popup/data.json",
   "runtime": "./runtime.tsx",

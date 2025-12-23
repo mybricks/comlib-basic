@@ -3,7 +3,7 @@
   "title": "布局",
   "author": "tangxiaoxin",
   "author_name": "tangxiaoxin",
-  "version": "1.0.19",
+  "version": "1.0.21",
   "description": "布局",
   "icon": "../../../src/grid/icon.svg",
   "runtime": "./runtime.tsx",

@@ -6,7 +6,7 @@
   "name": "基础组件库(antd5)",
   "namespace": "mybricks.basic-comlib.antd5",
   "commitInfo": "update",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "comAry": [
     "antd5/src/rectangle/com.json",
     "antd5/src/circle/com.json",
