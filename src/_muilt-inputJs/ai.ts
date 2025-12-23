@@ -1,124 +1,43 @@
-const unknownType = ['unknown', 'enum', 'tuple', 'indexObject', 'follow']
-const anyType = ['object', 'string', 'number', 'array', 'boolean', 'null']
-
-function getCodeTemplate ({useInputs}) {
-  return `({outputs${useInputs ? ',inputs' : ''}})=>{}`
-}
-
 export default {
-  ':root'(props) {
-    const {
-      input,
-      output,
-      inputs,
-      outputs
-    } = props
-    const inputSchemaArray = input.get().map(({id}) => {
-      const schema = inputs.get(id).schema
-      return {
-        id: id.split('.')[1],
-        schema: JSON.stringify(unknownType.includes(schema.type) ? {type: anyType} : schema)
-      }
-    })
-    const outputSchemaArray = output.get().map(({id}) => {
-      const schema = outputs.get(id).schema
-      return {
-        id,
-        schema: JSON.stringify(unknownType.includes(schema.type) ? {type: anyType} : schema)
-      }
-    })
-    const useInputs = !!inputSchemaArray.length
-
-    let inputsSchemaStr = ''
-    let outputsSchemaStr = 'outputs含有以下几个输出方法,'
-
-    if (useInputs) {
-      inputSchemaArray.forEach(({id, schema}) => {
-        inputsSchemaStr = (inputsSchemaStr ? ',' : '') + `"${id}":${schema}`
-      })
-      inputsSchemaStr = `inputs的JSON Schema定义为{"type":"object","additionalProperties":false,"properties":{${inputsSchemaStr}}},`
-    }
-
-    outputSchemaArray.forEach(({id, schema}) => {
-      outputsSchemaStr = outputsSchemaStr + `${id}函数输出的值的JSON Schema定义为${schema},`
-    })
-
-    return {
-      prompts: `
-      你是一名优秀的前端开发工程师,
-      现在有一个函数模版A“${getCodeTemplate({useInputs})}”,
-      需要你根据问题基于函数模版A编写Javascript代码,问题中提到的各种数据如果没有明确表达来自输入时需要你来mock数据,否则需要严格参照JSON Schema定义,回答不需要任何其它的解释或注释,以下是例子:
-
-      outputs含有以下几个输出方法,output0函数输出的值的JSON Schema定义为{"type":"number"},
-      请回答：将时间戳增加24小时
-      ({outputs})=>{const time=new Date().getTime();outputs.output0(time+24*60*60*1000)}
-  
-      inputs的JSON Schema定义为{"type":"object","additionalProperties":false,"properties":{"inputValue0":{"type":"array","items":{"type":"object","properties":{"score":{"type":"number"}}}}}},outputs含有以下几个输出方法,output0函数输出的值的JSON Schema定义为{"type":"array","items":{"type":"object","properties":{"score":{"type":"number"}}}},
-      请回答：从列表中获取成绩大于等于60的学生
-      ({outputs})=>{const list=[{score:1},{score:60},{score:99}];outputs.output0(list.filter(item=>item.score>=60))}
-
-      inputs的JSON Schema定义为{"type":"object","additionalProperties":false,"properties":{"inputValue0":{"type":"number"}}},outputs含有以下几个输出方法,output0函数输出的值的JSON Schema定义为{"type":"number"},
-      请回答：将输入的时间戳增加24小时
-      ({outputs,inputs})=>{outputs.output0(inputs.inputValue0+24*60*60*1000)}
-
-      inputs的JSON Schema定义为{"type":"object","additionalProperties":false,"properties":{"inputValue0":{"type":"number"}}},outputs含有以下几个输出方法,output0函数输出的值的JSON Schema定义为{"type":"number"},output1函数输出的值的JSON Schema定义为{"type":"number"},
-      请回答：如果输入的数字大于1从输出项1输出否则从输出项2输出
-      ({outputs,inputs})=>{if(inputs.inputValue0>1){outputs.output0(inputs.inputValue0)}else{outputs.output1(inputs.inputValue0)}}
-      
-      ${inputsSchemaStr}${outputsSchemaStr}如果提问中没有说明数据来自输入(输入项、inputs)时需要生成符合要求的mock数据,否则不允许出现mock数据且必须严格按照inputs的JSON Schema以及outputs下各函数的JSON Schema定义来实现,回答代码即可不允许出现任何解释或注释`,
-      execute(props) {
-        const { data, newData } = props
-        if (typeof newData === 'function') {
-          data.fns = newData.toString()
-          console.log('生成可执行代码: ', data.fns)
-        } else {
-          console.log('生成代码错误: ', newData)
-        }
-      }
-    }
-
-    // return {
-    //   prompts: `
-    //   你是一名优秀的前端开发工程师,
-    //   现在有一个函数模版A“${getCodeTemplate({useInputs})}”,
-    //   功能描述中所表达的输入均来自inputs,所有的返回均使用outputs下函数处理,如果功能描述中没有强调数据来自输入,就不要使用inputs下的数据,请根据功能描述按需正确使用函数入参inputs和outputs编写基于函数模版A的Javascript代码,inputs以及outputs需要严格按照给定的JSON Schema定义来使用,不需要任何其它的解释或注释,以下是例子:
-      
-    //   inputs的JSON Schema定义为{"type":"object","additionalProperties":false,"properties":{"inputValue0":{"type":"number"}}},outputs含有以下几个输出方法,output0函数输出的值的JSON Schema定义为{"type":"number"},
-    //   请回答：将输入的时间戳增加24小时
-    //   ({outputs,inputs})=>{outputs.output0(inputs.inputValue0+24*60*60*1000)}
-  
-    //   inputs的JSON Schema定义为{"type":"object","additionalProperties":false,"properties":{"inputValue0":{"type":"number"}}},outputs含有以下几个输出方法,output0函数输出的值的JSON Schema定义为{"type":"number"},output1函数输出的值的JSON Schema定义为{"type":"number"},
-    //   请回答：如果输入的数字大于1从输出项1输出否则从输出项2输出
-    //   ({outputs,inputs})=>{if(inputs.inputValue0>1){outputs.output0(inputs.inputValue0)}else{outputs.output1(inputs.inputValue0)}}
-  
-    //   outputs含有以下几个输出方法,output0函数输出的值的JSON Schema定义为{"type":"number"},
-    //   请回答：将时间戳增加24小时
-    //   ({outputs})=>{outputs.output0(new Date().getTime()+24*60*60*1000)}
-  
-    //   inputs的JSON Schema定义为{"type":"object","additionalProperties":false,"properties":{"inputValue0":{"type":"array","items":{"type":"object","properties":{"score":{"type":"number"}}}}}},outputs含有以下几个输出方法,output0函数输出的值的JSON Schema定义为{"type":"array","items":{"type":"object","properties":{"score":{"type":"number"}}}},
-    //   请回答：从列表中获取成绩大于等于60的学生
-    //   ({outputs,inputs})=>{outputs.output0(inputs.inputValue0.filter(item=>item.score>=60))}
-      
-    //   ${inputsSchemaStr}${outputsSchemaStr}`,
-    //   execute(props) {
-    //     console.log('execute: ', props)
-    //     const { data, newData } = props
-    //     data.fns = newData.toString()
-    //     console.log('data.fns: ', data.fns)
-    //   }
-    // }
+  ":root"({ data }) {
+    return {};
   },
+  prompts: {
+    summary: `JS计算，一个可嵌入事件流程中的JavaScript脚本组件，允许自定义JavaScript代码来处理和转换输入数据，灵活实现业务逻辑，控制流程分支
+只有当需要整合输入、数据转换处理、复杂计算、处理流程分支、输出自定义内容等场景时，才允许使用该组件`,
+    usage: `JS计算支持动态添加多个输入和输出端口，可实现复杂的数据整合，控制流程分支等功能。
+
+输入端口：
+  - input.inputValue[index] 参数[index] - 支持动态添加多个输入端口，每个端口可接收不同类型的数据。index对应的是输入端口的顺序，从0开始，依次递增
+    例如：input.inputValue0（参数0），input.inputValue1（参数1）, ...
+  注意：
+    - 该组件输入为多输入模式，即当所有的输入端口均有数据输入时，组件才会触发运行。
+    - 输入id一定是以\`input.inputValue\`开头，后面跟数字索引。
+
+输出端口：
+  - output[index] 输出项[index] - 支持动态添加多个输出端口，每个端口可输出不同类型的数据。index对应的是输出端口的顺序，从0开始，依次递增
+    例如：output0（输出项0），output1（输出项1），...
+
+自定义javascript代码编写，以下是一个示例介绍：
+({ outputs, inputs }) => {
+  const [ inputValue0, inputValue1, ... ] = inputs; // 输入的内容，对应各个输入端口，与输入端口顺序保持一致
+  const [ output0, output1, ... ] = outputs; // 输出，与输出端口顺序保持一致
+  // 在这里编写你的业务逻辑代码，禁止使用任何三方库，禁止任何形式的演示代码以及demo，只能使用原生js
+  output0();
+  output1();
 }
 
-/**
- * 生成0-10的随机数，如果大于5从输出项1输出，否则从输出项2输出
- * +10输出
- * 将输入+10输出
- * 返回一个商品信息
- * 商品信息，包含商品名称、价格以及描述
- * 从商品列表中获取所有折扣商品，按价格从低到高排序，取前3个商品
- * 从今天上班的工人列表中找出工作时间最长的工人
- * 从今天上班的老师中找出年龄最大的5个
- * 返回商品信息
- * 如果输入的商品是折扣商品，输出折扣价格否则输出正常价格
- */
+注意：
+  - 使用该组件必须要进行代码编辑，否则组件无法运行。
+  - JS计算组件仅支持运行在浏览器端。
+  - 严格按照上下文环境、输入内容、输出内容、当前节点的语义化名称进行分析，编写相应的javascript代码。
+  - 确保代码能实现预期的业务逻辑。
+  - 不允许使用任何三方库，只能原生js实现。
+  - 禁止出现任何形式的演示代码以及demo。
+
+<配置流程>
+  1. 根据业务需求，进行代码编辑；
+</配置流程>
+`,
+  },
+};  
