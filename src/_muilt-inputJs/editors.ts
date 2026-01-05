@@ -35,6 +35,7 @@ export default {
     {
       title: '添加输入项',
       type: 'Button',
+      description: "按需添加一个新的输入项",
       ifVisible({ data }: EditorResult<Data>) {
         return !data.runImmediate;
       },
@@ -56,6 +57,7 @@ export default {
     {
       title: '添加输出项',
       type: 'Button',
+      description: "按需添加一个新的输出项",
       value: {
         set({ output }: EditorResult<Data>) {
           const idx = getIoOrder(output);
@@ -100,6 +102,7 @@ export default {
         return option;
       },
       title: '代码编辑',
+      description: "编写自定义 JavaScript 代码，请确保代码中实际使用的输入项数量、输出项数量，与已配置/添加的输入项、输出项数量完全匹配。",
       value: {
         get({ data }: EditorResult<Data>) {
           return data.fns;
